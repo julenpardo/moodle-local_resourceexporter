@@ -1,5 +1,5 @@
-<?xml version="!.0" encoding="UTF-8"?>
-<project name="moodle-local_usablebackup">
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="moodle-local_usablebackup" default="codechecker">
 
     <property name="workspace.dir" value="${env.JENKINS_HOME}/jobs/${phing.project.name}/workspace"/>
     <property name="moodle.git" value="${workspace.dir}/moodle/"/>
@@ -27,6 +27,15 @@
         </copy>
     </target>
 
+    <target name="moodle_install" depends="moodle_pull">
+        <exec command="git checkout ${parameter.version}" dir="${moodle.git}" outputProperty="moodle_install.checkout.output"/>
+        <echo msg="${moodle_install.checkout.output}"/>
+        <copy todir="${version.dir}">
+            <fileset dir="${moodle.git}"/>
+        </copy>
+        <copy file="${config.path}" tofile="${version.dir}/config.php" overwrite="true"/>
+    </target>
+
     <target name="moodle_pull">
         <mkdir dir="${moodle.git}"/>
         <exec command="git init" dir="${moodle.git}"/>
@@ -36,7 +45,7 @@
     </target>
 
 
-    <target name="codechecker" depends="block_mycourse_install, moodle_install">
+    <target name="codechecker" depends="usablebackup_install, moodle_install">
         <exec command="git clone ${codechecker.url} codechecker" dir="${codechecker.dir}"/>
         <exec command="phpcs -v --colors --standard=${codechecker.ruleset} --ignore=*.xml,*.md,*.feature,.idea/*,doc/* ./*" dir="${usablebackup.install.path}" returnProperty="codechecker.status" outputProperty="codechecker.output"/>
         <if>
@@ -51,7 +60,7 @@
         <echo msg="${codechecker.output}"/>
     </target>
 
-    <target name="phpunit_init" depends="moodle_install, block_mycourse_install">
+    <target name="phpunit_init" depends="moodle_install, usablebackup_install">
         <copy file="${config.path}" tofile="${version.dir}/config.php" overwrite="true"/>
         <exec command="php ${version.dir}/admin/tool/phpunit/cli/init.php" dir="${version.dir}"/>
     </target>
