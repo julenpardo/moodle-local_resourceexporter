@@ -33,7 +33,41 @@ class file extends resource {
 
     }
 
+    /**
+     * Retrieves the information of all the files of a course, necessary to download them
+     * later.
+     *
+     * @param int $courseid The course to query the contents of.
+     * @return array Index-based array ([0,n]) with the information of the files.
+     */
     protected static function get_db_records($courseid) {
+        global $DB;
 
+        $sql = "SELECT files.id,
+                       course.id AS course_id,
+                       course.fullname AS course_shortname,
+                       course.shortname AS course_shortname,
+                       files.contextid,
+                       files.filename,
+                       files.filearea,
+                       files.filepath,
+                       files.filesize,
+                       files.mimetype,
+                       files.itemid,
+                       files.component
+                FROM {files} files
+                INNER JOIN {context} context
+                    ON files.contextid = context.id
+                INNER JOIN {course} course
+                    ON course.id = context.instanceid
+
+                WHERE context.contextlevel = 50
+                    AND files.filename <> '.'
+                    AND course.id = ?";
+
+        $records = $DB->get_records_sql($sql, array($courseid));
+        $records = array_values($records);
+
+        return $records;
     }
 }
