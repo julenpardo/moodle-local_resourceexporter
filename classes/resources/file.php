@@ -25,6 +25,8 @@ namespace local_usablebackup;
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once('resource.php');
+
 use local_usablebackup\resource;
 
 class file extends resource {
@@ -35,7 +37,7 @@ class file extends resource {
 
     /**
      * Retrieves the information of all the files of a course, necessary to download them
-     * later.
+     * later. And, also, the section of the course where it is.
      *
      * @param int $courseid The course to query the contents of.
      * @return array Index-based array ([0,n]) with the information of the files.
@@ -45,24 +47,30 @@ class file extends resource {
 
         $sql = "SELECT files.id,
                        course.id AS course_id,
-                       course.fullname AS course_shortname,
                        course.shortname AS course_shortname,
                        files.contextid,
                        files.filename,
                        files.filearea,
                        files.filepath,
-                       files.filesize,
-                       files.mimetype,
                        files.itemid,
-                       files.component
+                       files.component,
+                       resource.name AS resource_name,
+                       course_sections.name AS section_name
                 FROM {files} files
                 INNER JOIN {context} context
                     ON files.contextid = context.id
-                INNER JOIN {course} course
-                    ON course.id = context.instanceid
+                    AND context.contextlevel = 70
+                INNER JOIN {course_modules} course_modules
+                    ON context.instanceid = course_modules.id
+                INNER JOIN {course course}
+                    ON course_modules.course = course.id
+                INNER JOIN {resource} resource
+                    ON resource.course = course.id
+                    AND resource.id = course_modules.instance
+                INNER JOIN {course_sections} course_sections
+                    ON course_sections.id = course_modules.section
 
-                WHERE context.contextlevel = 50
-                    AND files.filename <> '.'
+                WHERE filename <> '.'
                     AND course.id = ?";
 
         $records = $DB->get_records_sql($sql, array($courseid));
