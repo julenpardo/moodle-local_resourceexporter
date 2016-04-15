@@ -61,6 +61,8 @@ class local_usablebackup_generator extends testing_module_generator {
 
     /**
      * Queries the last created file for a course, used the data generator for resources.
+     * The easiest way to retrieve the last inserted record (i.e., the one with the higher id), is to order the query
+     * descending, by the id, and then taking only the first element of the result array.
      *
      * @param int $courseid The course for which the resource was created.
      * @return object The last file object created for the course.
@@ -98,7 +100,10 @@ class local_usablebackup_generator extends testing_module_generator {
 
                 ORDER BY files.id DESC";
 
-        $file = $DB->get_record_sql($sql, array($courseid));
+        $files = $DB->get_records_sql($sql, array($courseid));
+        $files = array_values($files);
+
+        $file = $files[0];
 
         return $file;
     }
