@@ -1,0 +1,20 @@
+#;Class;Method;Values;Comments;Technique;Tested?;Result;Notes;Author;Date
+1;resources/resource;create_section_dir_if_not_exists;"$parentdirectory = $CFG->dataroot
+$sectionname = ''
+-------------------------------------------------------
+$parentdirectory = $CFG->dataroot
+$sectionname = 'section'""
+";"There are three different tests for this method:
+ - One that receives an empty $sectionname.
+ - One that receives a $sectionname with a value, for a non existing directory.
+ - One that receives a $sectionname with a value, for a directory that already exists.""
+";Equivalence;No;;;;
+2;resources/file;get_db_records;"$courseid = <generated>
+";"Test that, after creating a course and resources for it, retrieves properly the records of those resources of ""file"" type, with all the information required.
+
+The following data will be used for the generation of file resources:
+$resource[0]->name = """"Software Engineering notes""""
+$resource[1]->name = """"How to join Moodle tables without dying in the attempt""""
+
+And also a non-file resource will be created, to verify that the method actually returns resource type rows only.
+$url[0]->name = ""Whatever; this is not a file""";Equivalence;Yes;Pass;;Julen Pardo;15/04/2016
