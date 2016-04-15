@@ -25,6 +25,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+global $CFG;
+
+require_once($CFG->dirroot . '/config.php');
+
 /**
  * local_usablebackup data generator.
  *
@@ -37,10 +41,12 @@ defined('MOODLE_INTERNAL') || die();
 class local_usablebackup_generator extends testing_module_generator {
 
     protected $resourcegenerator;
+    protected $filestorage;
 
     public function __construct($datagenerator) {
         parent::__construct($datagenerator);
         $this->resourcegenerator = $datagenerator->get_plugin_generator('mod_resource');
+        $this->filestorage = get_file_storage();
     }
 
     /**
@@ -103,26 +109,25 @@ class local_usablebackup_generator extends testing_module_generator {
      *
      * @param int $course The course for which the resource will be created.
      * @param string $name The name of the resource.
-     * @param string $filename The name of the file.
-     * @param string $filearea The area of the file.
-     * @param string $filepath The path to the file.
-     * @return array The resource and the file objects, the only way to return two values...
+     * @param string $filecontent The content of the file.
+     * @return array The resource, the file row, and the physical file; the only way to return more than one value...
      */
-    public function create_resource($course, $name, $filename, $filearea = "content", $filepath = "/") {
-        global $DB;
-
+    public function create_resource($course, $name, $filecontent = "content") {
         $resourceattributes = array('course' => $course, 'name' => $name);
 
         $resource = $this->resourcegenerator->create_instance($resourceattributes);
-        $file = $this->get_last_created_file($course);
+        $filerow = $this->get_last_created_file($course);
 
-        $file->filename = $filename;
-        $file->filearea = $filearea;
-        $file->filepath = $filepath;
+        $file = $this->filestorage->get_file($filerow->contextid,
+            $filerow->component,
+            $filerow->filearea,
+            $filerow->itemid,
+            $filerow->filepath,
+            $filerow->filename);
 
-        $DB->update_record('files', $file);
-
-        $resourceandfile = array('resource' => $resource, 'file' => $file);
+        $resourceandfile = array('resource' => $resource,
+            'filerow' => $filerow,
+            'file' => $file);
 
         return $resourceandfile;
     }
