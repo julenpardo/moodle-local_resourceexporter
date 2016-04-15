@@ -56,6 +56,8 @@ class local_usablebackup_file_testcase extends advanced_testcase {
         $this->resetAfterTest();
         $this->setAdminUser();
 
+        $urlgenerator = $this->getDataGenerator()->get_plugin_generator('mod_url');
+
         $resources = array();
         $resources[0] = new stdClass();
         $resources[0]->name = 'Software Engineering notes';
@@ -63,7 +65,12 @@ class local_usablebackup_file_testcase extends advanced_testcase {
         $resources[1] = new stdClass();
         $resources[1]->name = 'How to join Moodle tables without dying in the attempt';
 
+        $url = new stdClass();
+        $url->name = 'Whatever; this is not a file';
+
         $course = $this->filegenerator->create_course();
+
+        $urlgenerator->create_instance(array('course' => $course->id));
 
         $generatedresources = array();
         $filesrows = array();
@@ -77,15 +84,48 @@ class local_usablebackup_file_testcase extends advanced_testcase {
             array_push($files, $resourceandfile['file']);
         }
 
+        // If in the database, in the 'resource' table, the number of rows is not the same as the defined resources,
+        // something is wrong.
         $expectedresourcecount = count($resources);
         $actualresourcecount = $DB->count_records('resource');
 
-        // If in the database, in the 'resource' table, the number of rows is not the same as the defined resources,
-        // something is wrong.
         $this->assertEquals($expectedresourcecount, $actualresourcecount);
 
+        // If the number of files for the course is not the same as the defined resources, something is wrong.
+        $expectedfilecount = count($resources);
+        $actualfilecount = $DB->count_records_sql("SELECT count(files.*)
+                                                    FROM {files} files
+                                                    INNER JOIN {context} context
+                                                        ON files.contextid = context.id
+                                                        AND context.contextlevel = 70
+                                                    INNER JOIN {course_modules} course_modules
+                                                        ON context.instanceid = course_modules.id
+                                                    INNER JOIN {course} course
+                                                        ON course_modules.course = course.id
+                                                    INNER JOIN {resource} resource
+                                                        ON resource.course = course.id
+                                                        AND resource.id = course_modules.instance
+                                                    INNER JOIN {course_sections} course_sections
+                                                        ON course_sections.id = course_modules.section
+
+                                                    WHERE filename <> '.'
+                                                        AND course.id = ?", array($course->id));
+
+        $this->assertEquals($expectedfilecount, $actualfilecount);
+
+        // If the returned number of resources is not the same as the defined resource number, something is wrong.
+        $expectedresources = count($resources);
+        $actualresources = count($generatedresources);
+
+        $this->assertEquals($expectedresources, $actualresources);
+
+        // Finally, the names of the resources.
         foreach ($generatedresources as $index => $generatedresource) {
-            $this->assertEquals($resources[$index]->name, $generatedresource->name);
+            $expectedname = $resources[$index]->name;
+            $actualname = $generatedresource->name;
+
+            $this->assertEquals($expectedname, $actualname);
         }
+
     }
 }
