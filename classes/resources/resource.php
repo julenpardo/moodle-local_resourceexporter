@@ -27,9 +27,9 @@ defined('MOODLE_INTERNAL') || die();
 
 abstract class resource {
 
-    abstract public static function add_resources_to_zip($courseid, $zipfile, $parentdirectory);
+    abstract public function add_resources_to_zip($courseid, $zipfile, $parentdirectory);
 
-    abstract protected static function get_db_records($courseid);
+    abstract protected function get_db_records($courseid);
 
     /**
      * Creates the section directory inside the parent directory, if it does not exist already.
@@ -40,7 +40,7 @@ abstract class resource {
      * @param string $sectionname The name of the section of a resource.
      * @return string The section directory (the full path).
      */
-    protected static function create_section_dir_if_not_exists($parentdirectory, $sectionname) {
+    protected function create_section_dir_if_not_exists($parentdirectory, $sectionname) {
         if ($sectionname !== '') {
             $sectiondirectory = $parentdirectory . '/' . $sectionname;
             $sectiondirectory = str_replace('//', '/', $sectiondirectory);
