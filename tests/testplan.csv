@@ -7,4 +7,4 @@ $resource[1]->name = ""How to join Moodle tables without dying in the attempt""
 And also a not-file resource will be created, to verify that the method actually returns resource type rows only.
 $url[0]->name = ""Whatever; this is not a file"""	"Test that, after creating a course and resources for it, retrieves properly the records of those resources of ""file"" type, with all the information required.
 The generator creates resources, allowing the specification of the name, but the associated physical files are created automatically, with no option to specify the name, the path, etc. So, only the name will be specified.
- "	Equivalence	No				
+ "	Equivalence	Yes	Pass		Julen Pardo	15/04/2016

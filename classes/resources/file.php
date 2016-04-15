@@ -32,7 +32,11 @@ use local_usablebackup\resource;
 class file extends resource {
 
     public static function add_resources_to_zip($courseid, $zipfile) {
+        $resources = self::get_db_records($courseid);
 
+        foreach ($resources as $resource) {
+            $file = self::get_file_from_resource_info($resource);
+        }
     }
 
     /**
@@ -78,4 +82,18 @@ class file extends resource {
 
         return $records;
     }
+
+    protected static function get_file_from_resource_info($resource) {
+        $filestorage = get_file_storage();
+
+        $file = $filestorage->get_file($resource->contextid,
+            $resource->component,
+            $resource->filearea,
+            $resource->itemid,
+            $resource->filepath,
+            $resource->filename);
+
+        return $file;
+    }
+
 }
