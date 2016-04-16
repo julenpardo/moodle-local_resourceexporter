@@ -31,8 +31,8 @@ use local_usablebackup\resource;
 
 class file extends resource {
 
-    public static function add_resources_to_zip($courseid, $zipfile) {
-        $resources = self::get_db_records($courseid);
+    public function add_resources_to_zip($courseid, $zipfile, $parentdirectory) {
+        $resources = $this->get_db_records($courseid);
 
         foreach ($resources as $resource) {
             $file = self::get_file_from_resource_info($resource);
@@ -46,7 +46,7 @@ class file extends resource {
      * @param int $courseid The course to query the contents of.
      * @return array Index-based array ([0,n]) with the information of the files.
      */
-    protected static function get_db_records($courseid) {
+    protected function get_db_records($courseid) {
         global $DB;
 
         $sql = "SELECT files.id,
