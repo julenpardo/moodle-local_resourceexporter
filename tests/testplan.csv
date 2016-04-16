@@ -8,7 +8,7 @@ $sectionname = 'section'""
  - One that receives an empty $sectionname.
  - One that receives a $sectionname with a value, for a non existing directory.
  - One that receives a $sectionname with a value, for a directory that already exists.""
-";Equivalence;No;;;;
+";Equivalence;Yes;Pass;Used reflection to access non-public methods.;Julen Pardo;15/04/2016
 2;resources/file;get_db_records;"$courseid = <generated>
 ";"Test that, after creating a course and resources for it, retrieves properly the records of those resources of ""file"" type, with all the information required.
 
