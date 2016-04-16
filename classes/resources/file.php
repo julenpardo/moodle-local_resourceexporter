@@ -35,7 +35,16 @@ class file extends resource {
         $resources = $this->get_db_records($courseid);
 
         foreach ($resources as $resource) {
-            $file = self::get_file_from_resource_info($resource);
+            $sectionname = $resource->section_name;
+
+            $file = $this->get_file_from_resource_info($resource);
+            $filename = $file->get_filename();
+            $filecontent = $file->get_content_file_handle();
+
+            $filedirectory = parent::create_section_dir_if_not_exists($parentdirectory, $sectionname);
+            $filedirectory .= '/' . $filename;
+
+            file_put_contents($filedirectory, $filecontent);
         }
     }
 

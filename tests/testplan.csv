@@ -18,3 +18,9 @@ $resource[1]->name = """"How to join Moodle tables without dying in the attempt"
 
 And also a non-file resource will be created, to verify that the method actually returns resource type rows only.
 $url[0]->name = ""Whatever; this is not a file""";Equivalence;Yes;Pass;;Julen Pardo;15/04/2016
+3;resources/file;add_resources_to_directory;"$courseid = <generated>
+$parentdirectory = $CFG->dataroot";"Test that file resources are correctly added to the parent directory received as parameter.
+
+The following data will be used for the generation of file resources:
+$resource[0]->name = ""Unit testing rules""
+$resource[1]->name = ""Software Engineering is fun""";Equivalence;No;;;;
