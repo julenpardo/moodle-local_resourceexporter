@@ -29,11 +29,11 @@ use local_usablebackup\resource;
 
 class url extends resource {
 
-    public static function add_resources_to_zip($courseid, $zipfile, $parentdirectory) {
+    public function add_resources_to_directory($courseid, $parentdirectory) {
 
     }
 
-    protected static function get_db_records($courseid) {
+    protected function get_db_records($courseid) {
 
     }
 }
