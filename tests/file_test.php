@@ -26,6 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once('generator/lib.php');
+require_once($CFG->dirroot . '/local/usablebackup/classes/resources/file.php');
+
+use local_usablebackup\file;
 
 /**
  * local_usablebackup data generator class.
@@ -38,10 +41,12 @@ require_once('generator/lib.php');
 
 class local_usablebackup_file_testcase extends advanced_testcase {
 
+    protected $file;
     protected $filegenerator;
 
     protected function setUp() {
         parent::setUp();
+        $this->file = new file();
         $this->filegenerator = new local_usablebackup_generator($this->getDataGenerator());
     }
 
@@ -113,19 +118,23 @@ class local_usablebackup_file_testcase extends advanced_testcase {
 
         $this->assertEquals($expectedfilecount, $actualfilecount);
 
+        // Finally, we can start testing the method.
+
+        $actualresources = $this->file->get_db_records($course->id);
+
         // If the returned number of resources is not the same as the defined resource number, something is wrong.
         $expectedresources = count($resources);
-        $actualresources = count($generatedresources);
+        $actualresourcescount = count($actualresources);
 
-        $this->assertEquals($expectedresources, $actualresources);
+        $this->assertEquals($expectedresources, $actualresourcescount);
 
         // Finally, the names of the resources.
-        foreach ($generatedresources as $index => $generatedresource) {
+        foreach ($actualresources as $index => $actualresource) {
             $expectedname = $resources[$index]->name;
-            $actualname = $generatedresource->name;
+            $actualname = $actualresource->name;
 
             $this->assertEquals($expectedname, $actualname);
         }
-
     }
+
 }
