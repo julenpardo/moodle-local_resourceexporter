@@ -55,11 +55,27 @@ class local_usablebackup_file_testcase extends advanced_testcase {
         parent::tearDown();
     }
 
+    /**
+     * Reflection method, to access non-public methods.
+     *
+     * @param $name
+     * @return ReflectionMethod
+     */
+    protected static function get_method($name) {
+        $class = new ReflectionClass('local_usablebackup\file');
+        $method = $class->getMethod($name);
+        $method->setAccessible(true);
+
+        return $method;
+    }
+
     public function test_get_db_records() {
         global $DB;
 
         $this->resetAfterTest();
         $this->setAdminUser();
+
+        $method = self::get_method('get_db_records');
 
         $urlgenerator = $this->getDataGenerator()->get_plugin_generator('mod_url');
 
@@ -119,8 +135,7 @@ class local_usablebackup_file_testcase extends advanced_testcase {
         $this->assertEquals($expectedfilecount, $actualfilecount);
 
         // Finally, we can start testing the method.
-
-        $actualresources = $this->file->get_db_records($course->id);
+        $actualresources = $method->invokeArgs($this->file, array($course->id));
 
         // If the returned number of resources is not the same as the defined resource number, something is wrong.
         $expectedresources = count($resources);
