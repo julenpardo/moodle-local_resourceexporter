@@ -75,7 +75,7 @@ class file extends resource {
                     AND context.contextlevel = 70
                 INNER JOIN {course_modules} course_modules
                     ON context.instanceid = course_modules.id
-                INNER JOIN {course course}
+                INNER JOIN {course} course
                     ON course_modules.course = course.id
                 INNER JOIN {resource} resource
                     ON resource.course = course.id

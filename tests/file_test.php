@@ -146,7 +146,7 @@ class local_usablebackup_file_testcase extends advanced_testcase {
         // Finally, the names of the resources.
         foreach ($actualresources as $index => $actualresource) {
             $expectedname = $resources[$index]->name;
-            $actualname = $actualresource->name;
+            $actualname = $actualresource->resource_name;
 
             $this->assertEquals($expectedname, $actualname);
         }
