@@ -249,7 +249,7 @@ class local_usablebackup_file_testcase extends advanced_testcase {
             $this->assertEquals($expectedfilename, $actualfilename);
         }
 
-        // @TODO: compare files' contents.
+        // TODO: compare files' contents.
     }
 
 }
