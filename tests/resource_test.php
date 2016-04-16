@@ -34,7 +34,7 @@ use local_usablebackup\resource;
  * This dirty workaround is required to test the implemented methods of the abstract class.
  */
 class concrete_resource extends resource {
-    public function add_resources_to_zip($courseid, $zipfile, $parentdirectory) {
+    public function add_resources_to_directory($courseid, $parentdirectory) {
         null;
     }
 

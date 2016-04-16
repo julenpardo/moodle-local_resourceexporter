@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 abstract class resource {
 
-    abstract public function add_resources_to_zip($courseid, $zipfile, $parentdirectory);
+    abstract public function add_resources_to_directory($courseid, $parentdirectory);
 
     abstract protected function get_db_records($courseid);
 
