@@ -49,4 +49,4 @@ $url[1]->externalurl = ""https://docs.moodle.org/dev/Writing_PHPUnit_tests""
 
 (The order matters, because when scanning the directory finding the files, they'll be ordered by name).
 
-After creating them, the file contents created in $parentdirectory will be checked to assert that the file contains the expected text (the externalurl).";Equivalence;No;;;;
+After creating them, the file contents created in $parentdirectory will be checked to assert that the file contains the expected text (the externalurl).";Equivalence;Yes;Pass;;Julen Pardo;17/04/2016
