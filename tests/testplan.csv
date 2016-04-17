@@ -17,4 +17,14 @@ $resource[0]->name = """"Software Engineering notes""""
 $resource[1]->name = """"How to join Moodle tables without dying in the attempt""""
 
 And also a non-file resource will be created, to verify that the method actually returns resource type rows only.
-$url[0]->name = ""Whatever; this is not a file""";Equivalence;Yes;Pass;;Julen Pardo;15/04/2016
+$url[0]->name = ""Whatever; this is not a file""";Equivalence;Yes;Pass;Used reflection to access non-public methods.;Julen Pardo;15/04/2016
+3;resources/file;add_resources_to_directory;"$courseid = <generated>
+$parentdirectory = $CFG->dataroot";"Test that file resources are correctly added to the parent directory received as parameter.
+
+The following data will be used for the generation of file resources:
+$resource[0]->name = ""Unit testing rules""
+$resource[1]->name = ""Software Engineering is fun""";Equivalence;Yes;Pass;;Julen Pardo;17/04/2016
+4;resources/file;get_file_from_resource_info;$resource = <generated>;"Test that, receiving a generated file resource, the method returns the expected file object.
+
+The following data will be used for the generation of file resources:
+$resource[0]->name = ""Apparently simple functions must also be tested""";Equivalence;Yes;Pass;Used reflection to access non-public methods.;Julen Pardo;17/04/2016

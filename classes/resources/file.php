@@ -25,15 +25,91 @@ namespace local_usablebackup;
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once('resource.php');
+
 use local_usablebackup\resource;
 
 class file extends resource {
 
+    /**
+     * Adds the file resources of the given course to the received parent directory. If the file is not categorized in a section
+     * in the course, it will be added to the $parentdirectory root.
+     *
+     * @param int $courseid The course id the files to add to the directory belong to.
+     * @param string $parentdirectory The directory to add the resources to.
+     */
     public function add_resources_to_directory($courseid, $parentdirectory) {
+        $resources = $this->get_db_records($courseid);
 
+        foreach ($resources as $resource) {
+            $sectionname = $resource->section_name;
+
+            $file = $this->get_file_from_resource_info($resource);
+            $filename = $file->get_filename();
+            $filecontent = $file->get_content_file_handle();
+
+            $filedirectory = parent::create_section_dir_if_not_exists($parentdirectory, $sectionname);
+            $filedirectory .= '/' . $filename;
+
+            file_put_contents($filedirectory, $filecontent);
+        }
     }
 
+    /**
+     * Retrieves the information of all the files of a course, necessary to download them later. And, also, the section of
+     * the course where it is.
+     *
+     * @param int $courseid The course to query the contents of.
+     * @return array Index-based array ([0,n]) with the information of the files.
+     */
     protected function get_db_records($courseid) {
+        global $DB;
 
+        $sql = "SELECT files.id,
+                       course.id AS course_id,
+                       course.shortname AS course_shortname,
+                       files.contextid,
+                       files.filename,
+                       files.filearea,
+                       files.filepath,
+                       files.itemid,
+                       files.component,
+                       resource.name AS resource_name,
+                       course_sections.name AS section_name
+                FROM {files} files
+                INNER JOIN {context} context
+                    ON files.contextid = context.id
+                    AND context.contextlevel = 70
+                INNER JOIN {course_modules} course_modules
+                    ON context.instanceid = course_modules.id
+                INNER JOIN {course} course
+                    ON course_modules.course = course.id
+                INNER JOIN {resource} resource
+                    ON resource.course = course.id
+                    AND resource.id = course_modules.instance
+                INNER JOIN {course_sections} course_sections
+                    ON course_sections.id = course_modules.section
+
+                WHERE filename <> '.'
+                    AND course.id = ?";
+
+        $records = $DB->get_records_sql($sql, array($courseid));
+        $records = array_values($records);
+
+        return $records;
     }
+
+    protected function get_file_from_resource_info($resource) {
+        $filestorage = get_file_storage();
+
+        $file = $filestorage->get_file($resource->contextid,
+            $resource->component,
+            $resource->filearea,
+            $resource->itemid,
+            $resource->filepath,
+            $resource->filename);
+
+        return $file;
+    }
+
 }
