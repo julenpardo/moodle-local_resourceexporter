@@ -130,7 +130,7 @@ class local_usablebackup_url_testcase extends advanced_testcase {
     }
 
     public function test_add_resources_to_directory() {
-        global $DB;
+        global $DB, $CFG;
 
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -155,6 +155,46 @@ class local_usablebackup_url_testcase extends advanced_testcase {
                 'externalurl' => $url->externalurl));
 
             array_push($generatedurls, $generatedurl);
+        }
+
+        // Now, we can call the testing method.
+        $parentdirectory = $CFG->dataroot . '/test_add_resources_to_directory';
+
+        $this->url->add_resources_to_directory($course->id, $parentdirectory);
+
+        // We get the actual files of the directory, omitting '.' and '..'.
+        $actualfiles = scandir($parentdirectory);
+        unset($actualfiles[0]);
+        unset($actualfiles[1]);
+        $actualfiles = array_values($actualfiles);
+
+        // If the number of defined url resources and the number of files created in the specified directory is different,
+        // something is wrong.
+        $expectedfilecount = count($urls);
+        $actualfilecount = count($actualfiles);
+
+        $this->assertEquals($expectedfilecount, $actualfilecount);
+
+        // We save the contents of the generated files...
+        $actualfilescontents = array();
+
+        foreach ($actualfiles as $actualfile) {
+            $path = $parentdirectory . '/' . $actualfile;
+            $content = file_get_contents($path);
+
+            array_push($actualfilescontents, $content);
+        }
+
+        // Finally, we can check the created files' names and contents.
+        foreach ($urls as $index => $url) {
+            $expectedname = $url->name;
+            $expectedcontent = $url->externalurl;
+
+            $actualname = $actualfiles[$index];
+            $actualcontent = $actualfilescontents[$index];
+
+            $this->assertEquals($expectedname, $actualname);
+            $this->assertEquals($expectedcontent, $actualcontent);
         }
     }
 

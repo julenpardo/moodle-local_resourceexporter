@@ -37,7 +37,7 @@ $url[1]->name = ""Moodle Testing and QA forum""
 $url[1]->externallurl = ""https://moodle.org/course/view.php?id=5""
 
 And also a non-url resource will be created, to verify that the method actually returns resource type rows only.
-$file[0]->name = ""Whatever; this is not a url""";Equivalence;No;;;;
+$file[0]->name = ""Whatever; this is not a url""";Equivalence;Yes;Pass;Used reflection to access non-public methods.;Julen Pardo;17/04/2016
 6;resources/url;add_resources_to_directory;"$courseid = <generated>
 $parentdirectory = $CFG->dataroot . '/test_add_resources_to_directory'";"Test that file resources are correctly added to the parent directory received as parameter.
 
