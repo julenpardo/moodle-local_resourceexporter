@@ -37,9 +37,11 @@ class file extends resource {
      *
      * @param int $courseid The course id the files to add to the directory belong to.
      * @param string $parentdirectory The directory to add the resources to.
+     * @return array The path of every added file.
      */
     public function add_resources_to_directory($courseid, $parentdirectory) {
         $resources = $this->get_db_records($courseid);
+        $addedfilespaths = array();
 
         foreach ($resources as $resource) {
             $sectionname = $resource->section_name;
@@ -48,11 +50,16 @@ class file extends resource {
             $filename = $file->get_filename();
             $filecontent = $file->get_content_file_handle();
 
-            $filedirectory = parent::create_section_dir_if_not_exists($parentdirectory, $sectionname);
-            $filedirectory .= '/' . $filename;
+            $filepath = parent::create_section_dir_if_not_exists($parentdirectory, $sectionname);
+            $filepath .= '/' . $filename;
+            $filepath = str_replace('//', '/', $filepath);
 
-            file_put_contents($filedirectory, $filecontent);
+            file_put_contents($filepath, $filecontent);
+
+            array_push($addedfilespaths, $filepath);
         }
+
+        return $addedfilespaths;
     }
 
     /**
