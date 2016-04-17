@@ -146,7 +146,6 @@ class local_usablebackup_url_testcase extends advanced_testcase {
         $urls[1]->name = 'Moodle - Writing PHPUnit tests';
         $urls[1]->externalurl = 'https://docs.moodle.org/dev/Writing_PHPUnit_tests';
 
-
         // We generate the urls...
         $generatedurls = array();
 
