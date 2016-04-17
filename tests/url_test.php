@@ -71,7 +71,7 @@ class local_usablebackup_url_testcase extends advanced_testcase {
     }
 
     public function test_get_db_records() {
-        global $DB, $CFG;
+        global $DB;
 
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -108,8 +108,11 @@ class local_usablebackup_url_testcase extends advanced_testcase {
             $filegenerator->create_resource($course->id, $resource->name);
         }
 
-        $actualurls = $DB->get_records('url');
-        $actualurls = array_values($actualurls);
+        // We get the method by reflection, and we call it.
+        $method = self::get_method('get_db_records');
+        $actualurls = $method->invokeArgs($this->url, array($course->id));
+        // The db rows are returned ordered by the insertion time, so we have to revert the array order not to have trouble later.
+        $actualurls = array_reverse($actualurls);
 
         // If the number of defined urls and the number of urls in database is not the same, something is wrong.
         $expectedurlcount = count($urls);
@@ -127,7 +130,32 @@ class local_usablebackup_url_testcase extends advanced_testcase {
     }
 
     public function test_add_resources_to_directory() {
+        global $DB;
 
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $course = $this->getDataGenerator()->create_course();
+
+        $urls = array();
+        $urls[0] = new stdClass();
+        $urls[0]->name = 'Moodle - Writing PHPUnit tests';
+        $urls[0]->externalurl = 'https://docs.moodle.org/dev/Writing_PHPUnit_tests';
+
+        $urls[1] = new stdClass();
+        $urls[1]->name = 'Moodle - QA Testing';
+        $urls[1]->externalurl = 'https://docs.moodle.org/dev/QA_testing';
+
+        // We generate the urls...
+        $generatedurls = array();
+
+        foreach ($urls as $url) {
+            $generatedurl = $this->urlgenerator->create_instance(array('course' => $course->id,
+                'name' => $url->name,
+                'externalurl' => $url->externalurl));
+
+            array_push($generatedurls, $generatedurl);
+        }
     }
 
 }
