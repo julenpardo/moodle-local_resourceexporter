@@ -29,11 +29,54 @@ use local_usablebackup\resource;
 
 class url extends resource {
 
+    /**
+     * Adds the urls of the given course to the received parent directory. If the url is not categorized in a section in the
+     * course, it will be added to the $parentdirectory root.
+     * The "transformation" of resource url to file, is creating a .txt file with the name of the url resource, and putting the
+     * external url as the content.
+     *
+     * @param int $courseid The course id the urls to add to the directory belong to.
+     * @param string $parentdirectory The directory to add the urls to.
+     */
     public function add_resources_to_directory($courseid, $parentdirectory) {
+        $resources = $this->get_db_records($courseid);
 
+        foreach ($resources as $resource) {
+            $sectionname = $resource->section_name;
+            $filename = mb_convert_encoding($resource->name, 'UTF-8');
+            $url = $resource->externalurl;
+
+            $filedirectory = parent::create_section_dir_if_not_exists($parentdirectory, $sectionname);
+
+            $filepath = $filedirectory . '/' . $filename . '.txt';
+            file_put_contents($filepath, $url);
+        }
     }
 
+    /**
+     * Retrieves the information of all the urls of a course, and, also, the section of the course where it is.
+     *
+     * @param int $courseid The course to query the contents of.
+     * @return array Index-based array ([0,n]) with the information of the urls.
+     */
     protected function get_db_records($courseid) {
+        global $DB;
 
+        $sql = "SELECT url.name,
+                       url.externalurl,
+                       course_sections.name AS section_name
+                FROM   {url} url
+                INNER JOIN {course_modules} course_modules
+                    ON url.id = course_modules.instance
+                    AND url.course = course_modules.course
+                INNER JOIN {course_sections} course_sections
+                    ON course_modules.section = course_sections.id
+
+                WHERE url.course = ?";
+
+        $records = $DB->get_records_sql($sql, array($courseid));
+        $records = array_values($records);
+
+        return $records;
     }
 }

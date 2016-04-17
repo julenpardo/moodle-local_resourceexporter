@@ -28,3 +28,25 @@ $resource[1]->name = ""Software Engineering is fun""";Equivalence;Yes;Pass;;Jule
 
 The following data will be used for the generation of file resources:
 $resource[0]->name = ""Apparently simple functions must also be tested""";Equivalence;Yes;Pass;Used reflection to access non-public methods.;Julen Pardo;17/04/2016
+5;resources/url;get_db_records;$courseid = <generated>;"Test that, after creating a course and url resources for it, retrieves properly the records of those resources of ""url"" type, with all the information required.
+
+The following data will be used for the generation of file resources:
+$url[0]->name = ""Moodle general development forum""
+$url[0]->externallurl = ""https://moodle.org/mod/forum/view.php?id=55""
+$url[1]->name = ""Moodle Testing and QA forum""
+$url[1]->externallurl = ""https://moodle.org/course/view.php?id=5""
+
+And also a non-url resource will be created, to verify that the method actually returns resource type rows only.
+$file[0]->name = ""Whatever; this is not a url""";Equivalence;Yes;Pass;Used reflection to access non-public methods.;Julen Pardo;17/04/2016
+6;resources/url;add_resources_to_directory;"$courseid = <generated>
+$parentdirectory = $CFG->dataroot . '/test_add_resources_to_directory'";"Test that file resources are correctly added to the parent directory received as parameter.
+
+The following data will be used for the generation of file resources:
+$url[0]->name = ""Moodle QA testing""
+$url0]->externalurl = ""https://docs.moodle.org/dev/QA_testing""
+$url[1]->name = ""Moodle - writing PHPUnit tests""
+$url[1]->externalurl = ""https://docs.moodle.org/dev/Writing_PHPUnit_tests""
+
+(The order matters, because when scanning the directory finding the files, they'll be ordered by name).
+
+After creating them, the file contents created in $parentdirectory will be checked to assert that the file contains the expected text (the externalurl).";Equivalence;Yes;Pass;;Julen Pardo;17/04/2016
