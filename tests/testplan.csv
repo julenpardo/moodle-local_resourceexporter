@@ -42,9 +42,11 @@ $file[0]->name = ""Whatever; this is not a url""";Equivalence;Yes;Pass;Used refl
 $parentdirectory = $CFG->dataroot . '/test_add_resources_to_directory'";"Test that file resources are correctly added to the parent directory received as parameter.
 
 The following data will be used for the generation of file resources:
-$url[0]->name = ""Moodle - writing PHPUnit tests""
-$url[0]->externalurl = ""https://docs.moodle.org/dev/Writing_PHPUnit_tests""
-$url[1]->name = ""Moodle QA testing""
-$url[1]->externalurl = ""https://docs.moodle.org/dev/QA_testing""
+$url[0]->name = ""Moodle QA testing""
+$url0]->externalurl = ""https://docs.moodle.org/dev/QA_testing""
+$url[1]->name = ""Moodle - writing PHPUnit tests""
+$url[1]->externalurl = ""https://docs.moodle.org/dev/Writing_PHPUnit_tests""
+
+(The order matters, because when scanning the directory finding the files, they'll be ordered by name).
 
 After creating them, the file contents created in $parentdirectory will be checked to assert that the file contains the expected text (the externalurl).";Equivalence;No;;;;

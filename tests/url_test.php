@@ -139,12 +139,13 @@ class local_usablebackup_url_testcase extends advanced_testcase {
 
         $urls = array();
         $urls[0] = new stdClass();
-        $urls[0]->name = 'Moodle - Writing PHPUnit tests';
-        $urls[0]->externalurl = 'https://docs.moodle.org/dev/Writing_PHPUnit_tests';
+        $urls[0]->name = 'Moodle - QA Testing';
+        $urls[0]->externalurl = 'https://docs.moodle.org/dev/QA_testing';
 
         $urls[1] = new stdClass();
-        $urls[1]->name = 'Moodle - QA Testing';
-        $urls[1]->externalurl = 'https://docs.moodle.org/dev/QA_testing';
+        $urls[1]->name = 'Moodle - Writing PHPUnit tests';
+        $urls[1]->externalurl = 'https://docs.moodle.org/dev/Writing_PHPUnit_tests';
+
 
         // We generate the urls...
         $generatedurls = array();
@@ -187,7 +188,7 @@ class local_usablebackup_url_testcase extends advanced_testcase {
 
         // Finally, we can check the created files' names and contents.
         foreach ($urls as $index => $url) {
-            $expectedname = $url->name;
+            $expectedname = $url->name . '.txt';
             $expectedcontent = $url->externalurl;
 
             $actualname = $actualfiles[$index];
