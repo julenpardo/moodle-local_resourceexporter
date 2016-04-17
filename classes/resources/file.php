@@ -31,6 +31,13 @@ use local_usablebackup\resource;
 
 class file extends resource {
 
+    /**
+     * Adds the file resources of the given course to the received parent directory. If the file is not categorized in a section
+     * in the course, it will be added to the $parentdirectory root.
+     *
+     * @param int $courseid The course id the files to add to the directory belong to.
+     * @param string $parentdirectory The directory to add the resources to.
+     */
     public function add_resources_to_directory($courseid, $parentdirectory) {
         $resources = $this->get_db_records($courseid);
 
@@ -49,8 +56,8 @@ class file extends resource {
     }
 
     /**
-     * Retrieves the information of all the files of a course, necessary to download them
-     * later. And, also, the section of the course where it is.
+     * Retrieves the information of all the files of a course, necessary to download them later. And, also, the section of
+     * the course where it is.
      *
      * @param int $courseid The course to query the contents of.
      * @return array Index-based array ([0,n]) with the information of the files.
@@ -92,7 +99,7 @@ class file extends resource {
         return $records;
     }
 
-    protected static function get_file_from_resource_info($resource) {
+    protected function get_file_from_resource_info($resource) {
         $filestorage = get_file_storage();
 
         $file = $filestorage->get_file($resource->contextid,
