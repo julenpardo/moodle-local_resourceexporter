@@ -44,7 +44,7 @@ class url extends resource {
         foreach ($resources as $resource) {
             $sectionname = $resource->section_name;
             $filename = mb_convert_encoding($resource->name, 'UTF-8');
-            $url = $resource->externalulr;
+            $url = $resource->externalurl;
 
             $filedirectory = parent::create_section_dir_if_not_exists($parentdirectory, $sectionname);
 
