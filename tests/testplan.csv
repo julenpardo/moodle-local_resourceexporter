@@ -24,4 +24,7 @@ $parentdirectory = $CFG->dataroot";"Test that file resources are correctly added
 The following data will be used for the generation of file resources:
 $resource[0]->name = ""Unit testing rules""
 $resource[1]->name = ""Software Engineering is fun""";Equivalence;Yes;Pass;;Julen Pardo;17/04/2016
-4;resources/file;get_file_from_resource_info;$resource = <generated>;Test that, receiving a generated file resource, the method returns the expected file object.;Equivalence;No;;;;
+4;resources/file;get_file_from_resource_info;$resource = <generated>;"Test that, receiving a generated file resource, the method returns the expected file object.
+
+The following data will be used for the generation of file resources:
+$resource[0]->name = ""Apparently simple functions must also be tested""";Equivalence;Yes;Pass;Used reflection to access non-public methods.;Julen Pardo;17/04/2016
