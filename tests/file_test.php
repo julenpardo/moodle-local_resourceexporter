@@ -249,7 +249,38 @@ class local_usablebackup_file_testcase extends advanced_testcase {
             $this->assertEquals($expectedfilename, $actualfilename);
         }
 
-        // TODO: compare files' contents.
+        // Finally, we compare the files' contents.
+        $actualfilecontents = array();
+
+        foreach ($actualfiles as $actualfile) {
+            $pathtoactualfile = $parentdirectory . '/' . $actualfile;
+            $content = file_get_contents($pathtoactualfile);
+
+            array_push($actualfilecontents, $content);
+        }
+
+        // File resource generator creates file contents in the following way:
+        // "Test resource x file", starting 'x' from 1.
+        $expectedfilecontents = array();
+
+        for ($index = 0; $index < count($expectedfiles); $index++) {
+            $content = 'Test resource ' . ($index + 1) . ' file';
+
+            array_push($expectedfilecontents, $content);
+        }
+
+        // If the number of files read and the number of defined resources is not the same, something is wrong.
+        $expectedfilecount = count($expectedfilecontents);
+        $actualfilecount = count($actualfilecontents);
+
+        $this->assertEquals($expectedfilecount, $actualfilecount);
+
+        // Finally, we can compare files' contents.
+        foreach ($expectedfilecontents as $index => $expectedfilecontent) {
+            $actualfilecontent = $actualfilecontents[$index];
+
+            $this->assertEquals($expectedfilecontent, $actualfilecontent);
+        }
     }
 
 }
