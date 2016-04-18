@@ -25,6 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+global $CFG;
+
 require_once('generator/lib.php');
 require_once($CFG->dirroot . '/local/usablebackup/classes/resources/file.php');
 
