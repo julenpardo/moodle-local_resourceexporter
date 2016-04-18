@@ -51,6 +51,8 @@ class downloader {
     /**
      * Creates the zip file. First, creates the parent directory for the contents of the course, and, then, adds the files of each
      * type of resource to that directory, and, finally, adds each added file to the directory to the zip file.
+     *
+     * @throws \Exception If the zip archive cannot be created.
      */
     protected function create_zip_file() {
         global $CFG;
@@ -72,7 +74,7 @@ class downloader {
         $ziparchive = new \ZipArchive();
 
         if ($ziparchive->open($zipfile, \ZipArchive::OVERWRITE)) {
-            die('Failed to create zip archive.');
+            throw new \Exception('Failed to create zip archive, error object: ' . print_r(error_get_last(), true));
         }
 
         $allcontentspaths = array_merge($files, $urls);
