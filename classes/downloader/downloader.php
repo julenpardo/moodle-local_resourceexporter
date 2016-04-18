@@ -53,8 +53,9 @@ class downloader {
      * type of resource to that directory, and, finally, adds each added file to the directory to the zip file.
      *
      * @throws \Exception If the zip archive cannot be created.
+     * @return string The path to the created zip file.
      */
-    protected function create_zip_file() {
+    public function create_zip_file() {
         $pluginrootdir = $this->create_parent_temp_folder_if_not_exists();
         $parentfolder = $this->get_parent_directory_name();
 
@@ -85,6 +86,8 @@ class downloader {
         }
 
         $ziparchive->close();
+
+        return $zipfile;
     }
 
     /**
