@@ -86,7 +86,7 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         // Now, we generate the resources that will be downloaded.
         $urls = array();
         $urls[0] = new stdClass();
-        $urls[0]->name = 'PHPUnit';
+        $urls[0]->name = 'PHPUnit - The PHP testing framework';
         $urls[0]->externalurl = 'https://phpunit.de/';
 
         $files = array();

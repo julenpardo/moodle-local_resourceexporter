@@ -81,7 +81,8 @@ class downloader {
         $allcontentspaths = array_merge($files, $urls);
 
         foreach ($allcontentspaths as $contentpath) {
-            $ziparchive->addFile($contentpath, $contentpath);
+            $basename = basename($contentpath);
+            $ziparchive->addFile($contentpath, $basename);
         }
 
         $ziparchive->close();
