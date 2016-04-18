@@ -75,7 +75,7 @@ class downloader {
 
         $erroropeningzip = !$ziparchive->open($zipfile, \ZipArchive::OVERWRITE);
         if ($erroropeningzip) {
-            throw new \Exception('Failed to create zip archive, error object: ' . print_r(error_get_last(), true));
+            throw new \Exception('Failed to create zip archive, error object: ' . error_get_last()['message']);
         }
 
         $allcontentspaths = array_merge($files, $urls);

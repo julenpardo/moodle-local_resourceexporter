@@ -122,7 +122,6 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         $expecteds[1]->filename = 'PHPUnit - The PHP testing framework.txt';
         $expecteds[1]->filecontent = 'https://phpunit.de/';
 
-
         // We get the actual values, from the generated zip file, and extracting the data of every files in it.
         $ziparchive = new ZipArchive();
         $ziparchive->open($pathtofile);
