@@ -55,11 +55,10 @@ class downloader {
      * @throws \Exception If the zip archive cannot be created.
      */
     protected function create_zip_file() {
-        global $CFG;
-
+        $pluginrootdir = $this->create_parent_temp_folder_if_not_exists();
         $parentfolder = $this->get_parent_directory_name();
-        $fullpathtoparent = $CFG->dataroot . '/' . $parentfolder;
-        $fullpathtoparent = str_replace('//', '/', $fullpathtoparent);
+
+        $fullpathtoparent = $pluginrootdir . '/' . $parentfolder;
 
         $directorynotexists = !is_dir($fullpathtoparent);
 
@@ -103,6 +102,27 @@ class downloader {
         $courseshortname = strtolower($courseshortname);
 
         return $courseshortname;
+    }
+
+    /**
+     * Creates, if not exists, a folder for the plugin, in the temp directory in the data root, where all the files generated
+     * by the plugin will be located.
+     *
+     * @return string The full path to the plugin folder in data root.
+     */
+    protected function create_parent_temp_folder_if_not_exists() {
+        global $CFG;
+
+        $parentfolder = $CFG->tempdir . '/usablebackup';
+        $parentfolder = str_replace('//', '/', $parentfolder);
+
+        $directorynotexists = !is_dir($parentfolder);
+
+        if ($directorynotexists) {
+            mkdir($parentfolder);
+        }
+
+        return $parentfolder;
     }
 
     public function create_download_link() {

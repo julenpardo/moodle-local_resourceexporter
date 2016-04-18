@@ -110,7 +110,7 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         // We set the expected SHA-1 hash value of the zip file...
 
         // We calculate the SHA-1 hash of the actual file created by the testing method...
-        $pathtofile = $CFG->dataroot . '/' . $courseshortname . '.zip';
+        $pathtofile = $CFG->dataroot . '/temp/usablebackup/' . $courseshortname . '.zip';
 
         // We set the expected values.
         $expecteds = array();
