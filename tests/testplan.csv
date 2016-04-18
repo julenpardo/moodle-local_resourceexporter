@@ -43,10 +43,33 @@ $parentdirectory = $CFG->dataroot . '/test_add_resources_to_directory'";"Test th
 
 The following data will be used for the generation of file resources:
 $url[0]->name = ""Moodle QA testing""
-$url0]->externalurl = ""https://docs.moodle.org/dev/QA_testing""
+$url[0]->externalurl = ""https://docs.moodle.org/dev/QA_testing""
 $url[1]->name = ""Moodle - writing PHPUnit tests""
 $url[1]->externalurl = ""https://docs.moodle.org/dev/Writing_PHPUnit_tests""
 
 (The order matters, because when scanning the directory finding the files, they'll be ordered by name).
 
 After creating them, the file contents created in $parentdirectory will be checked to assert that the file contains the expected text (the externalurl).";Equivalence;Yes;Pass;;Julen Pardo;17/04/2016
+7;downloader/downloader;get_parent_directory_name;-;"Test that the function returns correctly the course short name.
+
+The following course will be created:
+$course->shortname = 'Testing Moodle'
+
+The $courseid that uses for the query, is a class property.";Equivalence;No;;;;
+8;downloader/downloader;create_zip_file;-;"Test that the function creates the zip file from the defined file and url resource in the course.
+
+To test that the zip file is created correctly, expected and actual hashes of the zip file will be compared.
+
+The following course will be created:
+
+$course->shortname = 'testingcourse'
+
+The following resources will be created:
+
+$urls[0]->name = 'PHPUnit - The PHP testing framework'
+$urls[0]->extenarlurl = 'https://phpunit.de/'
+$files[0]->name = 'Unit testing rules'
+
+(The following content will be generated for $files[0] by the generator: 'Test resource 1 file')
+
+And, the SHA1 hash of the expected zip file is: 5bd159e24749c1218cc927ce224b3bb773eb9b32";Equivalence;No;;;;
