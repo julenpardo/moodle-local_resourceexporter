@@ -86,7 +86,7 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         // Now, we generate the resources that will be downloaded.
         $urls = array();
         $urls[0] = new stdClass();
-        $urls[0]->name = 'PHPUnit - The PHP testing framework';
+        $urls[0]->name = 'PHPUnit';
         $urls[0]->externalurl = 'https://phpunit.de/';
 
         $files = array();
@@ -108,14 +108,50 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         $method->invokeArgs($downloader, array());
 
         // We set the expected SHA-1 hash value of the zip file...
-        $expectedfilehash = '5bd159e24749c1218cc927ce224b3bb773eb9b32';
 
         // We calculate the SHA-1 hash of the actual file created by the testing method...
         $pathtofile = $CFG->dataroot . '/' . $courseshortname . '.zip';
-        $actualfilehash = sha1_file($pathtofile);
 
-        // Finally, we can make the assertion.
-        $this->assertEquals($expectedfilehash, $actualfilehash);
+        // We set the expected values.
+        $expecteds = array();
+        $expecteds[0] = new stdClass();
+        $expecteds[0]->filename = 'resource1.txt';
+        $expecteds[0]->filecontent = 'Test resource 1 file';
+
+        $expecteds[1] = new stdClass();
+        $expecteds[1]->filename = 'PHPUnit - The PHP testing framework.txt';
+        $expecteds[1]->filecontent = 'https://phpunit.de/';
+
+
+        // We get the actual values, from the generated zip file, and extracting the data of every files in it.
+        $ziparchive = new ZipArchive();
+        $ziparchive->open($pathtofile);
+
+        $actuals = array();
+
+        for ($index = 0; $index < $ziparchive->numFiles; $index++) {
+            $actuals[$index] = new stdClass();
+
+            $filename = $ziparchive->getNameIndex($index);
+            $filecontent = $ziparchive->getFromName($filename);
+
+            $actuals[$index]->filename = $filename;
+            $actuals[$index]->filecontent = $filecontent;
+        }
+
+        // If the number of files in the zip and the number of defined resources is different, something is wrong.
+        $expectedfilecount = count($expecteds);
+        $actualfilecount = count($actuals);
+
+        $this->assertEquals($expectedfilecount, $actualfilecount);
+
+        // Finally, we can compare files names and contents.
+        foreach ($expecteds as $index => $expected) {
+            $actual = $actuals[$index];
+
+            $this->assertEquals($expected->filename, $actual->filename);
+            $this->assertEquals($expected->filecontent, $actual->filecontent);
+        }
     }
 
     public function test_get_parent_directory_name() {
