@@ -25,22 +25,84 @@ namespace local_usablebackup;
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once(dirname(__FILE__) . '/../resources/file.php');
+require_once(dirname(__FILE__) . '/../resources/url.php');
+
+use local_usablebackup\file;
+use local_usablebackup\url;
+
 class downloader {
 
     protected $courseid;
-    protected $filestorage;
+    protected $file;
+    protected $url;
 
+    /**
+     * downloader constructor.
+     *
+     * @param int $courseid The course the download will be created for.
+     */
     public function __construct($courseid) {
         $this->courseid = $courseid;
-        $this->filestorage = get_file_storage();
+        $this->file = new file();
+        $this->url = new url();
     }
 
+    /**
+     * Creates the zip file. First, creates the parent directory for the contents of the course, and, then, adds the files of each
+     * type of resource to that directory, and, finally, adds each added file to the directory to the zip file.
+     */
     protected function create_zip_file() {
+        global $CFG;
 
+        $parentfolder = $this->get_parent_directory_name();
+        $fullpathtoparent = $CFG->dataroot . '/' . $parentfolder;
+        $fullpathtoparent = str_replace('//', '/', $fullpathtoparent);
+
+        $directorynotexists = !is_dir($fullpathtoparent);
+
+        if ($directorynotexists) {
+            mkdir($fullpathtoparent);
+        }
+
+        $files = $this->file->add_resources_to_directory($this->courseid, $fullpathtoparent);
+        $urls = $this->url->add_resources_to_directory($this->courseid, $fullpathtoparent);
+
+        $zipfile = $fullpathtoparent . '.zip';
+        $ziparchive = new \ZipArchive();
+
+        if ($ziparchive->open($zipfile, \ZipArchive::OVERWRITE)) {
+            die('Failed to create zip archive.');
+        }
+
+        $allcontentspaths = array_merge($files, $urls);
+
+        foreach ($allcontentspaths as $contentpath) {
+            $ziparchive->addFile($contentpath, $contentpath);
+        }
+
+        $ziparchive->close();
+    }
+
+    /**
+     * Creates the name for the parent directory of the contents; the directory that later will be compressed into a zip file.
+     * To create the name, retrieves the course short name, which is probably more suitable for a directory name than the
+     * full name.
+     *
+     * @return string Parent directory name (current course's short name).
+     */
+    protected function get_parent_directory_name() {
+        global $DB;
+
+        $courseshortname = $DB->get_record('course', array('id' => $this->courseid), 'shortname', MUST_EXIST);
+        $courseshortname = mb_convert_encoding($courseshortname->shortname, 'UTF-8');
+        $courseshortname = strtolower($courseshortname);
+
+        return $courseshortname;
     }
 
     public function create_download_link() {
-
+        $this->create_zip_file();
     }
 
 }
