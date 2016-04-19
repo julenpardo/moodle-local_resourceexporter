@@ -44,10 +44,14 @@ class file extends resource {
         $addedfilespaths = array();
 
         foreach ($resources as $resource) {
-            $sectionname = $resource->section_name;
+            $sectionname = ($resource->section_name === null) ? '' : $resource->section_name;
+            $sectionname = parent::clean_file_and_directory_names($sectionname);
 
             $file = $this->get_file_from_resource_info($resource);
+
             $filename = $file->get_filename();
+            $filename = parent::clean_file_and_directory_names($filename);
+
             $filecontent = $file->get_content_file_handle();
 
             $filepath = parent::create_section_dir_if_not_exists($parentdirectory, $sectionname);

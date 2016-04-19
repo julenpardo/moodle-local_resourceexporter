@@ -130,7 +130,7 @@ class local_usablebackup_url_testcase extends advanced_testcase {
     }
 
     public function test_add_resources_to_directory() {
-        global $DB, $CFG;
+        global $CFG;
 
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -158,7 +158,8 @@ class local_usablebackup_url_testcase extends advanced_testcase {
         }
 
         // Now, we can call the testing method.
-        $parentdirectory = $CFG->dataroot . '/test_add_resources_to_directory';
+        $parentdirectory = $CFG->tempdir . '/test_add_resources_to_directory';
+        mkdir($parentdirectory);
 
         $this->url->add_resources_to_directory($course->id, $parentdirectory);
 

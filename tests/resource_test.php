@@ -122,4 +122,39 @@ class local_usablebackup_resource_testcase extends advanced_testcase {
         $this->assertEquals($expected, $actual);
     }
 
+    public function test_clean_file_and_directory_names_null() {
+        $name = null;
+
+        // We get the protected method by reflection.
+        $method = self::get_methods('clean_file_and_directory_names');
+
+        $expected = '';
+        $actual = $method->invokeArgs($this->resource, array($name));
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_clean_file_and_directory_names_allowed_chars() {
+        $name = 'String with non problematic characters.';
+
+        // We get the protected method by reflection.
+        $method = self::get_methods('clean_file_and_directory_names');
+
+        $expected = 'String with non problematic characters.';
+        $actual = $method->invokeArgs($this->resource, array($name));
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_clean_file_and_directory_names_forbidden_chars() {
+        $name = 'String:with/some/problematic?characters';
+
+        // We get the protected method by reflection.
+        $method = self::get_methods('clean_file_and_directory_names');
+
+        $expected = 'String-with-some-problematic-characters';
+        $actual = $method->invokeArgs($this->resource, array($name));
+
+        $this->assertEquals($expected, $actual);
+    }
 }
