@@ -61,11 +61,12 @@ abstract class resource {
      * Cleans the files or directory names before the creation of them. "Clean" means removing those forbidden characters for the
      * file systems (most of them by Windows, thank you Microsoft). For that, a pattern is used, where each forbidden character is
      * specified.
+     * Those characters will be replaced with '-' dash, a suitable for this and non problematic character. :)
      *
      * Do not use this function to clean paths that contains subdirectories! The slashes will be removed, so the path will be lost.
      *
      * @param string $name The file, directory, to be cleaned.
-     * @return string The received name, cleaned.
+     * @return string The received name, cleaned, if containing any character defined in the pattern.
      */
     protected function clean_file_and_directory_names($name) {
         $forbiddencharacterspattern = '[\\\\|\/|\:|\*|\?|\"|\<|\>|\|]';
