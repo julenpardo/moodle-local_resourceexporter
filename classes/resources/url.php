@@ -44,7 +44,7 @@ class url extends resource {
         $addedfilespaths = array();
 
         foreach ($resources as $resource) {
-            $sectionname = $resource->section_name;
+            $sectionname = ($resource->section_name === null) ? '' : $resource->section_name;
             $sectionname = parent::clean_file_and_directory_names($sectionname);
 
             $filename = $resource->name;
