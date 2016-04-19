@@ -44,6 +44,13 @@ class file extends resource {
         $addedfilespaths = array();
 
         foreach ($resources as $resource) {
+            $moduleid = $resource->course_module_id;
+            $visibleforuser = parent::is_module_visible_for_user($courseid, $moduleid);
+
+            if (!$visibleforuser) {
+                continue;
+            }
+
             $sectionname = ($resource->section_name === null) ? '' : $resource->section_name;
             $sectionname = parent::clean_file_and_directory_names($sectionname);
 
@@ -79,6 +86,7 @@ class file extends resource {
         $sql = "SELECT files.id,
                        course.id AS course_id,
                        course.shortname AS course_shortname,
+                       course_modules.id AS course_module_id,
                        files.contextid,
                        files.filename,
                        files.filearea,
