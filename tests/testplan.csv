@@ -73,3 +73,10 @@ $files[0]->name = 'Unit testing rules'
 (The following content will be generated for $files[0] by the generator: 'Test resource 1 file')
 
 And, the SHA1 hash of the expected zip file is: 5bd159e24749c1218cc927ce224b3bb773eb9b32";Equivalence;No;;;;
+9;resources/resource;clean_file_and_directory_name;"The method will be tested for the following inputs:
+
+$name = null
+----------------------------------------------------
+$name = 'String with non problematic character'
+----------------------------------------------------
+$name = 'String:with/some/problematic?characters'";Test that the method returns the expected strings for the given different inputs.;Equivalence;No;;;;
