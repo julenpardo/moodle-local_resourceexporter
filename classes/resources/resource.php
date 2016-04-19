@@ -57,4 +57,22 @@ abstract class resource {
         return $sectiondirectory;
     }
 
+    /**
+     * Cleans the files or directory names before the creation of them. "Clean" means removing those forbidden characters for the
+     * file systems (most of them by Windows, thank you Microsoft). For that, a pattern is used, where each forbidden character is
+     * specified.
+     *
+     * Do not use this function to clean paths that contains subdirectories! The slashes will be removed, so the path will be lost.
+     *
+     * @param string $name The file, directory, to be cleaned.
+     * @return string The received name, cleaned.
+     */
+    protected function clean_file_and_directory_names($name) {
+        $forbiddencharacterspattern = '[\\\\|\/|\:|\*|\?|\"|\<|\>|\|]';
+        $replacement = '-';
+
+        $cleanname = preg_replace($forbiddencharacterspattern, $replacement, $name);
+
+        return $cleanname;
+    }
 }
