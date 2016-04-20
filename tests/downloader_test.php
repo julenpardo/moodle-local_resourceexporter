@@ -105,12 +105,10 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
 
         // We get the method by reflection, and we call it.
         $method = self::get_method('create_zip_file');
-        $method->invokeArgs($downloader, array());
+        $actualzipfile = $method->invokeArgs($downloader, array());
 
-        // We set the expected SHA-1 hash value of the zip file...
-
-        // We calculate the SHA-1 hash of the actual file created by the testing method...
-        $pathtofile = $CFG->dataroot . '/temp/usablebackup/' . $courseshortname . '.zip';
+        $zipfilename = basename($actualzipfile);
+        $pathtofile = $CFG->dataroot . '/temp/usablebackup/' . $zipfilename;
 
         // We set the expected values.
         $expecteds = array();
