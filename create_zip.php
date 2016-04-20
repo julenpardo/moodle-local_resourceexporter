@@ -38,10 +38,12 @@ $coursecontext = context_course::instance($courseid);
 
 init_page($coursecontext);
 
-if (is_enrolled($coursecontext)) {
+if ($nopermission) {
+    print_error_page($nopermission);
+} else if (is_enrolled($coursecontext)) {
     create_zip_and_redirect_to_download($courseid);
 } else {
-    print_error_page($nopermission);
+    print_error_page();
 }
 
 /**
@@ -81,7 +83,7 @@ function create_zip_and_redirect_to_download($courseid) {
  *
  * @param boolean $nopermission
  */
-function print_error_page($nopermission) {
+function print_error_page($nopermission = false) {
     global $OUTPUT;
 
     echo $OUTPUT->header();
@@ -89,8 +91,8 @@ function print_error_page($nopermission) {
 
     echo '<h2>' . get_string('error') . '</h2>';
 
-    $errormessage = ($nopermission) ? get_string('nopermission', 'local_usablebackup')
-        : get_string('notenrolled', 'local_usablebackup');
+    $errormessage = ($nopermission) ? get_string('nopermission', 'local_usablebackup') :
+        get_string('notenrolled', 'local_usablebackup');
     echo $errormessage;
 
     echo $OUTPUT->footer();

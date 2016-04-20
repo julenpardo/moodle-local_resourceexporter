@@ -30,7 +30,12 @@ require_login();
 global $SESSION;
 
 $courseid = required_param('courseid', PARAM_INT);
-$downloadpermission = $SESSION->usablebackup_downloadpermission;
+
+if (isset($SESSION->usablebackup_downloadpermission)) {
+    $downloadpermission = $SESSION->usablebackup_downloadpermission;
+} else {
+    $downloadpermission = false;
+}
 
 if ($downloadpermission) {
     $SESSION->usablebackup_downloadpermission = false;
