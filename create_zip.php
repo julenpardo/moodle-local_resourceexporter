@@ -26,7 +26,7 @@ require_once('classes/downloader/downloader.php');
 
 defined('MOODLE_INTERNAL') || die();
 
-global $CFG;
+global $CFG, $SESSION;
 
 use local_usablebackup\downloader;
 
@@ -40,6 +40,8 @@ if (is_enrolled($coursecontext)) {
     $zipfile = $downloader->create_zip_file();
 
     $downloadurl = new \moodle_url('/local/usablebackup/download.php', array('file' => $zipfile));
+
+    $SESSION->usablebackup_downloadpermission = true;
 
     redirect($downloadurl);
 }

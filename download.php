@@ -27,14 +27,22 @@ defined('MOODLE_INTERNAL') || die();
 
 require_login();
 
-$zipfile = required_param('file', PARAM_TEXT);
+global $SESSION;
 
-header('Content-Description: File Transfer');
-header('Content-Type: application/zip');
-header('Content-Disposition: attachment; filename="' . basename($zipfile) . '"');
-header('Expires: 0');
-header('Cache-Control: must-revalidate');
-header('Pragma: public');
-header('Content-Length: ' . filesize($zipfile));
+$downloadpermission = $SESSION->usablebackup_downloadpermission;
 
-readfile($zipfile);
+if ($downloadpermission) {
+    $SESSION->usablebackup_downloadpermission = false;
+
+    $zipfile = required_param('file', PARAM_TEXT);
+
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/zip');
+    header('Content-Disposition: attachment; filename="' . basename($zipfile) . '"');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+    header('Content-Length: ' . filesize($zipfile));
+
+    readfile($zipfile);
+}
