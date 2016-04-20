@@ -31,13 +31,15 @@ global $CFG;
 use local_usablebackup\downloader;
 
 require_login();
-$context = context_system::instance();
 
 $courseid = required_param('courseid', PARAM_INT);
+$coursecontext = context_course::instance($courseid);
 
-$downloader = new downloader($courseid);
-$zipfile = $downloader->create_zip_file();
+if (is_enrolled($coursecontext)) {
+    $downloader = new downloader($courseid);
+    $zipfile = $downloader->create_zip_file();
 
-$downloadurl = new \moodle_url('/local/usablebackup/download.php', array('file' => $zipfile));
+    $downloadurl = new \moodle_url('/local/usablebackup/download.php', array('file' => $zipfile));
 
-redirect($downloadurl);
+    redirect($downloadurl);
+}
