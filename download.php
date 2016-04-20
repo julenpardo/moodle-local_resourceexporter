@@ -29,6 +29,7 @@ require_login();
 
 global $SESSION;
 
+$courseid = required_param('courseid', PARAM_INT);
 $downloadpermission = $SESSION->usablebackup_downloadpermission;
 
 if ($downloadpermission) {
@@ -45,4 +46,8 @@ if ($downloadpermission) {
     header('Content-Length: ' . filesize($zipfile));
 
     readfile($zipfile);
+} else {
+    $previousurl = new \moodle_url('/local/usablebackup/create_zip.php', array('courseid' => $courseid, 'nopermission' => 1));
+
+    redirect($previousurl);
 }
