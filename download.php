@@ -27,14 +27,32 @@ defined('MOODLE_INTERNAL') || die();
 
 require_login();
 
-$zipfile = required_param('file', PARAM_TEXT);
+global $SESSION;
 
-header('Content-Description: File Transfer');
-header('Content-Type: application/zip');
-header('Content-Disposition: attachment; filename="' . basename($zipfile) . '"');
-header('Expires: 0');
-header('Cache-Control: must-revalidate');
-header('Pragma: public');
-header('Content-Length: ' . filesize($zipfile));
+$courseid = required_param('courseid', PARAM_INT);
 
-readfile($zipfile);
+if (isset($SESSION->usablebackup_downloadpermission)) {
+    $downloadpermission = $SESSION->usablebackup_downloadpermission;
+} else {
+    $downloadpermission = false;
+}
+
+if ($downloadpermission) {
+    $SESSION->usablebackup_downloadpermission = false;
+
+    $zipfile = required_param('file', PARAM_TEXT);
+
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/zip');
+    header('Content-Disposition: attachment; filename="' . basename($zipfile) . '"');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+    header('Content-Length: ' . filesize($zipfile));
+
+    readfile($zipfile);
+} else {
+    $previousurl = new \moodle_url('/local/usablebackup/create_zip.php', array('courseid' => $courseid, 'nopermission' => 1));
+
+    redirect($previousurl);
+}

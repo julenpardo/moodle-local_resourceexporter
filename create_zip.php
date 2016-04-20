@@ -21,23 +21,79 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(dirname(__FILE__) . '/../../config.php');
+require_once('../../config.php');
 require_once('classes/downloader/downloader.php');
 
 defined('MOODLE_INTERNAL') || die();
 
-global $CFG;
+global $CFG, $SESSION;
 
 use local_usablebackup\downloader;
 
 require_login();
-$context = context_system::instance();
 
 $courseid = required_param('courseid', PARAM_INT);
+$nopermission = optional_param('nopermission', 0, PARAM_INT);
+$coursecontext = context_course::instance($courseid);
 
-$downloader = new downloader($courseid);
-$zipfile = $downloader->create_zip_file();
+init_page($coursecontext);
 
-$downloadurl = new \moodle_url('/local/usablebackup/download.php', array('file' => $zipfile));
+if ($nopermission) {
+    print_error_page($nopermission);
+} else if (is_enrolled($coursecontext)) {
+    create_zip_and_redirect_to_download($courseid);
+} else {
+    print_error_page();
+}
 
-redirect($downloadurl);
+/**
+ * Initializes the page with: context, url, title, page layout.
+ *
+ * @param object $coursecontext The course context.
+ */
+function init_page($coursecontext) {
+    global $PAGE;
+
+    $PAGE->set_context($coursecontext);
+    $PAGE->set_url('/local/usablebackup/create_zip.php');
+    $PAGE->set_title(get_string('createzip_title', 'local_usablebackup'));
+    $PAGE->set_pagelayout('course');
+}
+
+/**
+ * Calls to the zip creation, and then redirects to the download page.
+ *
+ * @param int $courseid The id of the current course.
+ */
+function create_zip_and_redirect_to_download($courseid) {
+    global $SESSION;
+
+    $downloader = new downloader($courseid);
+    $zipfile = $downloader->create_zip_file();
+
+    $downloadurl = new \moodle_url('/local/usablebackup/download.php', array('file' => $zipfile, 'courseid' => $courseid));
+
+    $SESSION->usablebackup_downloadpermission = true;
+
+    redirect($downloadurl);
+}
+
+/**
+ * Prints the error page if the user is trying to download the contents from a course he's not enrolled in.
+ *
+ * @param boolean $nopermission
+ */
+function print_error_page($nopermission = false) {
+    global $OUTPUT;
+
+    echo $OUTPUT->header();
+    echo $OUTPUT->navbar();
+
+    echo '<h2>' . get_string('error') . '</h2>';
+
+    $errormessage = ($nopermission) ? get_string('nopermission', 'local_usablebackup') : get_string('notenrolled',
+        'local_usablebackup');
+    echo $errormessage;
+
+    echo $OUTPUT->footer();
+}
