@@ -91,8 +91,8 @@ function print_error_page($nopermission = false) {
 
     echo '<h2>' . get_string('error') . '</h2>';
 
-    $errormessage = ($nopermission) ? get_string('nopermission', 'local_usablebackup') :
-        get_string('notenrolled', 'local_usablebackup');
+    $errormessage = ($nopermission) ? get_string('nopermission', 'local_usablebackup') : get_string('notenrolled',
+        'local_usablebackup');
     echo $errormessage;
 
     echo $OUTPUT->footer();
