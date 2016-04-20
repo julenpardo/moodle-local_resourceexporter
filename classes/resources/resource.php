@@ -32,6 +32,21 @@ abstract class resource {
     abstract protected function get_db_records($courseid);
 
     /**
+     * Checks if the given module is visible for the current user.
+     * See documentation: https://docs.moodle.org/dev/Module_visibility_and_display#get_fast_modinfo_data
+     *
+     * @param int $courseid The course the backup is being created at.
+     * @param int $moduleid The module id of the current resource.
+     * @return boolean If the given module is visible for the current user or not.
+     */
+    protected function is_module_visible_for_user($courseid, $moduleid) {
+        $moduleinfo = get_fast_modinfo($courseid);
+        $module = $moduleinfo->get_cm($moduleid);
+
+        return $module->uservisible;
+    }
+
+    /**
      * Creates the section directory inside the parent directory, if it does not exist already.
      * If the section is an empty string (because the given resource has not been categorized in any section), there's no need
      * to do any action, and the parent directory will be returned, and that's where the resource will be created later.

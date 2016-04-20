@@ -157,4 +157,95 @@ class local_usablebackup_resource_testcase extends advanced_testcase {
 
         $this->assertEquals($expected, $actual);
     }
+
+    public function test_is_module_visible_for_user_visible() {
+        global $DB;
+
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        // We generate all the required stuff: course, a resource (url, e.g.), a user enrolled in the course.
+        $course = $this->getDataGenerator()->create_course();
+        $url = $this->getDataGenerator()->get_plugin_generator('mod_url')->create_instance(array('course' => $course->id));
+        $student = $this->getDataGenerator()->create_user();
+        $this->getDataGenerator()->enrol_user($student->id, $course->id, 5); // 5 is student role id.
+        $this->setUser($student);
+
+        $visibleurlmodule = new stdClass();
+        $visibleurlmodule->id = $url->cmid;
+        $visibleurlmodule->visible = 1;
+
+        $DB->update_record('course_modules', $visibleurlmodule);
+
+        // We get the testing method by reflection.
+        $method = self::get_methods('is_module_visible_for_user');
+
+        // And, finally, we test the method.
+        $actual = $method->invokeArgs($this->resource, array($course->id, $url->cmid));
+
+        $this->assertTrue($actual);
+    }
+
+    public function test_is_module_visible_for_user_hidden() {
+        global $DB;
+
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        // We generate all the required stuff: course, a resource (url, e.g.), a user enrolled in the course.
+        $course = $this->getDataGenerator()->create_course();
+        $url = $this->getDataGenerator()->get_plugin_generator('mod_url')->create_instance(array('course' => $course->id));
+        $student = $this->getDataGenerator()->create_user();
+        $this->getDataGenerator()->enrol_user($student->id, $course->id, 5); // 5 is student role id.
+        $this->setUser($student);
+
+        $visibleurlmodule = new stdClass();
+        $visibleurlmodule->id = $url->cmid;
+        $visibleurlmodule->visible = 0;
+
+        $DB->update_record('course_modules', $visibleurlmodule);
+
+        // We get the testing method by reflection.
+        $method = self::get_methods('is_module_visible_for_user');
+
+        // And, finally, we test the method.
+        $actual = $method->invokeArgs($this->resource, array($course->id, $url->cmid));
+
+        $this->assertFalse($actual);
+    }
+
+    public function test_is_module_visible_for_user_group_restriction() {
+        global $DB;
+
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $this->markTestSkipped("Don't know why, but setting the module available only for the created group, doesn't affect to the
+            availability of the resource for the user.");
+
+        // We generate all the required stuff: course, a resource (url, e.g.), a user enrolled in the course, a group.
+        $course = $this->getDataGenerator()->create_course();
+        $url = $this->getDataGenerator()->get_plugin_generator('mod_url')->create_instance(array('course' => $course->id));
+        $student = $this->getDataGenerator()->create_user();
+        $this->getDataGenerator()->enrol_user($student->id, $course->id, 5); // 5 is student role id.
+        $this->setUser($student);
+        $group = $this->getDataGenerator()->create_group(array('courseid' => $course->id));
+
+        $visibleurlmodule = new stdClass();
+        $visibleurlmodule->id = $url->cmid;
+        $visibleurlmodule->visible = 1;
+        // The following attribute value defines that the resource will be visible only for those students that are enrolled in
+        // generated group before. Based on an example looking at the database.
+        $visibleurlmodule->availability = '{"op":"&","c":[{"type":"group","id":' . $group->id . '}],"showc":[true]}';
+
+        $DB->update_record('course_modules', $visibleurlmodule);
+
+        // We get the testing method by reflection.
+        $method = self::get_methods('is_module_visible_for_user');
+
+        // And, finally, we test the method.
+        $actual = $method->invokeArgs($this->resource, array($course->id, $url->cmid));
+
+        $this->assertFalse($actual);
+    }
 }

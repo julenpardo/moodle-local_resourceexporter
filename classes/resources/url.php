@@ -44,6 +44,13 @@ class url extends resource {
         $addedfilespaths = array();
 
         foreach ($resources as $resource) {
+            $moduleid = $resource->course_module_id;
+            $visibleforuser = parent::is_module_visible_for_user($courseid, $moduleid);
+
+            if (!$visibleforuser) {
+                continue;
+            }
+
             $sectionname = ($resource->section_name === null) ? '' : $resource->section_name;
             $sectionname = parent::clean_file_and_directory_names($sectionname);
 
@@ -74,7 +81,8 @@ class url extends resource {
     protected function get_db_records($courseid) {
         global $DB;
 
-        $sql = "SELECT url.name,
+        $sql = "SELECT course_modules.id AS course_module_id,
+                       url.name,
                        url.externalurl,
                        course_sections.name AS section_name
                 FROM   {url} url
