@@ -70,10 +70,10 @@ class downloader {
         $files = $this->file->add_resources_to_directory($this->courseid, $fullpathtoparent);
         $urls = $this->url->add_resources_to_directory($this->courseid, $fullpathtoparent);
 
-        $zipfile = $this->create_zip_name($fullpathtoparent);
+        $zipfilepath = $fullpathtoparent . '.zip';
         $ziparchive = new \ZipArchive();
 
-        $erroropeningzip = !$ziparchive->open($zipfile, \ZipArchive::OVERWRITE);
+        $erroropeningzip = !$ziparchive->open($zipfilepath, \ZipArchive::OVERWRITE);
         if ($erroropeningzip) {
             throw new \Exception('Failed to create zip archive, error object: ' . error_get_last()['message']);
         }
@@ -87,33 +87,7 @@ class downloader {
 
         $ziparchive->close();
 
-        return $zipfile;
-    }
-
-    /**
-     * Creates the name the generated zip will have, with the following format:
-     * userid_courseid.zip
-     * Where courseshortname will be the received $parentfolder name.
-     * Is necessary to give each zip file an unique name, to avoid possible collisions of more than one person generating
-     * the zip for the same course. And, generating an unique zip file for the combination of user and course, every time an user
-     * tries to generate the zip for the course, the previous will be overwritten (if exists), so, the files won't be accumulating
-     * occupying useful space.
-     *
-     * @param string $fullpathtoparent The full path to the contents parent folder; i.e., the path to the folder that will be
-     * compressed into zip.
-     * @return string The full path to the zip file, with the generated name.
-     */
-    protected function create_zip_name($fullpathtoparent) {
-        global $USER;
-
-        $fullpathtoparent .= '/';
-        $fullpathtoparent = str_replace('//', '/', $fullpathtoparent);
-
-        $zipname = $fullpathtoparent;
-        $zipname .= $USER->id . '_' . $this->courseid;
-        $zipname .= '.zip';
-
-        return $zipname;
+        return $zipfilepath;
     }
 
     /**
@@ -124,13 +98,11 @@ class downloader {
      * @return string Parent directory name (current course's short name).
      */
     protected function get_parent_directory_name() {
-        global $DB;
+        global $USER;
 
-        $courseshortname = $DB->get_record('course', array('id' => $this->courseid), 'shortname', MUST_EXIST);
-        $courseshortname = mb_convert_encoding($courseshortname->shortname, 'UTF-8');
-        $courseshortname = strtolower($courseshortname);
+        $directoryname = $USER->id . '_' . $this->courseid;
 
-        return $courseshortname;
+        return $directoryname;
     }
 
     /**
