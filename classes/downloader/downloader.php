@@ -52,6 +52,12 @@ class downloader {
      * Creates the zip file. First, creates the parent directory for the contents of the course, and, then, adds the files of each
      * type of resource to that directory, and, finally, adds each added file to the directory to the zip file.
      *
+     * First of all, checks if, by any reason, it exists a directory with the name it will have (combination of userid and
+     * courseid). And, if exists, deletes it, to avoid possible file overlap of previous generated directories, and the one it
+     * will be generated.
+     *
+     * And, at the end, deletes the generated directory with its contents, not to waste disk space.
+     *
      * @throws \Exception If the zip archive cannot be created.
      * @return string The path to the created zip file.
      */
@@ -61,11 +67,13 @@ class downloader {
 
         $fullpathtoparent = $pluginrootdir . '/' . $parentfolder;
 
-        $directorynotexists = !is_dir($fullpathtoparent);
+        $directoryexists = is_dir($fullpathtoparent);
 
-        if ($directorynotexists) {
-            mkdir($fullpathtoparent);
+        if ($directoryexists) {
+            $this->rmdir_recursive($fullpathtoparent);
         }
+
+        mkdir($fullpathtoparent);
 
         $files = $this->file->add_resources_to_directory($this->courseid, $fullpathtoparent);
         $urls = $this->url->add_resources_to_directory($this->courseid, $fullpathtoparent);
