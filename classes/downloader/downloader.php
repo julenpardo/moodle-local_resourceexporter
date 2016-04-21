@@ -136,12 +136,12 @@ class downloader {
      * @param string $directory The directory to remove.
      */
     protected function rmdir_recursive($directory) {
-        foreach(scandir($directory) as $file) {
+        foreach (scandir($directory) as $file) {
             if ('.' === $file || '..' === $file) {
                 continue;
             }
 
-            if (is_dir("$directory/$file")){
+            if (is_dir("$directory/$file")) {
                 $this->rmdir_recursive("$directory/$file");
             } else {
                 unlink("$directory/$file");
