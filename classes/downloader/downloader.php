@@ -87,6 +87,8 @@ class downloader {
 
         $ziparchive->close();
 
+        $this->rmdir_recursive($fullpathtoparent);
+
         return $zipfilepath;
     }
 
@@ -124,6 +126,29 @@ class downloader {
         }
 
         return $parentfolder;
+    }
+
+    /**
+     * Removes a directory recursively, i.e., a directory that is not empty. There's no built-in function to remove non-empty
+     * directories.
+     * Took from: http://stackoverflow.com/questions/7288029/php-delete-directory-that-is-not-empty#7288067
+     *
+     * @param string $directory The directory to remove.
+     */
+    protected function rmdir_recursive($directory) {
+        foreach(scandir($directory) as $file) {
+            if ('.' === $file || '..' === $file) {
+                continue;
+            }
+
+            if (is_dir("$directory/$file")){
+                $this->rmdir_recursive("$directory/$file");
+            } else {
+                unlink("$directory/$file");
+            }
+        }
+
+        rmdir($directory);
     }
 
     public function create_download_link() {
