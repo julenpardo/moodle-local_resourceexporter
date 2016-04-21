@@ -52,6 +52,12 @@ class downloader {
      * Creates the zip file. First, creates the parent directory for the contents of the course, and, then, adds the files of each
      * type of resource to that directory, and, finally, adds each added file to the directory to the zip file.
      *
+     * First of all, checks if, by any reason, it exists a directory with the name it will have (combination of userid and
+     * courseid). And, if exists, deletes it, to avoid possible file overlap of previous generated directories, and the one it
+     * will be generated.
+     *
+     * And, at the end, deletes the generated directory with its contents, not to waste disk space.
+     *
      * @throws \Exception If the zip archive cannot be created.
      * @return string The path to the created zip file.
      */
@@ -61,19 +67,21 @@ class downloader {
 
         $fullpathtoparent = $pluginrootdir . '/' . $parentfolder;
 
-        $directorynotexists = !is_dir($fullpathtoparent);
+        $directoryexists = is_dir($fullpathtoparent);
 
-        if ($directorynotexists) {
-            mkdir($fullpathtoparent);
+        if ($directoryexists) {
+            $this->rmdir_recursive($fullpathtoparent);
         }
+
+        mkdir($fullpathtoparent);
 
         $files = $this->file->add_resources_to_directory($this->courseid, $fullpathtoparent);
         $urls = $this->url->add_resources_to_directory($this->courseid, $fullpathtoparent);
 
-        $zipfile = $this->create_zip_name($fullpathtoparent);
+        $zipfilepath = $fullpathtoparent . '.zip';
         $ziparchive = new \ZipArchive();
 
-        $erroropeningzip = !$ziparchive->open($zipfile, \ZipArchive::OVERWRITE);
+        $erroropeningzip = !$ziparchive->open($zipfilepath, \ZipArchive::OVERWRITE);
         if ($erroropeningzip) {
             throw new \Exception('Failed to create zip archive, error object: ' . error_get_last()['message']);
         }
@@ -87,33 +95,9 @@ class downloader {
 
         $ziparchive->close();
 
-        return $zipfile;
-    }
+        $this->rmdir_recursive($fullpathtoparent);
 
-    /**
-     * Creates the name the generated zip will have, with the following format:
-     * userid_courseid.zip
-     * Where courseshortname will be the received $parentfolder name.
-     * Is necessary to give each zip file an unique name, to avoid possible collisions of more than one person generating
-     * the zip for the same course. And, generating an unique zip file for the combination of user and course, every time an user
-     * tries to generate the zip for the course, the previous will be overwritten (if exists), so, the files won't be accumulating
-     * occupying useful space.
-     *
-     * @param string $fullpathtoparent The full path to the contents parent folder; i.e., the path to the folder that will be
-     * compressed into zip.
-     * @return string The full path to the zip file, with the generated name.
-     */
-    protected function create_zip_name($fullpathtoparent) {
-        global $USER;
-
-        $fullpathtoparent .= '/';
-        $fullpathtoparent = str_replace('//', '/', $fullpathtoparent);
-
-        $zipname = $fullpathtoparent;
-        $zipname .= $USER->id . '_' . $this->courseid;
-        $zipname .= '.zip';
-
-        return $zipname;
+        return $zipfilepath;
     }
 
     /**
@@ -124,13 +108,11 @@ class downloader {
      * @return string Parent directory name (current course's short name).
      */
     protected function get_parent_directory_name() {
-        global $DB;
+        global $USER;
 
-        $courseshortname = $DB->get_record('course', array('id' => $this->courseid), 'shortname', MUST_EXIST);
-        $courseshortname = mb_convert_encoding($courseshortname->shortname, 'UTF-8');
-        $courseshortname = strtolower($courseshortname);
+        $directoryname = $USER->id . '_' . $this->courseid;
 
-        return $courseshortname;
+        return $directoryname;
     }
 
     /**
@@ -152,6 +134,29 @@ class downloader {
         }
 
         return $parentfolder;
+    }
+
+    /**
+     * Removes a directory recursively, i.e., a directory that is not empty. There's no built-in function to remove non-empty
+     * directories.
+     * Took from: http://stackoverflow.com/questions/7288029/php-delete-directory-that-is-not-empty#7288067
+     *
+     * @param string $directory The directory to remove.
+     */
+    protected function rmdir_recursive($directory) {
+        foreach (scandir($directory) as $file) {
+            if ('.' === $file || '..' === $file) {
+                continue;
+            }
+
+            if (is_dir("$directory/$file")) {
+                $this->rmdir_recursive("$directory/$file");
+            } else {
+                unlink("$directory/$file");
+            }
+        }
+
+        rmdir($directory);
     }
 
     public function create_download_link() {

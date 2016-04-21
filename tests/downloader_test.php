@@ -76,10 +76,12 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         $this->resetAfterTest();
         $this->setAdminUser();
 
-        // First step is to create the course, and instantiate the testing class.
-        $courseshortname = 'testingcourse';
+        // First step is to create the course and user, and instantiate the testing class.
+        $course = $this->getDataGenerator()->create_course();
+        $user = $this->getDataGenerator()->create_user();
+        $this->getDataGenerator()->enrol_user($user->id, $course->id, 5); // 5 is student role id.
 
-        $course = $this->getDataGenerator()->create_course(array('shortname' => $courseshortname));
+        $this->setUser($user);
 
         $downloader = new downloader($course->id);
 
@@ -108,7 +110,7 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         $actualzipfile = $method->invokeArgs($downloader, array());
 
         $zipfilename = basename($actualzipfile);
-        $pathtofile = $CFG->dataroot . '/temp/usablebackup/' . $courseshortname . '/' . $zipfilename;
+        $pathtofile = $CFG->dataroot . '/temp/usablebackup/' . $user->id . '_' . $course->id . '.zip';
 
         // We set the expected values.
         $expecteds = array();
@@ -155,9 +157,11 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         $this->resetAfterTest();
         $this->setAdminUser();
 
-        $courseshortname = 'Testing Moodle';
+        $course = $this->getDataGenerator()->create_course();
+        $user = $this->getDataGenerator()->create_user();
+        $this->getDataGenerator()->enrol_user($user->id, $course->id, 5); // 5 is student role id.
 
-        $course = $this->getDataGenerator()->create_course(array('shortname' => $courseshortname));
+        $this->setUser($user);
 
         // We instantiate the testing class...
         $downloader = new downloader($course->id);
@@ -166,31 +170,7 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         $method = self::get_method('get_parent_directory_name');
 
         $actual = $method->invokeArgs($downloader, array());
-        $expected = strtolower($courseshortname);
-
-        $this->assertEquals($expected, $actual);
-    }
-
-    public function test_create_zip_name() {
-        global $CFG;
-
-        $this->resetAfterTest();
-        $this->setAdminUser();
-
-        $courseid = 1; // Is not necessary to have a real course generated.
-        $fullpathtoparent = $CFG->tempdir . '/test_create_zip_name';
-        $user = new stdClass();
-        $user->id = 10000;
-
-        $this->setUser($user);
-
-        $downloader = new downloader($courseid);
-
-        // We get the protected method by reflection.
-        $method = self::get_method('create_zip_name');
-
-        $expected = $fullpathtoparent . '/10000_1.zip';
-        $actual = $method->invokeArgs($downloader, array($fullpathtoparent));
+        $expected = $user->id . '_' . $course->id;
 
         $this->assertEquals($expected, $actual);
     }
