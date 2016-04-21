@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_login();
 
-global $SESSION;
+global $SESSION, $CFG;
 
 $courseid = required_param('courseid', PARAM_INT);
 
@@ -40,7 +40,8 @@ if (isset($SESSION->usablebackup_downloadpermission)) {
 if ($downloadpermission) {
     $SESSION->usablebackup_downloadpermission = false;
 
-    $zipfile = required_param('file', PARAM_TEXT);
+    $filename = required_param('file', PARAM_TEXT);
+    $zipfile = $CFG->tempdir . '/usablebackup/' . $filename;
 
     header('Content-Description: File Transfer');
     header('Content-Type: application/zip');
