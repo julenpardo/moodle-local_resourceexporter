@@ -101,10 +101,13 @@ class downloader {
      *
      * @param string $fullpathtoparent The full path to the contents parent folder; i.e., the path to the folder that will be
      * compressed into zip.
-     * @return string The zip file name with the described format.
+     * @return string The full path to the zip file, with the generated name.
      */
     protected function create_zip_name($fullpathtoparent) {
         global $USER;
+
+        $fullpathtoparent .= '/';
+        $fullpathtoparent = str_replace('//', '/', $fullpathtoparent);
 
         $zipname = $fullpathtoparent;
         $zipname .= $USER->id . '_' . $this->courseid;

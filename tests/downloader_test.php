@@ -189,7 +189,7 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         // We get the protected method by reflection.
         $method = self::get_method('create_zip_name');
 
-        $expected = '1_1000.zip';
+        $expected = $fullpathtoparent . '/10000_1.zip';
         $actual = $method->invokeArgs($downloader, array($fullpathtoparent));
 
         $this->assertEquals($expected, $actual);
