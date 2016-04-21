@@ -31,16 +31,18 @@ global $SESSION, $CFG;
 
 $courseid = required_param('courseid', PARAM_INT);
 
-if (isset($SESSION->usablebackup_downloadpermission)) {
-    $downloadpermission = $SESSION->usablebackup_downloadpermission;
-} else {
-    $downloadpermission = false;
-}
+$coursecontext = context_course::instance($courseid);
 
-if ($downloadpermission) {
-    $SESSION->usablebackup_downloadpermission = false;
+$validsubmission = isset($SESSION->usablebackup_downloadpermission);
+$validsubmission &= isset($SESSION->usablebackup_filename);
+$validsubmission &= is_enrolled($coursecontext);
 
-    $filename = required_param('file', PARAM_TEXT);
+if ($validsubmission) {
+    $filename = $SESSION->usablebackup_filename;
+
+    unset($SESSION->usablebackup_downloadpermission);
+    unset($SESSION->usablebackup_filename);
+
     $zipfile = $CFG->tempdir . '/usablebackup/' . $filename;
 
     header('Content-Description: File Transfer');

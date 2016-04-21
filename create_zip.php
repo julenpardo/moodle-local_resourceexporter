@@ -72,8 +72,9 @@ function create_zip_and_redirect_to_download($courseid) {
     $zipfile = $downloader->create_zip_file();
 
     $filename = basename($zipfile);
-    $downloadurl = new \moodle_url('/local/usablebackup/download.php', array('file' => $filename, 'courseid' => $courseid));
+    $downloadurl = new \moodle_url('/local/usablebackup/download.php', array('courseid' => $courseid));
 
+    $SESSION->usablebackup_filename = $filename;
     $SESSION->usablebackup_downloadpermission = true;
 
     redirect($downloadurl);
