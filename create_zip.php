@@ -32,6 +32,15 @@ use local_usablebackup\downloader;
 
 require_login();
 
+$modal = "
+<div id='usablebackup-modal'>
+    <div>
+        " . get_string('waituntilgenerated', 'local_usablebackup') . "
+    </div>
+</div>";
+
+echo $modal;
+
 $courseid = required_param('courseid', PARAM_INT);
 $nopermission = optional_param('nopermission', 0, PARAM_INT);
 $coursecontext = context_course::instance($courseid);

@@ -1,0 +1,23 @@
+#usablebackup-modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: grey;
+    opacity: 0.8;
+    z-index: 9999;
+}
+
+#usablebackup-modal > div {
+    width: 400px;
+    position: relative;
+    margin: auto;
+    margin-top: 20%;
+    background-color: lightgray;
+    text-align: center;
+    padding: 30px 15px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
