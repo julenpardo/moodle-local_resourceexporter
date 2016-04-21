@@ -92,27 +92,22 @@ class downloader {
 
     /**
      * Creates the name the generated zip will have, with the following format:
-     * courseshortname_yearmonthday_secondsmilliseconds
+     * userid_courseid.zip
      * Where courseshortname will be the received $parentfolder name.
-     * Is necessary to give each zip file an almost unique name, to avoid possible collisions of more than one person generating
-     * the zip for the same course. And, using the datetime with milliseconds of the time of the request, come on, is almost
-     * impossible to make that happen :)
-     * The format of the name is in human readable format instead of pure numbers, to make easier to the people downloading the
-     * zip to identify, classify or whatever they want to do with them; a string of milliseconds does not tell anything.
+     * Is necessary to give each zip file an unique name, to avoid possible collisions of more than one person generating
+     * the zip for the same course. And, generating an unique zip file for the combination of user and course, every time an user
+     * tries to generate the zip for the course, the previous will be overwritten (if exists), so, the files won't be accumulating
+     * occupying useful space.
      *
      * @param string $fullpathtoparent The full path to the contents parent folder; i.e., the path to the folder that will be
      * compressed into zip.
      * @return string The zip file name with the described format.
      */
     protected function create_zip_name($fullpathtoparent) {
-        list($microseconds, $seconds) = explode(' ', microtime());
-
-        $microseconds = str_replace('0.', '', $microseconds);
-        $milliseconds = substr($microseconds, 0, 4);
+        global $USER;
 
         $zipname = $fullpathtoparent;
-        $zipname .= '_' . date('Ymd_His', $seconds);
-        $zipname .= $milliseconds;
+        $zipname .= $USER->id . '_' . $this->courseid;
         $zipname .= '.zip';
 
         return $zipname;
