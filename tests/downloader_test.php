@@ -171,6 +171,30 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         $this->assertEquals($expected, $actual);
     }
 
+    public function test_create_zip_name() {
+        global $CFG;
+
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $courseid = 1; // Is not necessary to have a real course generated.
+        $fullpathtoparent = $CFG->tempdir . '/test_create_zip_name';
+        $user = new stdClass();
+        $user->id = 10000;
+
+        $this->setUser($user);
+
+        $downloader = new downloader($courseid);
+
+        // We get the protected method by reflection.
+        $method = self::get_method('create_zip_name');
+
+        $expected = '1_1000.zip';
+        $actual = $method->invokeArgs($downloader, array($fullpathtoparent));
+
+        $this->assertEquals($expected, $actual);
+    }
+
     public function test_create_download_link() {
 
     }
