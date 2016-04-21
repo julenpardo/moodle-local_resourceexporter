@@ -108,7 +108,7 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         $actualzipfile = $method->invokeArgs($downloader, array());
 
         $zipfilename = basename($actualzipfile);
-        $pathtofile = $CFG->dataroot . '/temp/usablebackup/' . $zipfilename;
+        $pathtofile = $CFG->dataroot . '/temp/usablebackup/' . $courseshortname . '/' . $zipfilename;
 
         // We set the expected values.
         $expecteds = array();
