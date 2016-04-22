@@ -26,3 +26,4 @@ $string['pluginname'] = 'Usable Backup';
 $string['createzip_title'] = 'Usable Backup - Create zip';
 $string['notenrolled'] = 'You can\'t download contents from a course you are not enrolled in.';
 $string['nopermission'] = 'You don\'t have permission to download the files.';
+$string['download'] = 'Download contents';
