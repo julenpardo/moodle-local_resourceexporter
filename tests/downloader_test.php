@@ -198,4 +198,29 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         $this->assertEquals($expected, $actual);
     }
 
+    public function test_get_file_course_path() {
+        global $CFG;
+
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $course = $this->getDataGenerator()->create_course();
+        $user = $this->getDataGenerator()->create_user();
+        $this->getDataGenerator()->enrol_user($user->id, $course->id, 5); // 5 is student role id.
+
+        $this->setUser($user);
+
+        $downloader = new downloader($course->id);
+
+        $fullpath = $CFG->tempdir . '/usablebackup/' . $user->id . '_' . $course->id . '/sectiondir/resource.txt';
+
+        // We get the method by reflection.
+        $method = self::get_method('get_file_course_path');
+
+        $expected = 'sectiondir/resource.txt';
+        $actual = $method->invokeArgs($downloader, array($fullpath));
+
+        $this->assertEquals($expected, $actual);
+    }
+
 }

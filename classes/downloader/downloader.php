@@ -89,8 +89,8 @@ class downloader {
         $allcontentspaths = array_merge($files, $urls);
 
         foreach ($allcontentspaths as $contentpath) {
-            $basename = basename($contentpath);
-            $ziparchive->addFile($contentpath, $basename);
+            $filepathincourse = $this->get_file_course_path($contentpath);
+            $ziparchive->addFile($contentpath, $filepathincourse);
         }
 
         $ziparchive->close();
@@ -98,6 +98,23 @@ class downloader {
         $this->rmdir_recursive($fullpathtoparent);
 
         return $zipfilepath;
+    }
+
+    /**
+     * 'Cuts' file's full path, to get only the path from the course, e.g., section_name/file.txt.
+     *
+     * @param string $fullpath The full path to the file.
+     * @return string The path of the file starting from the course.
+     */
+    protected function get_file_course_path($fullpath) {
+        global $CFG;
+
+        $path = $CFG->tempdir . '/usablebackup/';
+        $path .= $this->get_parent_directory_name() . '/';
+
+        $filecoursepath = str_replace($path, '', $fullpath);
+
+        return $filecoursepath;
     }
 
     /**
