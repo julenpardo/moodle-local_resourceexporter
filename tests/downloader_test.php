@@ -176,7 +176,26 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
     }
 
     public function test_create_download_link() {
+        global $CFG;
 
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $course = $this->getDataGenerator()->create_course();
+        $user = $this->getDataGenerator()->create_user();
+        $this->getDataGenerator()->enrol_user($user->id, $course->id, 5); // 5 is student role id.
+
+        $this->setUser($user);
+
+        // We instantiate the testing class...
+        $downloader = new downloader($course->id);
+
+        $href = $CFG->wwwroot . '/local/usablebackup/create_zip.php?courseid=' . $course->id;
+        $expected = "<a href='$href'>" . get_string('download', 'local_usablebackup') . '</a>';
+
+        $actual = $downloader->create_download_link();
+
+        $this->assertEquals($expected, $actual);
     }
 
 }
