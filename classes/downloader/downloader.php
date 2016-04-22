@@ -159,8 +159,18 @@ class downloader {
         rmdir($directory);
     }
 
+    /**
+     * Creates the link that will trigger the download.
+     *
+     * @return string The link for the download start.
+     */
     public function create_download_link() {
-        $this->create_zip_file();
+        global $CFG;
+
+        $href = $CFG->wwwroot . '/local/usablebackup/create_zip.php?courseid=' . $this->courseid;
+        $link = "<a href='$href'>" . get_string('download', 'local_usablebackup') . "</a>";
+
+        return $link;
     }
 
 }
