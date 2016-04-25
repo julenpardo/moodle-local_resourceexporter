@@ -87,9 +87,11 @@ class local_usablebackup_folder_testcase extends advanced_testcase {
         $resources = array();
         $resources[0] = new stdClass();
         $resources[0]->name = 'Software Engineering notes';
+        $resources[0]->filename = 'resource1.txt';
 
         $resources[1] = new stdClass();
         $resources[1]->name = 'How to join Moodle tables without dying in the attempt';
+        $resources[0]->filename = 'resource2.txt';
 
         $file = new stdClass();
         $file->name = "This is not in the folder so it shouldn't be taken into account";
@@ -118,6 +120,19 @@ class local_usablebackup_folder_testcase extends advanced_testcase {
         $actualfilecount = count($actualfilesinfolder);
 
         $this->assertEquals($expectedfilecount, $actualfilecount);
+
+        // Finally, we can test the resources their self.
+        foreach ($actualfilesinfolder as $index => $actualfile) {
+            $expectedfoldername = $folder;
+            $actualfoldername = $actualfile->folder_name;
+
+            $this->assertEquals($expectedfoldername, $actualfoldername);
+
+            $expectedfilename = $resources[$index]->filename;
+            $actualfilename = $actualfile->filename;
+
+            $this->assertEquals($expectedfilename, $actualfilename);
+        }
     }
 
 }

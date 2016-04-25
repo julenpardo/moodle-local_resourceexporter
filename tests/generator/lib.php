@@ -154,7 +154,6 @@ class local_usablebackup_generator extends testing_module_generator {
                              WHERE course.id = ?
                                  AND folder.id = ?";
 
-
         $contextid = $DB->get_record_sql($foldercontextsql, array($course, $folderid))->context_id;
 
         $resourceattributes = array('course' => $course, 'name' => $name);
