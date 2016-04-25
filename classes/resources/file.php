@@ -45,19 +45,14 @@ class file extends resource {
 
         foreach ($resources as $resource) {
             $moduleid = $resource->course_module_id;
-            $visibleforuser = parent::is_module_visible_for_user($courseid, $moduleid);
-
-            if (!$visibleforuser) {
+            if (!parent::is_module_visible_for_user($courseid, $moduleid)) {
                 continue;
             }
 
-            $sectionname = ($resource->section_name === null) ? '' : $resource->section_name;
-            $sectionname = parent::clean_file_and_directory_names($sectionname);
+            $sectionname = parent::clean_file_and_directory_names($resource->section_name);
 
             $file = $this->get_file_from_resource_info($resource);
-
-            $filename = $file->get_filename();
-            $filename = parent::clean_file_and_directory_names($filename);
+            $filename = parent::clean_file_and_directory_names($file->get_filename());
 
             $filecontent = $file->get_content_file_handle();
 

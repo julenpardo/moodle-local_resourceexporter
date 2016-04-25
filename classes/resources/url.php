@@ -45,14 +45,11 @@ class url extends resource {
 
         foreach ($resources as $resource) {
             $moduleid = $resource->course_module_id;
-            $visibleforuser = parent::is_module_visible_for_user($courseid, $moduleid);
-
-            if (!$visibleforuser) {
+            if (!parent::is_module_visible_for_user($courseid, $moduleid)) {
                 continue;
             }
 
-            $sectionname = ($resource->section_name === null) ? '' : $resource->section_name;
-            $sectionname = parent::clean_file_and_directory_names($sectionname);
+            $sectionname = parent::clean_file_and_directory_names($resource->section_name);
 
             $filename = $resource->name;
             $filename = parent::clean_file_and_directory_names($filename);
