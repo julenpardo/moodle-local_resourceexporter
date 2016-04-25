@@ -55,7 +55,7 @@ class file extends resource {
 
             $sectionname = parent::clean_file_and_directory_names($resource->section_name);
 
-            $file = $this->get_file_from_resource_info($resource); // file_handler trait method.
+            $file = $this->get_file_from_resource_info($resource); // File_handler trait method.
             $filename = parent::clean_file_and_directory_names($file->get_filename());
 
             $filecontent = $file->get_content_file_handle();
