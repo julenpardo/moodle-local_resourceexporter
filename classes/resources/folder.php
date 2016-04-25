@@ -26,10 +26,14 @@ namespace local_usablebackup;
 defined('MOODLE_INTERNAL') || die();
 
 require_once('resource.php');
+require_once('file_handler.php');
 
+use local_usablebackup\file_handler;
 use local_usablebackup\resource;
 
 class folder extends resource {
+
+    use file_handler;
 
     public function add_resources_to_directory($courseid, $parentdirectory) {
         $resources = $this->get_db_records($courseid);
@@ -37,19 +41,14 @@ class folder extends resource {
 
         foreach ($resources as $resource) {
             $moduleid = $resource->course_module_id;
-            $visibleforuser = parent::is_module_visible_for_user($courseid, $moduleid);
-
-            if (!$visibleforuser) {
+            if (!parent::is_module_visible_for_user($courseid, $moduleid)) {
                 continue;
             }
 
-            $sectionname = ($resource->section_name === null) ? '' : $resource->section_name;
-            $sectionname = parent::clean_file_and_directory_names($sectionname);
+            $sectionname = parent::clean_file_and_directory_names($resource->section_name);
 
-            $file = $this->get_file_from_resource_info($resource);
-
-            $filename = $file->get_filename();
-            $filename = parent::clean_file_and_directory_names($filename);
+            $file = $this->get_file_from_resource_info($resource); // File_handler trait method.
+            $filename = parent::clean_file_and_directory_names($file->get_filename());
             $filecontent = $file->get_content_file_handle();
 
             $foldername = $resource->folder_name;
@@ -106,19 +105,6 @@ class folder extends resource {
         $records = array_values($records);
 
         return $records;
-    }
-
-    protected function get_file_from_resource_info($resource) {
-        $filestorage = get_file_storage();
-
-        $file = $filestorage->get_file($resource->contextid,
-            $resource->component,
-            $resource->filearea,
-            $resource->itemid,
-            $resource->filepath,
-            $resource->filename);
-
-        return $file;
     }
 
 }

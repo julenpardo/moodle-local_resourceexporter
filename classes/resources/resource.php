@@ -81,13 +81,18 @@ abstract class resource {
      * Do not use this function to clean paths that contains subdirectories! The slashes will be removed, so the path will be lost.
      *
      * @param string $name The file, directory, to be cleaned.
-     * @return string The received name, cleaned, if containing any character defined in the pattern.
+     * @return string The received name, cleaned, if containing any character defined in the pattern; or empty string if null param
+     * received.
      */
     protected function clean_file_and_directory_names($name) {
-        $forbiddencharacterspattern = '[\\\\|\/|\:|\*|\?|\"|\<|\>|\|]';
-        $replacement = '-';
+        if ($name === null) {
+            $cleanname = '';
+        } else {
+            $forbiddencharacterspattern = '[\\\\|\/|\:|\*|\?|\"|\<|\>|\|]';
+            $replacement = '-';
 
-        $cleanname = preg_replace($forbiddencharacterspattern, $replacement, $name);
+            $cleanname = preg_replace($forbiddencharacterspattern, $replacement, $name);
+        }
 
         return $cleanname;
     }
