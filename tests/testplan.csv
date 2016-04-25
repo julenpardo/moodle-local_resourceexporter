@@ -97,4 +97,11 @@ $resource[0]->name = ""Software Engineering notes""
 $resource[1]->name = ""How to join Moodle tables without dying in the attempt""
 
 And also a non-""foldered""-file resource will be created, to verify that the method actually returns resource type rows only.
-$file[0]->name = ""This is not in the folder, so it shouldn't be taken into account""";Equivalence;No;;;;
+$file[0]->name = ""This is not in the folder, so it shouldn't be taken into account""";Equivalence;Yes;Pass;;Julen Pardo;25/04/2016
+14;resources/folder;add_resources_to_directory;"$courseid = <generated>
+$parentdirectory = $CFG->tempdir/test_add_resources_to_directory";"Test that file resources are correctly added to the folder inside parent received as parameter.
+
+The following data will be used for the generation of file resources:
+$folder = 'my_folder'
+$resource[0]->name = ""Unit testing rules""
+$resource[1]->name = ""Software Engineering is fun""";Equivalence;No;;;;

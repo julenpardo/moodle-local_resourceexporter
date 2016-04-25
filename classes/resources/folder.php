@@ -32,7 +32,38 @@ use local_usablebackup\resource;
 class folder extends resource {
 
     public function add_resources_to_directory($courseid, $parentdirectory) {
+        $resources = $this->get_db_records($courseid);
+        $addedfilespaths = array();
 
+        foreach ($resources as $resource) {
+            $moduleid = $resource->course_module_id;
+            $visibleforuser = parent::is_module_visible_for_user($courseid, $moduleid);
+
+            if (!$visibleforuser) {
+                continue;
+            }
+
+            $sectionname = ($resource->section_name === null) ? '' : $resource->section_name;
+            $sectionname = parent::clean_file_and_directory_names($sectionname);
+
+            $file = $this->get_file_from_resource_info($resource);
+
+            $filename = $file->get_filename();
+            $filename = parent::clean_file_and_directory_names($filename);
+            $filecontent = $file->get_content_file_handle();
+
+            $foldername = $resource->folder_name;
+            $filepath = parent::create_section_dir_if_not_exists($parentdirectory, $sectionname);
+            $filepath = parent::create_section_dir_if_not_exists($filepath, $foldername);
+            $filepath .= '/' . $filename;
+            $filepath = str_replace('//', '/', $filepath);
+
+            file_put_contents($filepath, $filecontent);
+
+            array_push($addedfilespaths, $filepath);
+        }
+
+        return $addedfilespaths;
     }
 
     /**
@@ -46,6 +77,7 @@ class folder extends resource {
 
         $sql = "SELECT files.id AS file_id,
                        folder.id AS folder_id,
+                       course_modules.id AS course_module_id,
                        folder.name AS folder_name,
                        files.contextid,
                        files.filename,
@@ -74,6 +106,19 @@ class folder extends resource {
         $records = array_values($records);
 
         return $records;
+    }
+
+    protected function get_file_from_resource_info($resource) {
+        $filestorage = get_file_storage();
+
+        $file = $filestorage->get_file($resource->contextid,
+            $resource->component,
+            $resource->filearea,
+            $resource->itemid,
+            $resource->filepath,
+            $resource->filename);
+
+        return $file;
     }
 
 }
