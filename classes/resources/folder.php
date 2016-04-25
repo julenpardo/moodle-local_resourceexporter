@@ -54,16 +54,16 @@ class folder extends resource {
                        files.itemid,
                        files.component,
                        course_sections.name AS section_name
-                FROM   m_files files
-                INNER JOIN m_context context
+                FROM   {files} files
+                INNER JOIN {context} context
                     ON files.contextid = context.id
-                INNER JOIN m_course_modules course_modules
+                INNER JOIN {course_modules} course_modules
                     ON course_modules.id = context.instanceid
-                INNER JOIN m_folder folder
+                INNER JOIN {folder} folder
                     ON folder.id = course_modules.instance
-                INNER JOIN m_course course
+                INNER JOIN {course} course
                     ON course.id = folder.course
-                INNER JOIN m_course_sections course_sections
+                INNER JOIN {course_sections} course_sections
                     ON course_sections.id = course_modules.section
 
                 WHERE files.component = 'mod_folder'
