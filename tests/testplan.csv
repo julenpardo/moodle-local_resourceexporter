@@ -97,4 +97,4 @@ $resource[0]->name = ""Software Engineering notes""
 $resource[1]->name = ""How to join Moodle tables without dying in the attempt""
 
 And also a non-""foldered""-file resource will be created, to verify that the method actually returns resource type rows only.
-$url[0]->file = ""This is not in the folder, so it shouldn't be taken into account""";Equivalence;No;;;;
+$file[0]->name = ""This is not in the folder, so it shouldn't be taken into account""";Equivalence;No;;;;

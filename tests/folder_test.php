@@ -73,7 +73,51 @@ class local_usablebackup_folder_testcase extends advanced_testcase {
     }
 
     public function test_get_db_records() {
+        global $DB;
 
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $method = self::get_method('get_db_records');
+
+        $foldergenerator = $this->getDataGenerator()->get_plugin_generator('mod_folder');
+
+        $folder = 'my folder';
+
+        $resources = array();
+        $resources[0] = new stdClass();
+        $resources[0]->name = 'Software Engineering notes';
+
+        $resources[1] = new stdClass();
+        $resources[1]->name = 'How to join Moodle tables without dying in the attempt';
+
+        $file = new stdClass();
+        $file->name = "This is not in the folder so it shouldn't be taken into account";
+
+        $course = $this->getDataGenerator()->create_course();
+
+        $folder = $foldergenerator->create_instance(array('course' => $course->id, 'name' => $folder));
+
+        $generatedresources = array();
+        $filesrows = array();
+        $files = array();
+
+        foreach ($resources as $resource) {
+            $resourceandfile = $this->filegenerator->create_resource_in_folder($course->id, $resource->name, $folder->id);
+
+            array_push($generatedresources, $resourceandfile['resource']);
+            array_push($filesrows, $resourceandfile['filerow']);
+            array_push($files, $resourceandfile['file']);
+        }
+
+        // Finally, we can call the testing method.
+        $actualfilesinfolder = $method->invokeArgs($this->folder, array($course->id));
+
+        // If the number of elements received and the number of resources for folder defined is different, something is wrong.
+        $expectedfilecount = count($resources);
+        $actualfilecount = count($actualfilesinfolder);
+
+        $this->assertEquals($expectedfilecount, $actualfilecount);
     }
 
 }
