@@ -89,4 +89,19 @@ Three test cases will be designed:
  3. One for a module that is visible only for a certain group (in where the testing student won't be).";Test that the method returns true or false depending on the visibility for the user of a course module.;Equivalence;Yes;"Pass 2/3; skip the 3º";Skipped the 3rd test to take up later, because it was supposed to work, but the assertion fails.;Julen Pardo;19/04/2016
 11;downloader/downloader;create_download_link;"_
 Instantiate class with generated $courseid.";Test that the method creates the expected download link to the contents, from the course id class property.;Equivalence;Yes;Pass;;Julen Pardo;22/04/2016
-12;downloader/downloader;get_file_course_path;$fullpath = $CFG->tempdir . /usablebackup/sectiondir/resource.txt';Test that te method returns correctly the path to the resource.txt, starting from sectiondir.;Equivalence;No;;;;
+12;downloader/downloader;get_file_course_path;$fullpath = $CFG->tempdir . /usablebackup/sectiondir/resource.txt';Test that te method returns correctly the path to the resource.txt, starting from sectiondir.;Equivalence;Yes;Pass;;Julen Pardo;22/04/2016
+13;resources/folder;get_db_records;$courseid = <generated>;"Test that, after creating a course, a folder, and resources for within it, retrieves properly the records of those resources of ""file"" type AND inside the folder, with all the information required.
+
+The following data will be used for the generation of file resources:
+$resource[0]->name = ""Software Engineering notes""
+$resource[1]->name = ""How to join Moodle tables without dying in the attempt""
+
+And also a non-""foldered""-file resource will be created, to verify that the method actually returns resource type rows only.
+$file[0]->name = ""This is not in the folder, so it shouldn't be taken into account""";Equivalence;Yes;Pass;;Julen Pardo;25/04/2016
+14;resources/folder;add_resources_to_directory;"$courseid = <generated>
+$parentdirectory = $CFG->tempdir/test_add_resources_to_directory";"Test that file resources are correctly added to the folder inside parent received as parameter.
+
+The following data will be used for the generation of file resources:
+$folder = 'my_folder'
+$resource[0]->name = ""Unit testing rules""
+$resource[1]->name = ""Software Engineering is fun""";Equivalence;No;;;;

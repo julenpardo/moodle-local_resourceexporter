@@ -136,4 +136,47 @@ class local_usablebackup_generator extends testing_module_generator {
 
         return $resourceandfile;
     }
+
+    public function create_resource_in_folder($course, $name, $folderid) {
+        global $DB;
+
+        $component = 'mod_folder';
+
+        $foldercontextsql = "SELECT context.id AS context_id
+                             FROM   {course_modules} course_modules
+                             INNER JOIN {course} course
+                                 ON course.id = course_modules.course
+                             INNER JOIN {context} context
+                                 ON course_modules.id = context.instanceid
+                             INNER JOIN {folder} folder
+                                 ON folder.id = course_modules.instance
+
+                             WHERE course.id = ?
+                                 AND folder.id = ?";
+
+        $contextid = $DB->get_record_sql($foldercontextsql, array($course, $folderid))->context_id;
+
+        $resourceattributes = array('course' => $course, 'name' => $name);
+
+        $resource = $this->resourcegenerator->create_instance($resourceattributes);
+        $filerow = $this->get_last_created_file($course);
+
+        $filerow->component = $component;
+        $filerow->contextid = $contextid;
+
+        $DB->update_record('files', $filerow);
+
+        $file = $this->filestorage->get_file($filerow->contextid,
+            $filerow->component,
+            $filerow->filearea,
+            $filerow->itemid,
+            $filerow->filepath,
+            $filerow->filename);
+
+        $resourceandfile = array('resource' => $resource,
+            'filerow' => $filerow,
+            'file' => $file);
+
+        return $resourceandfile;
+    }
 }
