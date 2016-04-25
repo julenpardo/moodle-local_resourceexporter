@@ -27,15 +27,18 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once(dirname(__FILE__) . '/../resources/file.php');
 require_once(dirname(__FILE__) . '/../resources/url.php');
+require_once(dirname(__FILE__) . '/../resources/folder.php');
 
 use local_usablebackup\file;
 use local_usablebackup\url;
+use local_usablebackup\folder;
 
 class downloader {
 
     protected $courseid;
     protected $file;
     protected $url;
+    protected $folder;
 
     /**
      * downloader constructor.
@@ -46,6 +49,7 @@ class downloader {
         $this->courseid = $courseid;
         $this->file = new file();
         $this->url = new url();
+        $this->folder = new folder();
     }
 
     /**
@@ -77,6 +81,7 @@ class downloader {
 
         $files = $this->file->add_resources_to_directory($this->courseid, $fullpathtoparent);
         $urls = $this->url->add_resources_to_directory($this->courseid, $fullpathtoparent);
+        $folders = $this->folder->add_resources_to_directory($this->courseid, $fullpathtoparent);
 
         $zipfilepath = $fullpathtoparent . '.zip';
         $ziparchive = new \ZipArchive();
@@ -86,7 +91,7 @@ class downloader {
             throw new \Exception('Failed to create zip archive, error object: ' . error_get_last()['message']);
         }
 
-        $allcontentspaths = array_merge($files, $urls);
+        $allcontentspaths = array_merge($files, $urls, $folders);
 
         foreach ($allcontentspaths as $contentpath) {
             $filepathincourse = $this->get_file_course_path($contentpath);
