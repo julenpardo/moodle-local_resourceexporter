@@ -26,10 +26,14 @@ namespace local_usablebackup;
 defined('MOODLE_INTERNAL') || die();
 
 require_once('resource.php');
+require_once('file_handler.php');
 
+use local_usablebackup\file_handler;
 use local_usablebackup\resource;
 
 class file extends resource {
+
+    use file_handler;
 
     /**
      * Adds the file resources of the given course to the received parent directory. If the file is not categorized in a section
@@ -51,7 +55,7 @@ class file extends resource {
 
             $sectionname = parent::clean_file_and_directory_names($resource->section_name);
 
-            $file = $this->get_file_from_resource_info($resource);
+            $file = $this->get_file_from_resource_info($resource); // file_handler trait method.
             $filename = parent::clean_file_and_directory_names($file->get_filename());
 
             $filecontent = $file->get_content_file_handle();
@@ -111,19 +115,6 @@ class file extends resource {
         $records = array_values($records);
 
         return $records;
-    }
-
-    protected function get_file_from_resource_info($resource) {
-        $filestorage = get_file_storage();
-
-        $file = $filestorage->get_file($resource->contextid,
-            $resource->component,
-            $resource->filearea,
-            $resource->itemid,
-            $resource->filepath,
-            $resource->filename);
-
-        return $file;
     }
 
 }

@@ -285,38 +285,4 @@ class local_usablebackup_file_testcase extends advanced_testcase {
         }
     }
 
-    public function test_get_file_from_resource_info() {
-        global $DB, $CFG;
-
-        $this->resetAfterTest();
-        $this->setAdminUser();
-
-        $course = $this->filegenerator->create_course();
-
-        $resource = new stdClass();
-        $resource->name = 'Apparently simple functions must also be tested';
-
-        $resourceandfile = $this->filegenerator->create_resource($course->id, $resource->name);
-        $filerow = $resourceandfile['filerow'];
-
-        // We get the testing method by reflection, we get the actual value, and we set the properties accessible using reflection.
-        $method = $this->get_method('get_file_from_resource_info');
-        $actualfile = $method->invokeArgs($this->file, array($filerow));
-
-        $reflectionfile = new ReflectionClass('stored_file');
-        $reflectionfilerecord = $reflectionfile->getProperty('file_record');
-        $reflectionfilerecord->setAccessible(true);
-
-        $actualfile = $reflectionfilerecord->getValue($actualfile);
-
-        // We construct the expected object. With the file content hash and the file name, should be enough to assert that the
-        // method works correctly.
-        $expectedfile = new stdClass();
-        $expectedfile->contenthash = sha1('Test resource 1 file');
-        $expectedfile->filename = 'resource1.txt';
-
-        $this->assertEquals($expectedfile->contenthash, $actualfile->contenthash);
-        $this->assertEquals($expectedfile->filename, $actualfile->filename);
-    }
-
 }
