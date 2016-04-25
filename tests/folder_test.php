@@ -140,4 +140,48 @@ class local_usablebackup_folder_testcase extends advanced_testcase {
         }
     }
 
+    public function test_add_resources_to_directory() {
+        global $DB, $CFG;
+
+        $this->markTestSkipped("This is not testeable since a way to generate files in folders natively, with the data generator,
+            is found. Because, the 'create_resource_in_folder' updates manually the files' table, in order to make the query of
+            'get_db_records' return the files in folders, but then the file API is not able to retrieve the files with those
+            modified values.");
+
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $folder = 'my_folder';
+        $course = $this->getDataGenerator()->create_course();
+        $foldergenerator = $this->getDataGenerator()->get_plugin_generator('mod_folder');
+        $folder = $foldergenerator->create_instance(array('course' => $course->id, 'name' => $folder));
+
+        // We made all the necessary things to create the resources within the folder...
+        $resources = array();
+        $resources[0] = new stdClass();
+        $resources[0]->name = 'Unit testing rules';
+        $resources[0]->filename = 'resource1.txt';
+
+        $resources[1] = new stdClass();
+        $resources[1]->name = 'Software Engineering is fun';
+        $resources[1]->filename = 'resource2.txt';
+
+        $generatedresources = array();
+        $filesrows = array();
+        $files = array();
+
+        foreach ($resources as $resource) {
+            $resourceandfile = $this->filegenerator->create_resource_in_folder($course->id, $resource->name, $folder->id);
+
+            array_push($generatedresources, $resourceandfile['resource']);
+            array_push($filesrows, $resourceandfile['filerow']);
+            array_push($files, $resourceandfile['file']);
+        }
+
+        $parentdirectory = $CFG->tempdir . '/test_add_resources_to_directory';
+
+        // Finally, we can call the testing methods.
+        $actualvalues = $this->folder->add_resources_to_directory($course->id, $parentdirectory);
+    }
+
 }
