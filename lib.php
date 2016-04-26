@@ -27,6 +27,8 @@ defined('MOODLE_INTERNAL') || die();
  * Adds the created url to the course administration block.
  * Before anything, checks that we are actually in a course, and, then, that an administration block actually  exists.
  *
+ * The icon used is the same as the one used by the backup; is probably the one that fits better.
+ *
  * See documentation: https://docs.moodle.org/dev/Navigation_API#Navbar
  *
  * @param object $navigation The navigation object.
@@ -35,7 +37,7 @@ defined('MOODLE_INTERNAL') || die();
 function local_usablebackup_extend_settings_navigation($navigation, $context) {
     global $COURSE;
 
-    $iscourse = $context->contextlevel === 50;
+    $iscourse = $context->contextlevel === CONTEXT_COURSE;
 
     if ($iscourse) {
         $parent = $navigation->find('courseadmin', navigation_node::TYPE_COURSE);
@@ -44,8 +46,9 @@ function local_usablebackup_extend_settings_navigation($navigation, $context) {
         if ($existsadminblock) {
             $pluginname = get_string('pluginname', 'local_usablebackup');
             $url = new moodle_url('/local/usablebackup/create_zip.php', array('courseid' => $COURSE->id));
+            $icon = new pix_icon('i/backup', '');
 
-            $parent->add($pluginname, $url, navigation_node::TYPE_SETTING);
+            $parent->add($pluginname, $url, navigation_node::TYPE_SETTING, null, null, $icon);
         }
     }
 }
