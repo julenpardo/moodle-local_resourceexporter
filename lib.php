@@ -24,16 +24,28 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Adds the created url to the navigation block (that usually under the admin block).
+ * Adds the created url to the course administration block.
+ * Before anything, checks that we are actually in a course, and, then, that an administration block actually  exists.
+ *
  * See documentation: https://docs.moodle.org/dev/Navigation_API#Navbar
  *
  * @param object $navigation The navigation object.
+ * @param object $context The given context.
  */
-function local_usablebackup_extend_navigation($navigation) {
+function local_usablebackup_extend_settings_navigation($navigation, $context) {
     global $COURSE;
 
-    $pluginname = get_string('pluginname', 'local_usablebackup') . ' in navigation!';
-    $url = new moodle_url('/local/usablebackup/create_zip.php', array('courseid' => $COURSE->id));
+    $iscourse = $context->contextlevel === 50;
 
-    $navigation->add($pluginname, $url, navigation_node::TYPE_SETTING);
+    if ($iscourse) {
+        $parent = $navigation->find('courseadmin', navigation_node::TYPE_COURSE);
+        $existsadminblock = $parent;
+
+        if ($existsadminblock) {
+            $pluginname = get_string('pluginname', 'local_usablebackup');
+            $url = new moodle_url('/local/usablebackup/create_zip.php', array('courseid' => $COURSE->id));
+
+            $parent->add($pluginname, $url, navigation_node::TYPE_SETTING);
+        }
+    }
 }
