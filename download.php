@@ -15,6 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Download of the file, or redirection if something went bad.
+ * This page cannot be accessed directly: the arrival to this page has to be made by a redirection from create_zip.php.
+ * If a user tries to access this page directly, it will be redirected to the create_zip, where an error message will be shown.
  *
  * @package    local_usablebackup
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea

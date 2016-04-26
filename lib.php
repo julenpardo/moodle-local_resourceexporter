@@ -15,6 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * local_usablebackup lib functions.
  *
  * @package    local_usablebackup
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea

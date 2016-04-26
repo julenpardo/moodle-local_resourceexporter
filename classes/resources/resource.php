@@ -15,6 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Moodle resource abstract declaration.
  *
  * @package    local_usablebackup
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
@@ -25,10 +26,32 @@ namespace local_usablebackup;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Abstract class resource.
+ *
+ * @package    local_usablebackup
+ * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 abstract class resource {
 
+    /**
+     * Adds every resource of the given type to the specified parent directory.
+     *
+     * @param int $courseid The course for which the resources will be downloaded.
+     * @param string $parentdirectory The top directory of the course, where the resource will be added.
+     * @return array Path of each added resource to the directory.
+     */
     abstract public function add_resources_to_directory($courseid, $parentdirectory);
 
+    /**
+     * Queries the required information for the construction of the files.
+     * Each soon class will query different tables and columns.
+     *
+     * @param int $courseid The course for which the given resource information will be queried.
+     * @return object Database record object with the required information for the given resource type.
+     */
     abstract protected function get_db_records($courseid);
 
     /**

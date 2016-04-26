@@ -24,8 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version      = 2016042500;
-$plugin->release      = 'master - v1.0-beta1 release (Build 2016042500).';
+$plugin->version      = 2016042600;
+$plugin->release      = 'master - v1.0-beta2 release (Build 2016042600).';
 $plugin->requires     = 2015051100;         // Required Moodle version.
 $plugin->component    = 'local_usablebackup'; // NOT DEFINITIVE!!
 $plugin->maturity     = MATURITY_BETA;

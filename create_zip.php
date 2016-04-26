@@ -15,6 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Page that creates the zip before redirecting to the download.
+ *
+ * The file name to download is passed through the SESSION object, instead of through HTTP parameter, to prevent evil intentions.
+ * Another property in SESSION object is set to mark that the checks have been passed (login, enrolled in the course), to have
+ * always a value that we know in advance will be assigned (true/false; the file object is more susceptible for possible errors).
+ *
+ * If the requesting user has no permissions, or he tries to access directly to the download page, he will be redirected to this
+ * page, to show the corresponding error message.
  *
  * @package    local_usablebackup
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
@@ -61,7 +69,10 @@ function init_page($coursecontext) {
 }
 
 /**
- * Calls to the zip creation, and then redirects to the download page.
+ * Calls to the zip creation, and then redirects to the download page. Passes the zip file name as SESSION object property,
+ * since it's not supposed to be writable by the client. Another property in SESSION object is set to mark that the checks have
+ * been passed (login, enrolled in the course), to have always a value that we know in advance will be assigned (true/false;
+ * the file object is more susceptible for possible errors).
  *
  * @param int $courseid The id of the current course.
  */
@@ -81,9 +92,11 @@ function create_zip_and_redirect_to_download($courseid) {
 }
 
 /**
- * Prints the error page if the user is trying to download the contents from a course he's not enrolled in.
+ * Prints the error page if the user is trying to download the contents from a course he's not enrolled in, or if he tries to
+ * access the download page directly.
  *
- * @param boolean $nopermission
+ * @param boolean $nopermission If the error is because of the user has no permission, and not because it has accessed directly
+ * to the download page.
  */
 function print_error_page($nopermission = false) {
     global $OUTPUT;

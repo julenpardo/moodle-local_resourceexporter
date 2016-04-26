@@ -15,6 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Download of the resources.
  *
  * @package    local_usablebackup
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
@@ -33,11 +34,38 @@ use local_usablebackup\file;
 use local_usablebackup\url;
 use local_usablebackup\folder;
 
+/**
+ * Class downloader for the download of the resources.
+ *
+ * @package    local_usablebackup
+ * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 class downloader {
 
+    /**
+     * The course for which the resources will be downloaded.
+     * @var int
+     */
     protected $courseid;
+
+    /**
+     * File handling for the download.
+     * @var \local_usablebackup\file
+     */
     protected $file;
+
+    /**
+     * Url handling for the download.
+     * @var \local_usablebackup\url
+     */
     protected $url;
+
+    /**
+     * Folder handling for the download.
+     * @var \local_usablebackup\folder
+     */
     protected $folder;
 
     /**

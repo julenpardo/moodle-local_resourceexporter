@@ -15,6 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Management of folder-type resources download.
  *
  * @package    local_usablebackup
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
@@ -31,10 +32,26 @@ require_once('file_handler.php');
 use local_usablebackup\file_handler;
 use local_usablebackup\resource;
 
+/**
+ * Class folder for the management of folder-type resources download.
+ *
+ * @package    local_usablebackup
+ * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 class folder extends resource {
 
     use file_handler;
 
+    /**
+     * Adds the files inside folder resources of the given course to the received parent directory. Every folder-type resource
+     * will have a folder with the same name, which will be, in the same way, inside the section directory, if any.
+     *
+     * @param int $courseid The course id the folders to add to the directory belong to.
+     * @param string $parentdirectory The directory to add the resources to.
+     * @return array The path of every added folder.
+     */
     public function add_resources_to_directory($courseid, $parentdirectory) {
         $resources = $this->get_db_records($courseid);
         $addedfilespaths = array();

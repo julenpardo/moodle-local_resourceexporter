@@ -15,6 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Management of url-type resources download.
  *
  * @package    local_usablebackup
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
@@ -26,6 +27,14 @@ namespace local_usablebackup;
 defined('MOODLE_INTERNAL') || die();
 
 use local_usablebackup\resource;
+
+/**
+ * Class url for the management of url-type resources download.
+ *
+ * @package    local_usablebackup
+ * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 class url extends resource {
 
