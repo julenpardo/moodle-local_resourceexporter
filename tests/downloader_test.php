@@ -108,7 +108,8 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         $pathtofolder = $CFG->dataroot . '/temp/usablebackup/' . $user->id . '_' . $course->id;
         $pathtofile = $pathtofolder . '.zip';
 
-        mkdir($pathtofolder, 0777, true); // We create the folder to make the function delete it calling to rmdir_recursive, to cover it.
+        // We create the folder to make the function delete it calling to rmdir_recursive, to cover it.
+        mkdir($pathtofolder, 0777, true);
 
         // We get the method by reflection, and we call it.
         $method = self::get_method('create_zip_file');
