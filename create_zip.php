@@ -44,7 +44,7 @@ $courseid = required_param('courseid', PARAM_INT);
 $nopermission = optional_param('nopermission', 0, PARAM_INT);
 $coursecontext = context_course::instance($courseid);
 
-init_page($coursecontext);
+init_page();
 
 if ($nopermission) {
     print_error_page($nopermission);
@@ -55,17 +55,17 @@ if ($nopermission) {
 }
 
 /**
- * Initializes the page with: context, url, title, page layout.
- *
- * @param object $coursecontext The course context.
+ * Initializes the page with: context, url, title.
+ * The context is set to system because, in case of having to show the error message for those trying to download resources from
+ * a course they are not enrolled in, setting the context of a course where the user is not enrolled makes no sense.
  */
-function init_page($coursecontext) {
+function init_page() {
     global $PAGE;
 
-    $PAGE->set_context($coursecontext);
+    $context = context_system::instance();
+    $PAGE->set_context($context);
     $PAGE->set_url('/local/usablebackup/create_zip.php');
     $PAGE->set_title(get_string('createzip_title', 'local_usablebackup'));
-    $PAGE->set_pagelayout('course');
 }
 
 /**
@@ -99,7 +99,7 @@ function create_zip_and_redirect_to_download($courseid) {
  * to the download page.
  */
 function print_error_page($nopermission = false) {
-    global $OUTPUT;
+    global $OUTPUT, $PAGE;
 
     echo $OUTPUT->header();
     echo $OUTPUT->navbar();
