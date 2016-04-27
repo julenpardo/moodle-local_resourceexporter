@@ -82,9 +82,12 @@ class local_usablebackup_url_testcase extends advanced_testcase {
         $urls[0] = new stdClass();
         $urls[0]->name = 'Moodle general development forum';
         $urls[0]->externalurl = 'https://moodle.org/mod/forum/view.php?id=55';
+        $urls[0]->hidden = false;
+
         $urls[1] = new stdClass();
         $urls[1]->name = 'Moodle Testing and QA forum';
         $urls[1]->externalurl = 'https://moodle.org/course/view.php?id=5';
+        $urls[1]->hidden = false;
 
         $resources = array();
         $resources[0] = new stdClass();
@@ -130,7 +133,7 @@ class local_usablebackup_url_testcase extends advanced_testcase {
     }
 
     public function test_add_resources_to_directory() {
-        global $CFG;
+        global $DB, $CFG;
 
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -141,10 +144,22 @@ class local_usablebackup_url_testcase extends advanced_testcase {
         $urls[0] = new stdClass();
         $urls[0]->name = 'Moodle - QA Testing';
         $urls[0]->externalurl = 'https://docs.moodle.org/dev/QA_testing';
+        $urls[0]->hidden = false;
 
         $urls[1] = new stdClass();
         $urls[1]->name = 'Moodle - Writing PHPUnit tests';
         $urls[1]->externalurl = 'https://docs.moodle.org/dev/Writing_PHPUnit_tests';
+        $urls[1]->hidden = false;
+
+        $urls[2] = new stdClass();
+        $urls[2]->name = 'Eh eh, this is a hidden resource!';
+        $urls[2]->externalurl = 'I said that this is a hidden resource!';
+        $urls[2]->hidden = true;
+
+        // We have to create a student who won't be able to see the hidden resources.
+        $student = $this->getDataGenerator()->create_user();
+        $this->getDataGenerator()->enrol_user($student->id, $course->id, 5); // 5 is student role id.
+        $this->setUser($student);
 
         // We generate the urls...
         $generatedurls = array();
@@ -154,7 +169,15 @@ class local_usablebackup_url_testcase extends advanced_testcase {
                 'name' => $url->name,
                 'externalurl' => $url->externalurl));
 
-            array_push($generatedurls, $generatedurl);
+            if ($url->hidden) {
+                $hiddenurl = new stdClass();
+                $hiddenurl->id = $generatedurl->cmid;
+                $hiddenurl->visible = 0;
+
+                $DB->update_record('course_modules', $hiddenurl);
+            } else {
+                array_push($generatedurls, $generatedurl);
+            }
         }
 
         // Now, we can call the testing method.
@@ -171,7 +194,14 @@ class local_usablebackup_url_testcase extends advanced_testcase {
 
         // If the number of defined url resources and the number of files created in the specified directory is different,
         // something is wrong.
-        $expectedfilecount = count($urls);
+        $expectedfilecount = 0;
+
+        foreach ($urls as $url) {
+            if (!$url->hidden) {
+                $expectedfilecount++;
+            }
+        }
+
         $actualfilecount = count($actualfiles);
 
         $this->assertEquals($expectedfilecount, $actualfilecount);
@@ -188,14 +218,16 @@ class local_usablebackup_url_testcase extends advanced_testcase {
 
         // Finally, we can check the created files' names and contents.
         foreach ($urls as $index => $url) {
-            $expectedname = $url->name . '.txt';
-            $expectedcontent = $url->externalurl;
+            if (!$url->hidden) {
+                $expectedname = $url->name . '.txt';
+                $expectedcontent = $url->externalurl;
 
-            $actualname = $actualfiles[$index];
-            $actualcontent = $actualfilescontents[$index];
+                $actualname = $actualfiles[$index];
+                $actualcontent = $actualfilescontents[$index];
 
-            $this->assertEquals($expectedname, $actualname);
-            $this->assertEquals($expectedcontent, $actualcontent);
+                $this->assertEquals($expectedname, $actualname);
+                $this->assertEquals($expectedcontent, $actualcontent);
+            }
         }
     }
 
