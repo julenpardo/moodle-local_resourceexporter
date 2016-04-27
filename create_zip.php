@@ -36,6 +36,8 @@ defined('MOODLE_INTERNAL') || die();
 
 global $CFG, $SESSION;
 
+require_once($CFG->libdir.'/adminlib.php');
+
 use local_usablebackup\downloader;
 
 require_login();
@@ -101,14 +103,18 @@ function create_zip_and_redirect_to_download($courseid) {
 function print_error_page($nopermission = false) {
     global $OUTPUT, $PAGE;
 
-    echo $OUTPUT->header();
-    echo $OUTPUT->navbar();
-
-    echo '<h2>' . get_string('error') . '</h2>';
-
+    $home = new \moodle_url('/');
     $errormessage = ($nopermission) ? get_string('nopermission', 'local_usablebackup') : get_string('notenrolled',
         'local_usablebackup');
-    echo $errormessage;
+
+    echo $OUTPUT->header();
+    echo $OUTPUT->heading(get_string('error'));
+    echo $OUTPUT->navbar();
+
+    echo $OUTPUT->box_start('generalbox', 'notice');
+    echo html_writer::tag('p', $errormessage);
+    echo $OUTPUT->single_button($home, get_string('sitehome'), 'get');
+    echo $OUTPUT->box_end();
 
     echo $OUTPUT->footer();
 }
