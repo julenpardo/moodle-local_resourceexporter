@@ -65,14 +65,16 @@ class local_usablebackup_generator extends testing_module_generator {
      * descending, by the id, and then taking only the first element of the result array.
      *
      * @param int $courseid The course for which the resource was created.
+     * @param boolean $onlyvisible If query only the resources marked as visible; by default, yes.
      * @return object The last file object created for the course.
      */
-    protected function get_last_created_file($courseid) {
+    protected function get_last_created_file($courseid, $onlyvisible = true) {
         global $DB;
 
         $sql = "SELECT files.id,
                        course.id AS course_id,
                        course.shortname AS course_shortname,
+                       context.instanceid,
                        files.contextid,
                        files.filename,
                        files.filearea,
@@ -96,9 +98,13 @@ class local_usablebackup_generator extends testing_module_generator {
                     ON course_sections.id = course_modules.section
 
                 WHERE filename <> '.'
-                    AND course.id = ?
+                    AND course.id = ? ";
 
-                ORDER BY files.id DESC";
+        if ($onlyvisible) {
+            $sql .= ' AND course_modules.visible = 1 ';
+        }
+
+        $sql .= ' ORDER BY files.id DESC';
 
         $files = $DB->get_records_sql($sql, array($courseid));
         $files = array_values($files);
@@ -114,10 +120,12 @@ class local_usablebackup_generator extends testing_module_generator {
      *
      * @param int $course The course for which the resource will be created.
      * @param string $name The name of the resource.
-     * @param string $filecontent The content of the file.
+     * @param boolean $hidden If the resource will be hidden; by default, no.
      * @return array The resource, the file row, and the physical file; the only way to return more than one value...
      */
-    public function create_resource($course, $name, $filecontent = "content") {
+    public function create_resource($course, $name, $hidden = false) {
+        global $DB;
+
         $resourceattributes = array('course' => $course, 'name' => $name);
 
         $resource = $this->resourcegenerator->create_instance($resourceattributes);
@@ -133,6 +141,13 @@ class local_usablebackup_generator extends testing_module_generator {
         $resourceandfile = array('resource' => $resource,
             'filerow' => $filerow,
             'file' => $file);
+
+        if ($hidden) {
+            $coursemodule = $DB->get_record('course_modules', array('id' => $filerow->instanceid));
+            $coursemodule->visible = 0;
+
+            $DB->update_record('course_modules', $coursemodule);
+        }
 
         return $resourceandfile;
     }

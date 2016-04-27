@@ -166,16 +166,27 @@ class local_usablebackup_file_testcase extends advanced_testcase {
         $resources = array();
         $resources[0] = new stdClass();
         $resources[0]->name = 'Unit testing rules';
+        $resources[0]->hidden = false;
 
         $resources[1] = new stdClass();
         $resources[1]->name = 'Software Engineering is fun';
+        $resources[1]->hidden = false;
+
+        $resources[2] = new stdClass();
+        $resources[2]->name = 'Eh eh, this is a hidden resource!';
+        $resources[2]->hidden = true;
+
+        // We have to create a student who won't be able to see the hidden resources.
+        $student = $this->getDataGenerator()->create_user();
+        $this->getDataGenerator()->enrol_user($student->id, $course->id, 5); // 5 is student role id.
+        $this->setUser($student);
 
         $generatedresources = array();
         $filesrows = array();
         $files = array();
 
         foreach ($resources as $resource) {
-            $resourceandfile = $this->filegenerator->create_resource($course->id, $resource->name);
+            $resourceandfile = $this->filegenerator->create_resource($course->id, $resource->name, $resource->hidden);
 
             array_push($generatedresources, $resourceandfile['resource']);
             array_push($filesrows, $resourceandfile['filerow']);
@@ -214,7 +225,7 @@ class local_usablebackup_file_testcase extends advanced_testcase {
         // Now, finally, we can start testing the method.
         $parentdirectory = $CFG->dataroot . '/test_add_resources_to_directory';
         mkdir($parentdirectory);
-        $this->file->add_resources_to_directory($course->id, $parentdirectory);
+        $actualpaths = $this->file->add_resources_to_directory($course->id, $parentdirectory);
 
         // We get the actual files of the directory, omitting '.' and '..'.
         $actualfiles = scandir($parentdirectory);
@@ -276,6 +287,24 @@ class local_usablebackup_file_testcase extends advanced_testcase {
         $actualfilecount = count($actualfilecontents);
 
         $this->assertEquals($expectedfilecount, $actualfilecount);
+
+        // If the number of different returned paths is different to the generate files, something is wrong.
+        $expectedpaths = array();
+        for ($index = 0; $index < count($resources); $index++) {
+            $path = $parentdirectory . '/resource' . ($index + 1) . '.txt';
+            array_push($expectedpaths, $path);
+        }
+        $expectedpathscount = count($expectedpaths);
+        $actualpathscount = count($actualpaths);
+
+        $this->assertEquals($expectedpathscount, $actualpathscount);
+
+        // And, of course, the paths their self must coincide.
+        foreach ($expectedpaths as $index => $expectedpath) {
+            $actualpath = $actualpaths[$index];
+
+            $this->assertEquals($expectedpath, $actualpath);
+        }
 
         // Finally, we can compare files' contents.
         foreach ($expectedfilecontents as $index => $expectedfilecontent) {
