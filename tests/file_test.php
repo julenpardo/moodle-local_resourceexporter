@@ -233,9 +233,37 @@ class local_usablebackup_file_testcase extends advanced_testcase {
         unset($actualfiles[1]);
         $actualfiles = array_values($actualfiles);
 
-        // We get the information of the created files, necessary later to get their name and content.
-        $getdbrecords = self::get_method('get_db_records');
-        $expectedresources = $getdbrecords->invokeArgs($this->file, array($course->id));
+        // We get the information of the created visible files, necessary later to get their name and content.
+        $sql = "SELECT files.id,
+                       course.id AS course_id,
+                       course.shortname AS course_shortname,
+                       course_modules.id AS course_module_id,
+                       files.contextid,
+                       files.filename,
+                       files.filearea,
+                       files.filepath,
+                       files.itemid,
+                       files.component,
+                       resource.name AS resource_name,
+                       course_sections.name AS section_name
+                FROM {files} files
+                INNER JOIN {context} context
+                    ON files.contextid = context.id
+                    AND context.contextlevel = 70
+                INNER JOIN {course_modules} course_modules
+                    ON context.instanceid = course_modules.id
+                INNER JOIN {course} course
+                    ON course_modules.course = course.id
+                INNER JOIN {resource} resource
+                    ON resource.course = course.id
+                    AND resource.id = course_modules.instance
+                INNER JOIN {course_sections} course_sections
+                    ON course_sections.id = course_modules.section
+
+                WHERE filename <> '.'
+                    AND course.id = ?
+                    AND course_modules.visible = 1";
+        $expectedresources = $DB->get_records_sql($sql, array($course->id));
         $expectedfiles = array();
 
         $filestorage = get_file_storage();
@@ -290,9 +318,11 @@ class local_usablebackup_file_testcase extends advanced_testcase {
 
         // If the number of different returned paths is different to the generate files, something is wrong.
         $expectedpaths = array();
-        for ($index = 0; $index < count($resources); $index++) {
-            $path = $parentdirectory . '/resource' . ($index + 1) . '.txt';
-            array_push($expectedpaths, $path);
+        foreach ($resources as $index => $resource) {
+            if (!$resource->hidden) {
+                $path = $parentdirectory . '/resource' . ($index + 1) . '.txt';
+                array_push($expectedpaths, $path);
+            }
         }
         $expectedpathscount = count($expectedpaths);
         $actualpathscount = count($actualpaths);
