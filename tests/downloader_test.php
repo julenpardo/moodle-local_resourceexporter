@@ -105,12 +105,15 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
             $this->filegenerator->create_resource($course->id, $file->name);
         }
 
+        $pathtofolder = $CFG->dataroot . '/temp/usablebackup/' . $user->id . '_' . $course->id;
+        $pathtofile = $pathtofolder . '.zip';
+
+        // We create the folder to make the function delete it calling to rmdir_recursive, to cover it.
+        mkdir($pathtofolder, 0777, true);
+
         // We get the method by reflection, and we call it.
         $method = self::get_method('create_zip_file');
         $actualzipfile = $method->invokeArgs($downloader, array());
-
-        $zipfilename = basename($actualzipfile);
-        $pathtofile = $CFG->dataroot . '/temp/usablebackup/' . $user->id . '_' . $course->id . '.zip';
 
         // We set the expected values.
         $expecteds = array();
@@ -221,6 +224,65 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         $actual = $method->invokeArgs($downloader, array($fullpath));
 
         $this->assertEquals($expected, $actual);
+    }
+
+    public function test_create_parent_temp_folder_if_not_exists() {
+        global $CFG;
+
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $course = $this->getDataGenerator()->create_course();
+        $downloader = new downloader($course->id);
+
+        $expected = $CFG->tempdir . '/usablebackup';
+
+        // We get the method by reflection, and we call it.
+        $method = self::get_method('create_parent_temp_folder_if_not_exists');
+        $actual = $method->invokeArgs($downloader, array());
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function test_rmdir_recursive() {
+        global $CFG;
+
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        // We create all the necessary stuff: course, nested directories...
+        $course = $this->getDataGenerator()->create_course();
+        $downloader = new downloader($course->id);
+
+        $rootdirectory = $CFG->tempdir . '/test_rmdir_recursive';
+        $childdirectory = $rootdirectory . '/child1';
+        $childchilddirectory = $childdirectory . '/child2'; // Yes, quite silly name.
+
+        mkdir($rootdirectory);
+        mkdir($childdirectory);
+        mkdir($childchilddirectory);
+
+        // We check that we have created the directories correctly...
+        $childchildexists = is_dir($childchilddirectory);
+        $childexists = is_dir($childdirectory);
+        $rootexists = is_dir($rootdirectory);
+
+        $this->assertTrue($childchildexists);
+        $this->assertTrue($childexists);
+        $this->assertTrue($rootexists);
+
+        // We get the method by reflection, and we call the testing method.
+        $method = self::get_method('rmdir_recursive');
+        $method->invokeArgs($downloader, array($rootdirectory));
+
+        // If everything is okay, any created directory must exist.
+        $childchildexists = is_dir($childchilddirectory);
+        $childexists = is_dir($childdirectory);
+        $rootexists = is_dir($rootdirectory);
+
+        $this->assertFalse($childchildexists);
+        $this->assertFalse($childexists);
+        $this->assertFalse($rootexists);
     }
 
 }

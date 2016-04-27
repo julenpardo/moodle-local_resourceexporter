@@ -166,16 +166,27 @@ class local_usablebackup_file_testcase extends advanced_testcase {
         $resources = array();
         $resources[0] = new stdClass();
         $resources[0]->name = 'Unit testing rules';
+        $resources[0]->hidden = false;
 
         $resources[1] = new stdClass();
         $resources[1]->name = 'Software Engineering is fun';
+        $resources[1]->hidden = false;
+
+        $resources[2] = new stdClass();
+        $resources[2]->name = 'Eh eh, this is a hidden resource!';
+        $resources[2]->hidden = true;
+
+        // We have to create a student who won't be able to see the hidden resources.
+        $student = $this->getDataGenerator()->create_user();
+        $this->getDataGenerator()->enrol_user($student->id, $course->id, 5); // 5 is student role id.
+        $this->setUser($student);
 
         $generatedresources = array();
         $filesrows = array();
         $files = array();
 
         foreach ($resources as $resource) {
-            $resourceandfile = $this->filegenerator->create_resource($course->id, $resource->name);
+            $resourceandfile = $this->filegenerator->create_resource($course->id, $resource->name, $resource->hidden);
 
             array_push($generatedresources, $resourceandfile['resource']);
             array_push($filesrows, $resourceandfile['filerow']);
@@ -214,7 +225,7 @@ class local_usablebackup_file_testcase extends advanced_testcase {
         // Now, finally, we can start testing the method.
         $parentdirectory = $CFG->dataroot . '/test_add_resources_to_directory';
         mkdir($parentdirectory);
-        $this->file->add_resources_to_directory($course->id, $parentdirectory);
+        $actualpaths = $this->file->add_resources_to_directory($course->id, $parentdirectory);
 
         // We get the actual files of the directory, omitting '.' and '..'.
         $actualfiles = scandir($parentdirectory);
@@ -222,9 +233,37 @@ class local_usablebackup_file_testcase extends advanced_testcase {
         unset($actualfiles[1]);
         $actualfiles = array_values($actualfiles);
 
-        // We get the information of the created files, necessary later to get their name and content.
-        $getdbrecords = self::get_method('get_db_records');
-        $expectedresources = $getdbrecords->invokeArgs($this->file, array($course->id));
+        // We get the information of the created visible files, necessary later to get their name and content.
+        $sql = "SELECT files.id,
+                       course.id AS course_id,
+                       course.shortname AS course_shortname,
+                       course_modules.id AS course_module_id,
+                       files.contextid,
+                       files.filename,
+                       files.filearea,
+                       files.filepath,
+                       files.itemid,
+                       files.component,
+                       resource.name AS resource_name,
+                       course_sections.name AS section_name
+                FROM {files} files
+                INNER JOIN {context} context
+                    ON files.contextid = context.id
+                    AND context.contextlevel = 70
+                INNER JOIN {course_modules} course_modules
+                    ON context.instanceid = course_modules.id
+                INNER JOIN {course} course
+                    ON course_modules.course = course.id
+                INNER JOIN {resource} resource
+                    ON resource.course = course.id
+                    AND resource.id = course_modules.instance
+                INNER JOIN {course_sections} course_sections
+                    ON course_sections.id = course_modules.section
+
+                WHERE filename <> '.'
+                    AND course.id = ?
+                    AND course_modules.visible = 1";
+        $expectedresources = $DB->get_records_sql($sql, array($course->id));
         $expectedfiles = array();
 
         $filestorage = get_file_storage();
@@ -276,6 +315,26 @@ class local_usablebackup_file_testcase extends advanced_testcase {
         $actualfilecount = count($actualfilecontents);
 
         $this->assertEquals($expectedfilecount, $actualfilecount);
+
+        // If the number of different returned paths is different to the generate files, something is wrong.
+        $expectedpaths = array();
+        foreach ($resources as $index => $resource) {
+            if (!$resource->hidden) {
+                $path = $parentdirectory . '/resource' . ($index + 1) . '.txt';
+                array_push($expectedpaths, $path);
+            }
+        }
+        $expectedpathscount = count($expectedpaths);
+        $actualpathscount = count($actualpaths);
+
+        $this->assertEquals($expectedpathscount, $actualpathscount);
+
+        // And, of course, the paths their self must coincide.
+        foreach ($expectedpaths as $index => $expectedpath) {
+            $actualpath = $actualpaths[$index];
+
+            $this->assertEquals($expectedpath, $actualpath);
+        }
 
         // Finally, we can compare files' contents.
         foreach ($expectedfilecontents as $index => $expectedfilecontent) {
