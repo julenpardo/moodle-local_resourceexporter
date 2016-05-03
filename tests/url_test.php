@@ -185,6 +185,7 @@ class local_usablebackup_url_testcase extends advanced_testcase {
         mkdir($parentdirectory);
 
         $this->url->add_resources_to_directory($course->id, $parentdirectory);
+        $parentdirectory .= '/0_General';
 
         // We get the actual files of the directory, omitting '.' and '..'.
         $actualfiles = scandir($parentdirectory);

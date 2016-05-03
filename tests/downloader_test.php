@@ -151,7 +151,7 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         foreach ($expecteds as $index => $expected) {
             $actual = $actuals[$index];
 
-            $this->assertEquals($expected->filename, $actual->filename);
+            $this->assertEquals('0_General/' . $expected->filename, $actual->filename);
             $this->assertEquals($expected->filecontent, $actual->filecontent);
         }
     }
