@@ -116,4 +116,4 @@ $folder = 'my_folder'
 $resource[0]->name = ""Unit testing rules""
 $resource[1]->name = ""Software Engineering is fun""";Equivalence;No;;;;
 15;resources/resource;get_section_name;"$courseid = <generated>
-$moduleid = <generated>";Test that, for the given resource, the function returns its section name correctly.;Equivalence;No;;;;
+$moduleid = <generated>";Test that, for the given resource, the function returns its section name correctly.;Equivalence;Yes;Pass;;Julen Pardo;03/05/2016

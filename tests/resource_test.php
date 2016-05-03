@@ -261,7 +261,8 @@ class local_usablebackup_resource_testcase extends advanced_testcase {
         $this->assertFalse($actual);
     }
 
-    public function test_get_section_name() {$this->resetAfterTest();
+    public function test_get_section_name() {
+        $this->resetAfterTest();
         $this->setAdminUser();
 
         // We generate all the required stuff: course, a resource (url, e.g.).
