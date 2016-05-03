@@ -79,6 +79,9 @@ abstract class resource {
      * that's the way we can now to which section belongs the given $moduleid. We check, just in case, that the section name has
      * a value; if not, the section name will have an empty string, an the given module will be created in the root directory.
      *
+     * When creating the section name, the section number is added as prefix, to make the directories keep the order as same as
+     * sections in Moodle.
+     *
      * @param int $courseid The course for which the section name is being queried.
      * @param int $moduleid The module for which the section name is being queried.
      * @return string The section name the module id belongs to.
@@ -95,7 +98,8 @@ abstract class resource {
             $insection = in_array($moduleid, $modules);
 
             if ($insection) {
-                $sectionname = get_section_name($course, $section);
+                $sectionnumber = $section->section;
+                $sectionname = $sectionnumber . '_' . get_section_name($course, $section);
                 break;
             }
         }
