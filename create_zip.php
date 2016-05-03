@@ -30,6 +30,7 @@
  */
 
 require_once('../../config.php');
+require_once('lib.php');
 require_once('classes/downloader/downloader.php');
 
 defined('MOODLE_INTERNAL') || die();
@@ -50,7 +51,7 @@ init_page();
 
 if ($nopermission) {
     print_error_page($nopermission);
-} else if (is_enrolled($coursecontext)) {
+} else if (is_enrolled($coursecontext) || is_admin($coursecontext)) {
     create_zip_and_redirect_to_download($courseid);
 } else {
     print_error_page();

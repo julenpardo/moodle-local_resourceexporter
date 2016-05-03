@@ -24,7 +24,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(dirname(__FILE__) . '/../../config.php');
+require_once('../../config.php');
+require_once('lib.php');
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -38,7 +39,7 @@ $coursecontext = context_course::instance($courseid);
 
 $validsubmission = isset($SESSION->usablebackup_downloadpermission);
 $validsubmission &= isset($SESSION->usablebackup_filename);
-$validsubmission &= is_enrolled($coursecontext);
+$validsubmission &= is_enrolled($coursecontext) || is_admin($coursecontext);
 
 if ($validsubmission) {
     $filename = $SESSION->usablebackup_filename;
