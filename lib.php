@@ -53,3 +53,15 @@ function local_usablebackup_extend_settings_navigation($navigation, $context) {
         }
     }
 }
+
+/**
+ * Checks if the user is admin, checking if has the capability of site config.
+ *
+ * @param int $coursecontext The course context.
+ * @return boolean If the user is admin, or not.
+ */
+function is_admin($coursecontext) {
+    $isadmin = has_capability('moodle/site:config', $coursecontext);
+
+    return $isadmin;
+}
