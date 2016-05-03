@@ -58,7 +58,8 @@ class url extends resource {
                 continue;
             }
 
-            $sectionname = parent::clean_file_and_directory_names($resource->section_name);
+            $sectionname = parent::get_section_name($courseid, $moduleid);
+            $sectionname = parent::clean_file_and_directory_names($sectionname);
 
             $filename = $resource->name;
             $filename = parent::clean_file_and_directory_names($filename);

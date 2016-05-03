@@ -226,6 +226,7 @@ class local_usablebackup_file_testcase extends advanced_testcase {
         $parentdirectory = $CFG->dataroot . '/test_add_resources_to_directory';
         mkdir($parentdirectory);
         $actualpaths = $this->file->add_resources_to_directory($course->id, $parentdirectory);
+        $parentdirectory .= '/0_General';
 
         // We get the actual files of the directory, omitting '.' and '..'.
         $actualfiles = scandir($parentdirectory);
