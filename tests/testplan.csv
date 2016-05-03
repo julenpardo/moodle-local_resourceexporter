@@ -86,7 +86,10 @@ $name = null
 ----------------------------------------------------
 $name = 'String with non problematic character'
 ----------------------------------------------------
-$name = 'String:with/some/problematic?characters'";Test that the method returns the expected strings for the given different inputs.;Equivalence;Yes;Pass;;Julen Pardo;19/04/2016
+$name = 'String:with/some/problematic?characters'
+
+------------------------------------------------------
+$name = 'String con caracteres problemáticos'";Test that the method returns the expected strings for the given different inputs.;Equivalence;Yes;Pass;;Julen Pardo;19/04/2016
 10;resources/resource;is_module_visible_for_user;"$courseid = <generated>
 $moduleid = <generated>
 

@@ -158,6 +158,18 @@ class local_usablebackup_resource_testcase extends advanced_testcase {
         $this->assertEquals($expected, $actual);
     }
 
+    public function test_clean_file_and_directory_names_non_ascii_chars() {
+        $name = 'String con caracteres problemáticos';
+
+        // We get the protected method by reflection.
+        $method = self::get_methods('clean_file_and_directory_names');
+
+        $expected = 'String con caracteres problematicos';
+        $actual = $method->invokeArgs($this->resource, array($name));
+
+        $this->assertEquals($expected, $actual);
+    }
+
     public function test_is_module_visible_for_user_visible() {
         global $DB;
 

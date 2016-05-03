@@ -103,6 +103,12 @@ abstract class resource {
      *
      * Do not use this function to clean paths that contains subdirectories! The slashes will be removed, so the path will be lost.
      *
+     * issue #15: file_put_contents function is not able to properly encode the file names in UTF-8. So, the best option is to
+     * use ASCII. Sorry for those chinese, japanese, etc. Moodle users. :(
+     * The '//TRANSLIT' suffix activates the transliteration, i.e., when a character can't be represented in the target charset, it
+     * can be approximated through one or several similarly looking characters. Now, the cleanup of forbidden characters is made
+     * after the transliteration, because this process may create illegal characters for those non-transliterable characters.
+     *
      * @param string $name The file, directory, to be cleaned.
      * @return string The received name, cleaned, if containing any character defined in the pattern; or empty string if null param
      * received.
@@ -114,7 +120,10 @@ abstract class resource {
             $forbiddencharacterspattern = '[\\\\|\/|\:|\*|\?|\"|\<|\>|\|]';
             $replacement = '-';
 
-            $cleanname = preg_replace($forbiddencharacterspattern, $replacement, $name);
+            $originalencoding = mb_detect_encoding($name);
+
+            $cleanname = iconv($originalencoding, 'ASCII//TRANSLIT', $name);
+            $cleanname = preg_replace($forbiddencharacterspattern, $replacement, $cleanname);
         }
 
         return $cleanname;
