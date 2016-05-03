@@ -260,4 +260,21 @@ class local_usablebackup_resource_testcase extends advanced_testcase {
 
         $this->assertFalse($actual);
     }
+
+    public function test_get_section_name() {$this->resetAfterTest();
+        $this->setAdminUser();
+
+        // We generate all the required stuff: course, a resource (url, e.g.).
+        $course = $this->getDataGenerator()->create_course();
+        $url = $this->getDataGenerator()->get_plugin_generator('mod_url')->create_instance(array('course' => $course->id));
+
+        // We get the testing method by reflection.
+        $method = self::get_methods('get_section_name');
+
+        // And, finally, we test the method.
+        $expected = '0_General';
+        $actual = $method->invokeArgs($this->resource, array($course->id, $url->cmid));
+
+        $this->assertEquals($expected, $actual);
+    }
 }
