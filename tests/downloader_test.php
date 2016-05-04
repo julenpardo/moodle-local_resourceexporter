@@ -16,7 +16,7 @@
 
 /**
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,19 +27,19 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 
 require_once('generator/lib.php');
-require_once($CFG->dirroot . '/local/usablebackup/classes/downloader/downloader.php');
+require_once($CFG->dirroot . '/local/resourceexporter/classes/downloader/downloader.php');
 
-use local_usablebackup\downloader;
+use local_resourceexporter\downloader;
 
 /**
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-class local_usablebackup_downloader_testcase extends advanced_testcase {
+class local_resourceexporter_downloader_testcase extends advanced_testcase {
 
     protected $urlgenerator;
     protected $filegenerator;
@@ -47,7 +47,7 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
     protected function setUp() {
         parent::setUp();
         $this->urlgenerator = $this->getDataGenerator()->get_plugin_generator('mod_url');
-        $this->filegenerator = new local_usablebackup_generator($this->getDataGenerator());
+        $this->filegenerator = new local_resourceexporter_generator($this->getDataGenerator());
     }
 
     protected function tearDown() {
@@ -63,7 +63,7 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
      * @return ReflectionMethod
      */
     protected static function get_method($name) {
-        $class = new ReflectionClass('local_usablebackup\downloader');
+        $class = new ReflectionClass('local_resourceexporter\downloader');
         $method = $class->getMethod($name);
         $method->setAccessible(true);
 
@@ -105,7 +105,7 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
             $this->filegenerator->create_resource($course->id, $file->name);
         }
 
-        $pathtofolder = $CFG->dataroot . '/temp/usablebackup/' . $user->id . '_' . $course->id;
+        $pathtofolder = $CFG->dataroot . '/temp/resourceexporter/' . $user->id . '_' . $course->id;
         $pathtofile = $pathtofolder . '.zip';
 
         // We create the folder to make the function delete it calling to rmdir_recursive, to cover it.
@@ -193,8 +193,8 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         // We instantiate the testing class...
         $downloader = new downloader($course->id);
 
-        $href = $CFG->wwwroot . '/local/usablebackup/create_zip.php?courseid=' . $course->id;
-        $expected = "<a href='$href'>" . get_string('download', 'local_usablebackup') . '</a>';
+        $href = $CFG->wwwroot . '/local/resourceexporter/create_zip.php?courseid=' . $course->id;
+        $expected = "<a href='$href'>" . get_string('download', 'local_resourceexporter') . '</a>';
 
         $actual = $downloader->create_download_link();
 
@@ -215,7 +215,7 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
 
         $downloader = new downloader($course->id);
 
-        $fullpath = $CFG->tempdir . '/usablebackup/' . $user->id . '_' . $course->id . '/sectiondir/resource.txt';
+        $fullpath = $CFG->tempdir . '/resourceexporter/' . $user->id . '_' . $course->id . '/sectiondir/resource.txt';
 
         // We get the method by reflection.
         $method = self::get_method('get_file_course_path');
@@ -235,7 +235,7 @@ class local_usablebackup_downloader_testcase extends advanced_testcase {
         $course = $this->getDataGenerator()->create_course();
         $downloader = new downloader($course->id);
 
-        $expected = $CFG->tempdir . '/usablebackup';
+        $expected = $CFG->tempdir . '/resourceexporter';
 
         // We get the method by reflection, and we call it.
         $method = self::get_method('create_parent_temp_folder_if_not_exists');

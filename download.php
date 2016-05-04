@@ -19,7 +19,7 @@
  * This page cannot be accessed directly: the arrival to this page has to be made by a redirection from create_zip.php.
  * If a user tries to access this page directly, it will be redirected to the create_zip, where an error message will be shown.
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -37,17 +37,17 @@ $courseid = required_param('courseid', PARAM_INT);
 
 $coursecontext = context_course::instance($courseid);
 
-$validsubmission = isset($SESSION->usablebackup_downloadpermission);
-$validsubmission &= isset($SESSION->usablebackup_filename);
+$validsubmission = isset($SESSION->resourceexporter_downloadpermission);
+$validsubmission &= isset($SESSION->resourceexporter_filename);
 $validsubmission &= is_enrolled($coursecontext) || is_admin($coursecontext);
 
 if ($validsubmission) {
-    $filename = $SESSION->usablebackup_filename;
+    $filename = $SESSION->resourceexporter_filename;
 
-    unset($SESSION->usablebackup_downloadpermission);
-    unset($SESSION->usablebackup_filename);
+    unset($SESSION->resourceexporter_downloadpermission);
+    unset($SESSION->resourceexporter_filename);
 
-    $zipfile = $CFG->tempdir . '/usablebackup/' . $filename;
+    $zipfile = $CFG->tempdir . '/resourceexporter/' . $filename;
 
     header('Content-Description: File Transfer');
     header('Content-Type: application/zip');
@@ -59,7 +59,7 @@ if ($validsubmission) {
 
     readfile($zipfile);
 } else {
-    $previousurl = new \moodle_url('/local/usablebackup/create_zip.php', array('courseid' => $courseid, 'nopermission' => 1));
+    $previousurl = new \moodle_url('/local/resourceexporter/create_zip.php', array('courseid' => $courseid, 'nopermission' => 1));
 
     redirect($previousurl);
 }

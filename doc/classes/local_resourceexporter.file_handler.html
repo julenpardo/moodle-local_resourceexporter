@@ -92,7 +92,7 @@
                             API Documentation <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                                                        <li><a href="../namespaces/local_usablebackup.html">\local_usablebackup</a></li>
+                                                        <li><a href="../namespaces/local_resourceexporter.html">\local_resourceexporter</a></li>
                                                     </ul>
                     </li>
                                         <li class="dropdown" id="charts-menu">
@@ -144,29 +144,29 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-589168122"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-833785587"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-589168122" class="accordion-body collapse in">
+            <div id="namespace-833785587" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-34643819"></a>
-                                <a href="../namespaces/local_usablebackup.html" style="margin-left: 30px; padding-left: 0">local_usablebackup</a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1174077771"></a>
+                                <a href="../namespaces/local_resourceexporter.html" style="margin-left: 30px; padding-left: 0">local_resourceexporter</a>
             </div>
-            <div id="namespace-34643819" class="accordion-body collapse ">
+            <div id="namespace-1174077771" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
                     <ul>
-                                                                            <li class="trait"><a href="../classes/local_usablebackup.file_handler.html">file_handler</a></li>
-                                                                            <li class="class"><a href="../classes/local_usablebackup.downloader.html">downloader</a></li>
-                                                    <li class="class"><a href="../classes/local_usablebackup.file.html">file</a></li>
-                                                    <li class="class"><a href="../classes/local_usablebackup.folder.html">folder</a></li>
-                                                    <li class="class"><a href="../classes/local_usablebackup.resource.html">resource</a></li>
-                                                    <li class="class"><a href="../classes/local_usablebackup.url.html">url</a></li>
+                                                                            <li class="trait"><a href="../classes/local_resourceexporter.file_handler.html">file_handler</a></li>
+                                                                            <li class="class"><a href="../classes/local_resourceexporter.downloader.html">downloader</a></li>
+                                                    <li class="class"><a href="../classes/local_resourceexporter.file.html">file</a></li>
+                                                    <li class="class"><a href="../classes/local_resourceexporter.folder.html">folder</a></li>
+                                                    <li class="class"><a href="../classes/local_resourceexporter.resource.html">resource</a></li>
+                                                    <li class="class"><a href="../classes/local_resourceexporter.url.html">url</a></li>
                                             </ul>
                 </div>
             </div>
@@ -188,13 +188,14 @@
             <div class="row-fluid">
                 <div class="span8 content class">
                     <nav>
-                                                <a href="../namespaces/local_usablebackup.html">\local_usablebackup</a> <i class="icon-level-up"></i>
+                                                <a href="../namespaces/local_resourceexporter.html">\local_resourceexporter</a> <i class="icon-level-up"></i>
                                             </nav>
                     <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
 
-                    <h1><small>\local_usablebackup</small>folder</h1>
-                    <p><em>Class folder for the management of folder-type resources download.</em></p>
-                    
+                    <h1><small>\local_resourceexporter</small>file_handler</h1>
+                    <p><em>Trait file_handler for file handling with Moodle File API.</em></p>
+                    <p>A trait is used instead of parent methods in local_resourceexporter\resource class, because not all the resources deal with files,
+but at least two of them they do.</p>
                     
                                         
                     <section id="summary">
@@ -212,8 +213,7 @@
                         </section>
                         <section class="row-fluid public">
                             <section class="span4">
-                                                                    <a href="../classes/local_usablebackup.file_handler.html#method_get_file_from_resource_info" class="">get_file_from_resource_info()</a><br />
-                                                                    <a href="../classes/local_usablebackup.folder.html#method_add_resources_to_directory" class="">add_resources_to_directory()</a><br />
+                                                                    <a href="../classes/local_resourceexporter.file_handler.html#method_get_file_from_resource_info" class="">get_file_from_resource_info()</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No public properties found</em>
@@ -224,10 +224,7 @@
                         </section>
                         <section class="row-fluid protected">
                             <section class="span4">
-                                                                    <a href="../classes/local_usablebackup.folder.html#method_get_db_records" class="">get_db_records()</a><br />
-                                                                    <a href="../classes/local_usablebackup.resource.html#method_is_module_visible_for_user" class="">is_module_visible_for_user()</a><br />
-                                                                    <a href="../classes/local_usablebackup.resource.html#method_create_section_dir_if_not_exists" class="">create_section_dir_if_not_exists()</a><br />
-                                                                    <a href="../classes/local_usablebackup.resource.html#method_clean_file_and_directory_names" class="">clean_file_and_directory_names()</a><br />
+                                                                    <em>No protected methods found</em>
                                                             </section>
                             <section class="span4">
                                                                     <em>No protected properties found</em>
@@ -254,21 +251,15 @@
                     
                     <dl>
                         <dt>File</dt>
-                            <dd><a href="../files/classes.resources.folder.html"><div class="path-wrapper">classes/resources/folder.php</div></a></dd>
+                            <dd><a href="../files/classes.resources.file_handler.html"><div class="path-wrapper">classes/resources/file_handler.php</div></a></dd>
                                                 <dt>Package</dt>
-                            <dd><div class="namespace-wrapper">local_usablebackup</div></dd>
+                            <dd><div class="namespace-wrapper">local_resourceexporter</div></dd>
                                                 <dt>Class hierarchy</dt>
                             <dd class="hierarchy">
-                                                                                                                                                                                                                                                                                                
-                                        <div class="namespace-wrapper"><a href="../classes/local_usablebackup.resource.html">\local_usablebackup\resource</a></div>
-                                                                                                    <div class="namespace-wrapper">\local_usablebackup\folder</div>
+                                                                                                                                                                    <div class="namespace-wrapper">\local_resourceexporter\file_handler</div>
                             </dd>
 
                         
-                                                                                    <dt>Uses traits</dt>
-                                                        <dd>
-                                <a href="../classes/local_usablebackup.file_handler.html">                                    <div class="namespace-wrapper">\local_usablebackup\file_handler</div>
-                                </a>                            </dd>
                         
                         
                         
@@ -332,51 +323,8 @@
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
                                                             <dl>
-                                                    <dt>Inherited from</dt>
-                    <dd><a href="../classes/local_usablebackup.file_handler.html"><div class="path-wrapper">\local_usablebackup\file_handler</div></a></dd>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_add_resources_to_directory" name="method_add_resources_to_directory" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">add_resources_to_directory()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">add_resources_to_directory(integer  <span class="argument">$courseid</span>, string  <span class="argument">$parentdirectory</span>) : array</pre>
-                <p><em>Adds the files inside folder resources of the given course to the received parent directory. Every folder-type resource
-will have a folder with the same name, which will be, in the same way, inside the section directory, if any.</em></p>
-                
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>integer</td>
-                                <td>$courseid </td>
-                                <td><p>The course id the folders to add to the directory belong to.</p></td>
-                            </tr>
-                                                    <tr>
-                                <td>string</td>
-                                <td>$parentdirectory </td>
-                                <td><p>The directory to add the resources to.</p></td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    array
-                                            &mdash; <p>The path of every added folder.</p>
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href="../files/classes.resources.file_handler.html"><div class="path-wrapper">classes/resources/file_handler.php</div></a></dd>
                                                                             </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
@@ -385,185 +333,16 @@ will have a folder with the same name, which will be, in the same way, inside th
         </aside>
     </div>
 
-                                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_get_db_records" name="method_get_db_records" class="anchor"></a>
-            <article class="method">
-                <h3 class="protected ">get_db_records()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get_db_records(integer  <span class="argument">$courseid</span>) : array</pre>
-                <p><em>Retrieves the information of all the folders, and the files within them, of the given course.</em></p>
-                <p>Each soon class will query different tables and columns.</p>
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>integer</td>
-                                <td>$courseid </td>
-                                <td><p>The course to query the contents of.</p></td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    array
-                                            &mdash; <p>Index-based array ([0,n]) with the information of the files in the folders.</p>
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_is_module_visible_for_user" name="method_is_module_visible_for_user" class="anchor"></a>
-            <article class="method">
-                <h3 class="protected ">is_module_visible_for_user()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">is_module_visible_for_user(integer  <span class="argument">$courseid</span>, integer  <span class="argument">$moduleid</span>) : boolean</pre>
-                <p><em>Checks if the given module is visible for the current user.</em></p>
-                <p>See documentation: <a href="https://docs.moodle.org/dev/Module_visibility_and_display#get_fast_modinfo_data">https://docs.moodle.org/dev/Module_visibility_and_display#get_fast_modinfo_data</a></p>
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>integer</td>
-                                <td>$courseid </td>
-                                <td><p>The course the backup is being created at.</p></td>
-                            </tr>
-                                                    <tr>
-                                <td>integer</td>
-                                <td>$moduleid </td>
-                                <td><p>The module id of the current resource.</p></td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    boolean
-                                            &mdash; <p>If the given module is visible for the current user or not.</p>
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                    <dt>Inherited from</dt>
-                    <dd><a href="../classes/local_usablebackup.resource.html"><div class="path-wrapper">\local_usablebackup\resource</div></a></dd>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_create_section_dir_if_not_exists" name="method_create_section_dir_if_not_exists" class="anchor"></a>
-            <article class="method">
-                <h3 class="protected ">create_section_dir_if_not_exists()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">create_section_dir_if_not_exists(string  <span class="argument">$parentdirectory</span>, string  <span class="argument">$sectionname</span>) : string</pre>
-                <p><em>Creates the section directory inside the parent directory, if it does not exist already.</em></p>
-                <p>If the section is an empty string (because the given resource has not been categorized in any section), there's no need
-to do any action, and the parent directory will be returned, and that's where the resource will be created later.</p>
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$parentdirectory </td>
-                                <td><p>The parent directory (the full path).</p></td>
-                            </tr>
-                                                    <tr>
-                                <td>string</td>
-                                <td>$sectionname </td>
-                                <td><p>The name of the section of a resource.</p></td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    string
-                                            &mdash; <p>The section directory (the full path).</p>
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                    <dt>Inherited from</dt>
-                    <dd><a href="../classes/local_usablebackup.resource.html"><div class="path-wrapper">\local_usablebackup\resource</div></a></dd>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_clean_file_and_directory_names" name="method_clean_file_and_directory_names" class="anchor"></a>
-            <article class="method">
-                <h3 class="protected ">clean_file_and_directory_names()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">clean_file_and_directory_names(string  <span class="argument">$name</span>) : string</pre>
-                <p><em>Cleans the files or directory names before the creation of them. &quot;Clean&quot; means removing those forbidden characters for the
-file systems (most of them by Windows, thank you Microsoft). For that, a pattern is used, where each forbidden character is
-specified.</em></p>
-                <p>Those characters will be replaced with '-' dash, a suitable for this and non problematic character. :)</p>
-<p>Do not use this function to clean paths that contains subdirectories! The slashes will be removed, so the path will be lost.</p>
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$name </td>
-                                <td><p>The file, directory, to be cleaned.</p></td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    string
-                                            &mdash; <p>The received name, cleaned, if containing any character defined in the pattern; or empty string if null param
-received.</p>
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                    <dt>Inherited from</dt>
-                    <dd><a href="../classes/local_usablebackup.resource.html"><div class="path-wrapper">\local_usablebackup\resource</div></a></dd>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                                    </div>
+                                                                    </div>
     </section>
 
     <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="source-view-label">folder.php</h3>
+            <h3 id="source-view-label">file_handler.php</h3>
         </div>
         <div class="modal-body">
-            <pre data-src="../files/classes/resources/folder.php.txt" class="language-php line-numbers"></pre>
+            <pre data-src="../files/classes/resources/file_handler.php.txt" class="language-php line-numbers"></pre>
         </div>
     </div>
 
@@ -576,7 +355,7 @@ received.</p>
                                                         <h1><i class="icon-code"></i></h1>
                             <div>
                                 <ul>
-                                                                            <li><a href="../namespaces/local_usablebackup.html">\local_usablebackup</a></li>
+                                                                            <li><a href="../namespaces/local_resourceexporter.html">\local_resourceexporter</a></li>
                                                                     </ul>
                             </div>
                         </section>
@@ -604,7 +383,7 @@ received.</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on April 26th, 2016 at 17:51.
+                    on May 4th, 2016 at 16:04.
                 </section>
             </section>
         </section>

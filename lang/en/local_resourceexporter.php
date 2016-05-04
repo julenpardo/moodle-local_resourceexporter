@@ -17,14 +17,13 @@
 /**
  * Strings for 'Usable Backup' plugin.
  *
- * @package   local_usablebackup
+ * @package   local_resourceexporter
  * @copyright 2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Usable Backup';
-$string['createzip_title'] = 'Usable Backup - Create zip';
+$string['pluginname'] = 'Resource Exporter';
+$string['createzip_title'] = 'Resource Exporter - Create zip';
 $string['notenrolled'] = 'You can\'t download contents from a course you are not enrolled in.';
 $string['nopermission'] = 'You don\'t have permission to download the files.';
-$string['download'] = 'Download contents';
-
+$string['download'] = 'Export resources';

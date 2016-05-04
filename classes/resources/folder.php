@@ -17,25 +17,25 @@
 /**
  * Management of folder-type resources download.
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_usablebackup;
+namespace local_resourceexporter;
 
 defined('MOODLE_INTERNAL') || die();
 
 require_once('resource.php');
 require_once('file_handler.php');
 
-use local_usablebackup\file_handler;
-use local_usablebackup\resource;
+use local_resourceexporter\file_handler;
+use local_resourceexporter\resource;
 
 /**
  * Class folder for the management of folder-type resources download.
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

@@ -16,7 +16,7 @@
 
 /**
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @category   phpunit
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,9 +26,9 @@ defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 
-require_once($CFG->dirroot . '/local/usablebackup/classes/resources/resource.php');
+require_once($CFG->dirroot . '/local/resourceexporter/classes/resources/resource.php');
 
-use local_usablebackup\resource;
+use local_resourceexporter\resource;
 
 /**
  * This dirty workaround is required to test the implemented methods of the abstract class.
@@ -47,7 +47,7 @@ class concrete_resource extends resource {
     }
 }
 
-class local_usablebackup_resource_testcase extends advanced_testcase {
+class local_resourceexporter_resource_testcase extends advanced_testcase {
 
     protected $resource;
 
@@ -68,7 +68,7 @@ class local_usablebackup_resource_testcase extends advanced_testcase {
      * @return ReflectionMethod
      */
     protected static function get_methods($name) {
-        $class = new ReflectionClass('local_usablebackup\resource');
+        $class = new ReflectionClass('local_resourceexporter\resource');
         $method = $class->getMethod($name);
         $method->setAccessible(true);
 

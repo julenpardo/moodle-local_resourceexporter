@@ -17,12 +17,12 @@
 /**
  * Download of the resources.
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_usablebackup;
+namespace local_resourceexporter;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -30,14 +30,14 @@ require_once(dirname(__FILE__) . '/../resources/file.php');
 require_once(dirname(__FILE__) . '/../resources/url.php');
 require_once(dirname(__FILE__) . '/../resources/folder.php');
 
-use local_usablebackup\file;
-use local_usablebackup\url;
-use local_usablebackup\folder;
+use local_resourceexporter\file;
+use local_resourceexporter\url;
+use local_resourceexporter\folder;
 
 /**
  * Class downloader for the download of the resources.
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -52,19 +52,19 @@ class downloader {
 
     /**
      * File handling for the download.
-     * @var \local_usablebackup\file
+     * @var \local_resourceexporter\file
      */
     protected $file;
 
     /**
      * Url handling for the download.
-     * @var \local_usablebackup\url
+     * @var \local_resourceexporter\url
      */
     protected $url;
 
     /**
      * Folder handling for the download.
-     * @var \local_usablebackup\folder
+     * @var \local_resourceexporter\folder
      */
     protected $folder;
 
@@ -142,7 +142,7 @@ class downloader {
     protected function get_file_course_path($fullpath) {
         global $CFG;
 
-        $path = $CFG->tempdir . '/usablebackup/';
+        $path = $CFG->tempdir . '/resourceexporter/';
         $path .= $this->get_parent_directory_name() . '/';
 
         $filecoursepath = str_replace($path, '', $fullpath);
@@ -174,7 +174,7 @@ class downloader {
     protected function create_parent_temp_folder_if_not_exists() {
         global $CFG;
 
-        $parentfolder = $CFG->tempdir . '/usablebackup';
+        $parentfolder = $CFG->tempdir . '/resourceexporter';
         $parentfolder = str_replace('//', '/', $parentfolder);
 
         $directorynotexists = !is_dir($parentfolder);
@@ -217,8 +217,8 @@ class downloader {
     public function create_download_link() {
         global $CFG;
 
-        $href = $CFG->wwwroot . '/local/usablebackup/create_zip.php?courseid=' . $this->courseid;
-        $link = "<a href='$href'>" . get_string('download', 'local_usablebackup') . "</a>";
+        $href = $CFG->wwwroot . '/local/resourceexporter/create_zip.php?courseid=' . $this->courseid;
+        $link = "<a href='$href'>" . get_string('download', 'local_resourceexporter') . "</a>";
 
         return $link;
     }

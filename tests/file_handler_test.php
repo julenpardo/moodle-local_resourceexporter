@@ -16,7 +16,7 @@
 
 /**
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,19 +27,19 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 
 require_once('generator/lib.php');
-require_once($CFG->dirroot . '/local/usablebackup/classes/resources/file_handler.php');
+require_once($CFG->dirroot . '/local/resourceexporter/classes/resources/file_handler.php');
 
-use local_usablebackup\file_handler;
+use local_resourceexporter\file_handler;
 
 /**
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-class local_usablebackup_file_handler_testcase extends advanced_testcase {
+class local_resourceexporter_file_handler_testcase extends advanced_testcase {
 
     use file_handler;
 
@@ -47,7 +47,7 @@ class local_usablebackup_file_handler_testcase extends advanced_testcase {
 
     protected function setUp() {
         parent::setUp();
-        $this->generator = new local_usablebackup_generator($this->getDataGenerator());
+        $this->generator = new local_resourceexporter_generator($this->getDataGenerator());
     }
 
     protected function tearDown() {

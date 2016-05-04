@@ -24,19 +24,22 @@
  * If the requesting user has no permissions, or he tries to access directly to the download page, he will be redirected to this
  * page, to show the corresponding error message.
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once('../../config.php');
+require_once('lib.php');
 require_once('classes/downloader/downloader.php');
 
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG, $SESSION;
 
-use local_usablebackup\downloader;
+require_once($CFG->libdir.'/adminlib.php');
+
+use local_resourceexporter\downloader;
 
 require_login();
 
@@ -44,28 +47,28 @@ $courseid = required_param('courseid', PARAM_INT);
 $nopermission = optional_param('nopermission', 0, PARAM_INT);
 $coursecontext = context_course::instance($courseid);
 
-init_page($coursecontext);
+init_page();
 
 if ($nopermission) {
     print_error_page($nopermission);
-} else if (is_enrolled($coursecontext)) {
+} else if (is_enrolled($coursecontext) || is_admin($coursecontext)) {
     create_zip_and_redirect_to_download($courseid);
 } else {
     print_error_page();
 }
 
 /**
- * Initializes the page with: context, url, title, page layout.
- *
- * @param object $coursecontext The course context.
+ * Initializes the page with: context, url, title.
+ * The context is set to system because, in case of having to show the error message for those trying to download resources from
+ * a course they are not enrolled in, setting the context of a course where the user is not enrolled makes no sense.
  */
-function init_page($coursecontext) {
+function init_page() {
     global $PAGE;
 
-    $PAGE->set_context($coursecontext);
-    $PAGE->set_url('/local/usablebackup/create_zip.php');
-    $PAGE->set_title(get_string('createzip_title', 'local_usablebackup'));
-    $PAGE->set_pagelayout('course');
+    $context = context_system::instance();
+    $PAGE->set_context($context);
+    $PAGE->set_url('/local/resourceexporter/create_zip.php');
+    $PAGE->set_title(get_string('createzip_title', 'local_resourceexporter'));
 }
 
 /**
@@ -83,10 +86,10 @@ function create_zip_and_redirect_to_download($courseid) {
     $zipfile = $downloader->create_zip_file();
 
     $filename = basename($zipfile);
-    $downloadurl = new \moodle_url('/local/usablebackup/download.php', array('courseid' => $courseid));
+    $downloadurl = new \moodle_url('/local/resourceexporter/download.php', array('courseid' => $courseid));
 
-    $SESSION->usablebackup_filename = $filename;
-    $SESSION->usablebackup_downloadpermission = true;
+    $SESSION->resourceexporter_filename = $filename;
+    $SESSION->resourceexporter_downloadpermission = true;
 
     redirect($downloadurl);
 }
@@ -99,16 +102,20 @@ function create_zip_and_redirect_to_download($courseid) {
  * to the download page.
  */
 function print_error_page($nopermission = false) {
-    global $OUTPUT;
+    global $OUTPUT, $PAGE;
+
+    $home = new \moodle_url('/');
+    $errormessage = ($nopermission) ? get_string('nopermission', 'local_resourceexporter') : get_string('notenrolled',
+        'local_resourceexporter');
 
     echo $OUTPUT->header();
+    echo $OUTPUT->heading(get_string('error'));
     echo $OUTPUT->navbar();
 
-    echo '<h2>' . get_string('error') . '</h2>';
-
-    $errormessage = ($nopermission) ? get_string('nopermission', 'local_usablebackup') : get_string('notenrolled',
-        'local_usablebackup');
-    echo $errormessage;
+    echo $OUTPUT->box_start('generalbox', 'notice');
+    echo html_writer::tag('p', $errormessage);
+    echo $OUTPUT->single_button($home, get_string('sitehome'), 'get');
+    echo $OUTPUT->box_end();
 
     echo $OUTPUT->footer();
 }

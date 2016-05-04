@@ -24,7 +24,7 @@
  * If the requesting user has no permissions, or he tries to access directly to the download page, he will be redirected to this
  * page, to show the corresponding error message.
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -39,7 +39,7 @@ global $CFG, $SESSION;
 
 require_once($CFG->libdir.'/adminlib.php');
 
-use local_usablebackup\downloader;
+use local_resourceexporter\downloader;
 
 require_login();
 
@@ -67,8 +67,8 @@ function init_page() {
 
     $context = context_system::instance();
     $PAGE->set_context($context);
-    $PAGE->set_url('/local/usablebackup/create_zip.php');
-    $PAGE->set_title(get_string('createzip_title', 'local_usablebackup'));
+    $PAGE->set_url('/local/resourceexporter/create_zip.php');
+    $PAGE->set_title(get_string('createzip_title', 'local_resourceexporter'));
 }
 
 /**
@@ -86,10 +86,10 @@ function create_zip_and_redirect_to_download($courseid) {
     $zipfile = $downloader->create_zip_file();
 
     $filename = basename($zipfile);
-    $downloadurl = new \moodle_url('/local/usablebackup/download.php', array('courseid' => $courseid));
+    $downloadurl = new \moodle_url('/local/resourceexporter/download.php', array('courseid' => $courseid));
 
-    $SESSION->usablebackup_filename = $filename;
-    $SESSION->usablebackup_downloadpermission = true;
+    $SESSION->resourceexporter_filename = $filename;
+    $SESSION->resourceexporter_downloadpermission = true;
 
     redirect($downloadurl);
 }
@@ -105,8 +105,8 @@ function print_error_page($nopermission = false) {
     global $OUTPUT, $PAGE;
 
     $home = new \moodle_url('/');
-    $errormessage = ($nopermission) ? get_string('nopermission', 'local_usablebackup') : get_string('notenrolled',
-        'local_usablebackup');
+    $errormessage = ($nopermission) ? get_string('nopermission', 'local_resourceexporter') : get_string('notenrolled',
+        'local_resourceexporter');
 
     echo $OUTPUT->header();
     echo $OUTPUT->heading(get_string('error'));

@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * local_usablebackup folder test.
+ * local_resourceexporter folder test.
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,20 +28,20 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 
 require_once('generator/lib.php');
-require_once($CFG->dirroot . '/local/usablebackup/classes/resources/folder.php');
+require_once($CFG->dirroot . '/local/resourceexporter/classes/resources/folder.php');
 
-use local_usablebackup\folder;
+use local_resourceexporter\folder;
 
 /**
- * Class local_usablebackup_folder_testcase
+ * Class local_resourceexporter_folder_testcase
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-class local_usablebackup_folder_testcase extends advanced_testcase {
+class local_resourceexporter_folder_testcase extends advanced_testcase {
 
     protected $folder;
     protected $filegenerator;
@@ -49,7 +49,7 @@ class local_usablebackup_folder_testcase extends advanced_testcase {
     protected function setUp() {
         parent::setUp();
         $this->folder = new folder();
-        $this->filegenerator = new local_usablebackup_generator($this->getDataGenerator());
+        $this->filegenerator = new local_resourceexporter_generator($this->getDataGenerator());
     }
 
     protected function tearDown() {
@@ -65,7 +65,7 @@ class local_usablebackup_folder_testcase extends advanced_testcase {
      * @return ReflectionMethod The method object.
      */
     protected static function get_method($name) {
-        $class = new ReflectionClass('local_usablebackup\folder');
+        $class = new ReflectionClass('local_resourceexporter\folder');
         $method = $class->getMethod($name);
         $method->setAccessible(true);
 

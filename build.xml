@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="moodle-local_usablebackup" default="codechecker">
+<project name="moodle-local_resourceexporter" default="codechecker">
 
     <property name="workspace.dir" value="${env.JENKINS_HOME}/jobs/${phing.project.name}/workspace"/>
     <property name="moodle.git" value="${workspace.dir}/moodle/"/>
@@ -10,7 +10,7 @@
     <property name="codechecker.url" value="https://github.com/moodlehq/moodle-local_codechecker.git"/>
     <property name="codechecker.dir" value="${version.dir}/local"/>
     <property name="codechecker.ruleset" value="${codechecker.dir}/codechecker/moodle/ruleset.xml"/>
-    <property name="testsuite.name" value="local_usablebackup_testsuite"/>
+    <property name="testsuite.name" value="local_resourceexporter_testsuite"/>
     <property name="success.code" value="0"/>
 
     <target name="git_status">

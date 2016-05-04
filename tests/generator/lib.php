@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * local_usablebackup data generator.
+ * local_resourceexporter data generator.
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,15 +30,15 @@ global $CFG;
 require_once($CFG->dirroot . '/config.php');
 
 /**
- * local_usablebackup data generator.
+ * local_resourceexporter data generator.
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-class local_usablebackup_generator extends testing_module_generator {
+class local_resourceexporter_generator extends testing_module_generator {
 
     protected $resourcegenerator;
     protected $filestorage;

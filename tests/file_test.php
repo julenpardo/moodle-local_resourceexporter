@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * local_usablebackup data generator.
+ * local_resourceexporter data generator.
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,20 +28,20 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 
 require_once('generator/lib.php');
-require_once($CFG->dirroot . '/local/usablebackup/classes/resources/file.php');
+require_once($CFG->dirroot . '/local/resourceexporter/classes/resources/file.php');
 
-use local_usablebackup\file;
+use local_resourceexporter\file;
 
 /**
- * local_usablebackup data generator class.
+ * local_resourceexporter data generator class.
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-class local_usablebackup_file_testcase extends advanced_testcase {
+class local_resourceexporter_file_testcase extends advanced_testcase {
 
     protected $file;
     protected $filegenerator;
@@ -49,7 +49,7 @@ class local_usablebackup_file_testcase extends advanced_testcase {
     protected function setUp() {
         parent::setUp();
         $this->file = new file();
-        $this->filegenerator = new local_usablebackup_generator($this->getDataGenerator());
+        $this->filegenerator = new local_resourceexporter_generator($this->getDataGenerator());
     }
 
     protected function tearDown() {
@@ -64,7 +64,7 @@ class local_usablebackup_file_testcase extends advanced_testcase {
      * @return ReflectionMethod
      */
     protected static function get_method($name) {
-        $class = new ReflectionClass('local_usablebackup\file');
+        $class = new ReflectionClass('local_resourceexporter\file');
         $method = $class->getMethod($name);
         $method->setAccessible(true);
 

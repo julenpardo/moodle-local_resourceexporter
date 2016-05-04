@@ -16,7 +16,7 @@
 
 /**
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,19 +27,19 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 
 require_once('generator/lib.php');
-require_once($CFG->dirroot . '/local/usablebackup/classes/resources/url.php');
+require_once($CFG->dirroot . '/local/resourceexporter/classes/resources/url.php');
 
-use local_usablebackup\url;
+use local_resourceexporter\url;
 
 /**
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-class local_usablebackup_url_testcase extends advanced_testcase {
+class local_resourceexporter_url_testcase extends advanced_testcase {
 
     protected $url;
     protected $urlgenerator;
@@ -63,7 +63,7 @@ class local_usablebackup_url_testcase extends advanced_testcase {
      * @return ReflectionMethod
      */
     protected static function get_method($name) {
-        $class = new ReflectionClass('local_usablebackup\url');
+        $class = new ReflectionClass('local_resourceexporter\url');
         $method = $class->getMethod($name);
         $method->setAccessible(true);
 
@@ -105,7 +105,7 @@ class local_usablebackup_url_testcase extends advanced_testcase {
         }
 
         // We generate the resources...
-        $filegenerator = new local_usablebackup_generator($this->getDataGenerator());
+        $filegenerator = new local_resourceexporter_generator($this->getDataGenerator());
 
         foreach ($resources as $resource) {
             $filegenerator->create_resource($course->id, $resource->name);

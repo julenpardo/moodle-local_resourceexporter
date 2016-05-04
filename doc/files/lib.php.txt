@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * local_usablebackup lib functions.
+ * local_resourceexporter lib functions.
  *
- * @package    local_usablebackup
+ * @package    local_resourceexporter
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -35,7 +35,7 @@ defined('MOODLE_INTERNAL') || die();
  * @param object $navigation The navigation object.
  * @param object $context The given context.
  */
-function local_usablebackup_extend_settings_navigation($navigation, $context) {
+function local_resourceexporter_extend_settings_navigation($navigation, $context) {
     global $COURSE;
 
     $iscourse = $context->contextlevel === CONTEXT_COURSE;
@@ -45,8 +45,8 @@ function local_usablebackup_extend_settings_navigation($navigation, $context) {
         $existsadminblock = $parent;
 
         if ($existsadminblock) {
-            $pluginname = get_string('pluginname', 'local_usablebackup');
-            $url = new moodle_url('/local/usablebackup/create_zip.php', array('courseid' => $COURSE->id));
+            $pluginname = get_string('download', 'local_resourceexporter');
+            $url = new moodle_url('/local/resourceexporter/create_zip.php', array('courseid' => $COURSE->id));
             $icon = new pix_icon('i/backup', '');
 
             $parent->add($pluginname, $url, navigation_node::TYPE_SETTING, null, null, $icon);
@@ -54,3 +54,14 @@ function local_usablebackup_extend_settings_navigation($navigation, $context) {
     }
 }
 
+/**
+ * Checks if the user is admin, checking if has the capability of site config.
+ *
+ * @param int $coursecontext The course context.
+ * @return boolean If the user is admin, or not.
+ */
+function is_admin($coursecontext) {
+    $isadmin = has_capability('moodle/site:config', $coursecontext);
+
+    return $isadmin;
+}
