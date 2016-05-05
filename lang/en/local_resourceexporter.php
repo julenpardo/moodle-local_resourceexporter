@@ -24,6 +24,6 @@
 
 $string['pluginname'] = 'Resource Exporter';
 $string['createzip_title'] = 'Resource Exporter - Create zip';
-$string['notenrolled'] = 'You can\'t download contents from a course you are not enrolled in.';
-$string['nopermission'] = 'You don\'t have permission to download the files.';
+$string['notenrolled'] = 'You can\'t download resources from a course you are not enrolled in.';
+$string['nopermission'] = 'You don\'t have permission to download the resources.';
 $string['download'] = 'Export resources';

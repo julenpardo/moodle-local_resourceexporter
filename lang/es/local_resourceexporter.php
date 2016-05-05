@@ -15,17 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Resource exporter plugin version details.
+ * Strings for 'Usable Backup' plugin.
  *
  * @package   local_resourceexporter
  * @copyright 2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->version      = 2016050500;
-$plugin->release      = 'master - v1.0 release (Build 2016050500) for Moodle 2.9 and 3.0.';
-$plugin->requires     = 2015051100;
-$plugin->component    = 'local_resourceexporter';
-$plugin->maturity     = MATURITY_STABLE;
+$string['pluginname'] = 'Resource Exporter';
+$string['createzip_title'] = 'Resource Exporter - Crear zip';
+$string['notenrolled'] = 'No puedes descargas recursos de un curso en el que no estás matriculado.';
+$string['nopermission'] = 'No tienes permiso para descargar los recursos.';
+$string['download'] = 'Exportar recursos';
