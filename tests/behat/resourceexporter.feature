@@ -54,3 +54,17 @@
       When I log in as "student1"
       And I go to "/local/resourceexporter/create_zip.php" "c1"
       Then I should see "You can't download resources from a course you are not enrolled in."
+
+    Scenario: More evil student knows the url he should not know, and gets a message error, even if he's enrolled in the course
+      Given the following "courses" exist:
+        | fullname | shortname |
+        | Course 1 | c1        |
+      And the following "users" exist:
+        | username | firstname | lastname | email                |
+        | student1 | Student   | 1        | student1@example.com |
+      And the following "course enrolments" exist:
+        | user     | course | role    |
+        | student1 | c1     | student |
+      When I log in as "student1"
+      And I go to "/local/resourceexporter/download.php" "c1"
+      Then I should see "You don't have permission to download the resources."
