@@ -42,7 +42,7 @@ class behat_local_resourceexporter extends behat_base {
     /**
      * @Given /^I go to "([^"]*)" "([^"]*)"$/
      */
-    public function iGoTo($url, $courseshortname) {
+    public function i_go_to($url, $courseshortname) {
         global $DB;
 
         $courseid = $DB->get_record('course', array('shortname' => $courseshortname), 'id', MUST_EXIST);
