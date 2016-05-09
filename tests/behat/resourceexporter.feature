@@ -43,3 +43,14 @@
       And I click on "Export resources" "link" in the "Administration" "block"
       Then I should not see "You can't download resources from a course you are not enrolled in."
       And I should not see "You don't have permission to download the resources."
+
+    Scenario: Evil student trying to access directly the download link for a course he's not enrolled in, receives an error message
+      Given the following "courses" exist:
+        | fullname | shortname |
+        | Course 1 | c1        |
+      And the following "users" exist:
+        | username | firstname | lastname | email                |
+        | student1 | Student   | 1        | student1@example.com |
+      When I log in as "student1"
+      And I go to "/local/resourceexporter/create_zip.php" "c1"
+      Then I should see "You can't download resources from a course you are not enrolled in."
