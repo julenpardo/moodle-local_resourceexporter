@@ -68,3 +68,9 @@
       When I log in as "student1"
       And I go to "/local/resourceexporter/download.php" "c1"
       Then I should see "You don't have permission to download the resources."
+
+    Scenario: Evil user tries to download the contents of homepage course, but is redirected to homepage instead of downloading
+      When I log in as "admin"
+      And I go to "/local/resourceexporter/create_zip.php" "Acceptance test site"
+      Then I should see "Course overview"
+      And I should see "No course information to show."
