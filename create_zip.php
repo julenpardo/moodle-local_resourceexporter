@@ -77,10 +77,18 @@ function init_page() {
  * been passed (login, enrolled in the course), to have always a value that we know in advance will be assigned (true/false;
  * the file object is more susceptible for possible errors).
  *
+ * If someone is trying to download contents from course=1, that is, the home page, it will be redirected to the home page, since
+ * the no contents can be downloaded (and the created zip file will be marked as corrupt).
+ *
  * @param int $courseid The id of the current course.
  */
 function create_zip_and_redirect_to_download($courseid) {
     global $SESSION;
+
+    if ($courseid === 1) {
+        $home = new \moodle_url('/');
+        redirect($home);
+    }
 
     $downloader = new downloader($courseid);
     $zipfile = $downloader->create_zip_file();
