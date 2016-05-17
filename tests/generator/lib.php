@@ -178,12 +178,14 @@ class local_resourceexporter_generator extends testing_module_generator {
 
         $component = 'mod_folder';
 
-        $foldercontextsql = "SELECT context.id AS context_id
+        $foldercontextsql = "SELECT context.id AS context_id,
+                                    context.contextlevel
                              FROM   {course_modules} course_modules
                              INNER JOIN {course} course
                                  ON course.id = course_modules.course
                              INNER JOIN {context} context
                                  ON course_modules.id = context.instanceid
+                                AND context.contextlevel = 70
                              INNER JOIN {folder} folder
                                  ON folder.id = course_modules.instance
 
