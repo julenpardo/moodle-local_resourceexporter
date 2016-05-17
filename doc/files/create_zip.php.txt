@@ -44,6 +44,9 @@ use local_resourceexporter\downloader;
 require_login();
 
 $courseid = required_param('courseid', PARAM_INT);
+
+redirect_to_homepage_if_invalid_course($courseid);
+
 $nopermission = optional_param('nopermission', 0, PARAM_INT);
 $coursecontext = context_course::instance($courseid);
 
@@ -77,6 +80,9 @@ function init_page() {
  * been passed (login, enrolled in the course), to have always a value that we know in advance will be assigned (true/false;
  * the file object is more susceptible for possible errors).
  *
+ * If someone is trying to download contents from course=1, that is, the home page, it will be redirected to the home page, since
+ * the no contents can be downloaded (and the created zip file will be marked as corrupt).
+ *
  * @param int $courseid The id of the current course.
  */
 function create_zip_and_redirect_to_download($courseid) {
@@ -95,6 +101,27 @@ function create_zip_and_redirect_to_download($courseid) {
 }
 
 /**
+ * Redirects to homepage if the course specified is invalid, i.e., if it is the homepage itself (it doesn't have resources to
+ * download), or if the course doesn't exist.
+ *
+ * @param int $courseid The course to check if is valid or not.
+ */
+function redirect_to_homepage_if_invalid_course($courseid) {
+    global $DB;
+
+    $invalidcourse = $courseid === 1;
+
+    if (!$invalidcourse) {
+        $invalidcourse = !$DB->record_exists('course', array('id' => $courseid));
+    }
+
+    if ($invalidcourse) {
+        $homepage = new \moodle_url('/');
+        redirect($homepage);
+    }
+}
+
+/**
  * Prints the error page if the user is trying to download the contents from a course he's not enrolled in, or if he tries to
  * access the download page directly.
  *
@@ -102,7 +129,7 @@ function create_zip_and_redirect_to_download($courseid) {
  * to the download page.
  */
 function print_error_page($nopermission = false) {
-    global $OUTPUT, $PAGE;
+    global $OUTPUT;
 
     $home = new \moodle_url('/');
     $errormessage = ($nopermission) ? get_string('nopermission', 'local_resourceexporter') : get_string('notenrolled',

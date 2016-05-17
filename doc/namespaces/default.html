@@ -66,12 +66,12 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">0</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">0</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="../reports/markers.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
                                 </a>
                             </li>
                             <li>
@@ -96,19 +96,19 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-75060671"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-667718282"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-75060671" class="accordion-body collapse in">
+            <div id="namespace-667718282" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1163556645"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1356817137"></a>
                                 <a href="../namespaces/local_resourceexporter.html" style="margin-left: 30px; padding-left: 0">local_resourceexporter</a>
             </div>
-            <div id="namespace-1163556645" class="accordion-body collapse ">
+            <div id="namespace-1356817137" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -184,7 +184,8 @@
 since it&#039;s not supposed to be writable by the client. Another property in SESSION object is set to mark that the checks have
 been passed (login, enrolled in the course), to have always a value that we know in advance will be assigned (true/false;
 the file object is more susceptible for possible errors).</em></p>
-                
+                <p>If someone is trying to download contents from course=1, that is, the home page, it will be redirected to the home page, since
+the no contents can be downloaded (and the created zip file will be marked as corrupt).</p>
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
@@ -396,6 +397,50 @@ to the download page.</p></td>
         </aside>
     </div>
 
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_redirect_to_homepage_if_invalid_course" name="method_redirect_to_homepage_if_invalid_course" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">redirect_to_homepage_if_invalid_course()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">redirect_to_homepage_if_invalid_course(integer  <span class="argument">$courseid</span>) </pre>
+                <p><em>Redirects to homepage if the course specified is invalid, i.e., if it is the homepage itself (it doesn&#039;t have resources to
+download), or if the course doesn&#039;t exist.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$courseid </td>
+                                <td><p>The course to check if is valid or not.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper"></div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>local_resourceexporter</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
                             
         </div>
     </section>
@@ -437,7 +482,7 @@ to the download page.</p></td>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on May 4th, 2016 at 16:04.
+                    on May 17th, 2016 at 12:19.
                 </section>
             </section>
         </section>
