@@ -15,13 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * File handler trait test.
  *
  * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
@@ -32,29 +32,42 @@ require_once($CFG->dirroot . '/local/resourceexporter/classes/resources/file_han
 use local_resourceexporter\file_handler;
 
 /**
+ * File handler trait test.
  *
  * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 class local_resourceexporter_file_handler_testcase extends advanced_testcase {
 
     use file_handler;
 
+    /**
+     * Data genearator.
+     * @var object
+     */
     protected $generator;
 
+    /**
+     * Set up testcase.
+     */
     protected function setUp() {
         parent::setUp();
         $this->generator = new local_resourceexporter_generator($this->getDataGenerator());
     }
 
+    /**
+     * Tear down testcase.
+     */
     protected function tearDown() {
         $this->generator = null;
         parent::tearDown();
     }
 
+    /**
+     * Test the method that returns the file, passing the resource information.
+     */
     public function test_get_file_from_resource_info() {
         $this->resetAfterTest();
         $this->setAdminUser();

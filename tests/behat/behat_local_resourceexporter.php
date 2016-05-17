@@ -40,7 +40,11 @@ use Behat\Behat\Context\Step\Given as Given,
 class behat_local_resourceexporter extends behat_base {
 
     /**
+     * Sets the page location to the given url.
+     *
      * @Given /^I go to "([^"]*)" "([^"]*)"$/
+     * @param string $url The url to go.
+     * @param string $courseshortname The short name of the ?courseid param.
      */
     public function i_go_to($url, $courseshortname) {
         global $DB;
