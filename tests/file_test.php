@@ -15,14 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * local_resourceexporter data generator.
+ * File class test.
  *
  * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
@@ -33,25 +32,39 @@ require_once($CFG->dirroot . '/local/resourceexporter/classes/resources/file.php
 use local_resourceexporter\file;
 
 /**
- * local_resourceexporter data generator class.
+ * File class test.
  *
  * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 class local_resourceexporter_file_testcase extends advanced_testcase {
 
+    /**
+     * Testing class.
+     * @var object
+     */
     protected $file;
+
+    /**
+     * File generator.
+     * @var object
+     */
     protected $filegenerator;
 
+    /**
+     * Set up testcase.
+     */
     protected function setUp() {
         parent::setUp();
         $this->file = new file();
         $this->filegenerator = new local_resourceexporter_generator($this->getDataGenerator());
     }
 
+    /**
+     * Tear down testcase.
+     */
     protected function tearDown() {
         $this->filegenerator = null;
         parent::tearDown();
@@ -60,7 +73,7 @@ class local_resourceexporter_file_testcase extends advanced_testcase {
     /**
      * Reflection method, to access non-public methods.
      *
-     * @param $name
+     * @param string $name Method name.
      * @return ReflectionMethod
      */
     protected static function get_method($name) {
@@ -71,6 +84,9 @@ class local_resourceexporter_file_testcase extends advanced_testcase {
         return $method;
     }
 
+    /**
+     * Test getting db records info of files.
+     */
     public function test_get_db_records() {
         global $DB;
 
@@ -154,7 +170,9 @@ class local_resourceexporter_file_testcase extends advanced_testcase {
         }
     }
 
-
+    /**
+     * Test add file resources to download directory.
+     */
     public function test_add_resources_to_directory() {
         global $DB, $CFG;
 

@@ -22,7 +22,6 @@
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
@@ -40,18 +39,32 @@ use local_resourceexporter\folder;
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 class local_resourceexporter_folder_testcase extends advanced_testcase {
 
+    /**
+     * Testing class.
+     * @var object
+     */
     protected $folder;
+
+    /**
+     * File generator.
+     * @var object.
+     */
     protected $filegenerator;
 
+    /**
+     * Set up testcase.
+     */
     protected function setUp() {
         parent::setUp();
         $this->folder = new folder();
         $this->filegenerator = new local_resourceexporter_generator($this->getDataGenerator());
     }
 
+    /**
+     * Tear down testcase.
+     */
     protected function tearDown() {
         $this->folder = null;
         $this->filegenerator = null;
@@ -72,6 +85,9 @@ class local_resourceexporter_folder_testcase extends advanced_testcase {
         return $method;
     }
 
+    /**
+     * Test get db records information of folders.
+     */
     public function test_get_db_records() {
         global $DB;
 
@@ -140,6 +156,9 @@ class local_resourceexporter_folder_testcase extends advanced_testcase {
         }
     }
 
+    /**
+     * Test add file resources to download directory.
+     */
     public function test_add_resources_to_directory() {
         global $DB, $CFG;
 
