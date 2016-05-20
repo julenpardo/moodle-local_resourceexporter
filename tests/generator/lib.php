@@ -37,12 +37,25 @@ require_once($CFG->dirroot . '/config.php');
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 class local_resourceexporter_generator extends testing_module_generator {
 
+    /**
+     * The resource generator.
+     * @var object
+     */
     protected $resourcegenerator;
+
+    /**
+     * File storage to access file system.
+     * @var object
+     */
     protected $filestorage;
 
+    /**
+     * local_resourceexporter_generator constructor.
+     *
+     * @param object $datagenerator Default data generator.
+     */
     public function __construct($datagenerator) {
         parent::__construct($datagenerator);
         $this->resourcegenerator = $datagenerator->get_plugin_generator('mod_resource');
@@ -152,17 +165,27 @@ class local_resourceexporter_generator extends testing_module_generator {
         return $resourceandfile;
     }
 
+    /**
+     * Creates a resource for the given folder.
+     *
+     * @param int $course The course the folder and resource will belong to.
+     * @param string $name Name of the resource.
+     * @param int $folderid Folder id.
+     * @return array Created resources info.
+     */
     public function create_resource_in_folder($course, $name, $folderid) {
         global $DB;
 
         $component = 'mod_folder';
 
-        $foldercontextsql = "SELECT context.id AS context_id
+        $foldercontextsql = "SELECT context.id AS context_id,
+                                    context.contextlevel
                              FROM   {course_modules} course_modules
                              INNER JOIN {course} course
                                  ON course.id = course_modules.course
                              INNER JOIN {context} context
                                  ON course_modules.id = context.instanceid
+                                AND context.contextlevel = 70
                              INNER JOIN {folder} folder
                                  ON folder.id = course_modules.instance
 

@@ -15,10 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Resource class tests.
  *
  * @package    local_resourceexporter
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
- * @category   phpunit
+ * @category   test
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -32,6 +33,11 @@ use local_resourceexporter\resource;
 
 /**
  * This dirty workaround is required to test the implemented methods of the abstract class.
+ *
+ * @package    local_resourceexporter
+ * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
+ * @category   test
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class concrete_resource extends resource {
     public function add_resources_to_directory($courseid, $parentdirectory) {
@@ -47,15 +53,33 @@ class concrete_resource extends resource {
     }
 }
 
+/**
+ * Resource class tests.
+ *
+ * @package    local_resourceexporter
+ * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
+ * @category   test
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class local_resourceexporter_resource_testcase extends advanced_testcase {
 
+    /**
+     * Testing class.
+     * @var object
+     */
     protected $resource;
 
+    /**
+     * Set up testcase.
+     */
     protected function setUp() {
         parent::setUp();
         $this->resource = new concrete_resource();
     }
 
+    /**
+     * Tear down testcase.
+     */
     protected function tearDown() {
         parent::tearDown();
         $this->resource = null;
@@ -64,7 +88,7 @@ class local_resourceexporter_resource_testcase extends advanced_testcase {
     /**
      * Reflection method, to access non-public methods.
      *
-     * @param $name
+     * @param string $name Method name.
      * @return ReflectionMethod
      */
     protected static function get_methods($name) {
@@ -75,6 +99,9 @@ class local_resourceexporter_resource_testcase extends advanced_testcase {
         return $method;
     }
 
+    /**
+     * Test the creation of section directory, having an empty section.
+     */
     public function test_create_section_dir_if_not_exists_emtpy_section() {
         global $CFG;
 
@@ -90,6 +117,9 @@ class local_resourceexporter_resource_testcase extends advanced_testcase {
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * Test the creation of section directory, when the directory does not exist.
+     */
     public function test_create_section_dir_if_not_exists_dir_not_exists() {
         global $CFG;
 
@@ -105,6 +135,9 @@ class local_resourceexporter_resource_testcase extends advanced_testcase {
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * Test the creation of section directory, when the directory already exists.
+     */
     public function test_create_section_dir_if_not_exists_dir_exists() {
         global $CFG;
 
@@ -122,6 +155,9 @@ class local_resourceexporter_resource_testcase extends advanced_testcase {
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * Test the file and directory name clean, when this is null.
+     */
     public function test_clean_file_and_directory_names_null() {
         $name = null;
 
@@ -134,6 +170,9 @@ class local_resourceexporter_resource_testcase extends advanced_testcase {
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * Test the file and directory name clean, when only passing allowed chars.
+     */
     public function test_clean_file_and_directory_names_allowed_chars() {
         $name = 'String with non problematic characters.';
 
@@ -146,6 +185,9 @@ class local_resourceexporter_resource_testcase extends advanced_testcase {
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * Test the file and directory name clean, when passing string with forbidden chars.
+     */
     public function test_clean_file_and_directory_names_forbidden_chars() {
         $name = 'String:with/some/problematic?characters';
 
@@ -158,6 +200,9 @@ class local_resourceexporter_resource_testcase extends advanced_testcase {
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * Test the file and directory name clean, when passing non-ascii chars.
+     */
     public function test_clean_file_and_directory_names_non_ascii_chars() {
         $name = 'String con caracteres problemáticos';
 
@@ -170,6 +215,9 @@ class local_resourceexporter_resource_testcase extends advanced_testcase {
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * Test the visibility of the module for the user, when this is visible.
+     */
     public function test_is_module_visible_for_user_visible() {
         global $DB;
 
@@ -198,6 +246,9 @@ class local_resourceexporter_resource_testcase extends advanced_testcase {
         $this->assertTrue($actual);
     }
 
+    /**
+     * Test the visibility of the module for the user, when this is hidden.
+     */
     public function test_is_module_visible_for_user_hidden() {
         global $DB;
 
@@ -226,6 +277,9 @@ class local_resourceexporter_resource_testcase extends advanced_testcase {
         $this->assertFalse($actual);
     }
 
+    /**
+     * Test the visibility of the module for the user, when this is restricted for groups.
+     */
     public function test_is_module_visible_for_user_group_restriction() {
         global $DB;
 
@@ -261,6 +315,9 @@ class local_resourceexporter_resource_testcase extends advanced_testcase {
         $this->assertFalse($actual);
     }
 
+    /**
+     * Test getting the section name of a resource.
+     */
     public function test_get_section_name() {
         $this->resetAfterTest();
         $this->setAdminUser();

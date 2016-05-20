@@ -28,14 +28,13 @@ defined('MOODLE_INTERNAL') || die();
 
 /**
  * Trait file_handler for file handling with Moodle File API.
- * A trait is used instead of parent methods in local_resourceexporter\resource class, because not all the resources deal with files,
- * but at least two of them they do.
+ * A trait is used instead of parent methods in local_resourceexporter\resource class, because not all the resources deal with
+ * files, but at least two of them they do.
  *
  * @package    local_resourceexporter
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 trait file_handler {
 
     /**
