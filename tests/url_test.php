@@ -15,6 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Url class test.
  *
  * @package    local_resourceexporter
  * @category   test
@@ -32,24 +33,39 @@ require_once($CFG->dirroot . '/local/resourceexporter/classes/resources/url.php'
 use local_resourceexporter\url;
 
 /**
+ * Url class test.
  *
  * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 class local_resourceexporter_url_testcase extends advanced_testcase {
 
+    /**
+     * Testing class.
+     * @var object
+     */
     protected $url;
+
+    /**
+     * Url generator.
+     * @var object
+     */
     protected $urlgenerator;
 
+    /**
+     * Set up testcase.
+     */
     protected function setUp() {
         parent::setUp();
         $this->url = new url();
         $this->urlgenerator = $this->getDataGenerator()->get_plugin_generator('mod_url');
     }
 
+    /**
+     * Tear down testcase.
+     */
     protected function tearDown() {
         $this->url = null;
         $this->urlgenerator = null;
@@ -59,7 +75,7 @@ class local_resourceexporter_url_testcase extends advanced_testcase {
     /**
      * Reflection method, to access non-public methods.
      *
-     * @param $name
+     * @param string $name Method name.
      * @return ReflectionMethod
      */
     protected static function get_method($name) {
@@ -70,6 +86,9 @@ class local_resourceexporter_url_testcase extends advanced_testcase {
         return $method;
     }
 
+    /**
+     * Test get db records information of urls.
+     */
     public function test_get_db_records() {
         global $DB;
 
@@ -132,6 +151,9 @@ class local_resourceexporter_url_testcase extends advanced_testcase {
         }
     }
 
+    /**
+     * Test add url resources to the download directory.
+     */
     public function test_add_resources_to_directory() {
         global $DB, $CFG;
 

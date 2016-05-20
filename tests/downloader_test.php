@@ -15,6 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Resource exporter class tests.
  *
  * @package    local_resourceexporter
  * @category   test
@@ -32,24 +33,39 @@ require_once($CFG->dirroot . '/local/resourceexporter/classes/downloader/downloa
 use local_resourceexporter\downloader;
 
 /**
+ * Resource exporter class tests.
  *
  * @package    local_resourceexporter
  * @category   test
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 class local_resourceexporter_downloader_testcase extends advanced_testcase {
 
+    /**
+     * URL data generator.
+     * @var object
+     */
     protected $urlgenerator;
+
+    /**
+     * File generator.
+     * @var object
+     */
     protected $filegenerator;
 
+    /**
+     * Set up testcase.
+     */
     protected function setUp() {
         parent::setUp();
         $this->urlgenerator = $this->getDataGenerator()->get_plugin_generator('mod_url');
         $this->filegenerator = new local_resourceexporter_generator($this->getDataGenerator());
     }
 
+    /**
+     * Tear down testcase.
+     */
     protected function tearDown() {
         $this->urlgenerator = null;
         $this->filegenerator = null;
@@ -59,7 +75,7 @@ class local_resourceexporter_downloader_testcase extends advanced_testcase {
     /**
      * Reflection method, to access non-public methods.
      *
-     * @param $name
+     * @param string $name Method name.
      * @return ReflectionMethod
      */
     protected static function get_method($name) {
@@ -70,6 +86,9 @@ class local_resourceexporter_downloader_testcase extends advanced_testcase {
         return $method;
     }
 
+    /**
+     * Tests the creation of zip file.
+     */
     public function test_create_zip_file() {
         global $CFG;
 
@@ -156,6 +175,9 @@ class local_resourceexporter_downloader_testcase extends advanced_testcase {
         }
     }
 
+    /**
+     * Tests the parent directory name construction.
+     */
     public function test_get_parent_directory_name() {
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -178,6 +200,9 @@ class local_resourceexporter_downloader_testcase extends advanced_testcase {
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * Tests the created download link.
+     */
     public function test_create_download_link() {
         global $CFG;
 
@@ -201,6 +226,9 @@ class local_resourceexporter_downloader_testcase extends advanced_testcase {
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * Tests the construction of path to resource.
+     */
     public function test_get_file_course_path() {
         global $CFG;
 
@@ -226,6 +254,9 @@ class local_resourceexporter_downloader_testcase extends advanced_testcase {
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * Tests the creation of temp folder where the zips will be stored.
+     */
     public function test_create_parent_temp_folder_if_not_exists() {
         global $CFG;
 
@@ -244,6 +275,9 @@ class local_resourceexporter_downloader_testcase extends advanced_testcase {
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * Tests the recursive deletion of directory.
+     */
     public function test_rmdir_recursive() {
         global $CFG;
 

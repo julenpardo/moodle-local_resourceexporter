@@ -6,12 +6,16 @@
     <property name="parameter.version" value=""/>
     <property name="version.dir" value="${workspace.dir}/target/${parameter.version}"/>
     <property name="config.path" value="${env.JENKINS_HOME}/moodle-config/config-${parameter.version}.php"/>
-    <property name="usablebackup.install.path" value="${version.dir}/local/usablebackup"/>
+    <property name="resourceexporter.install.path" value="${version.dir}/local/resourceexporter"/>
     <property name="codechecker.url" value="https://github.com/moodlehq/moodle-local_codechecker.git"/>
     <property name="codechecker.dir" value="${version.dir}/local"/>
     <property name="codechecker.ruleset" value="${codechecker.dir}/codechecker/moodle/ruleset.xml"/>
     <property name="testsuite.name" value="local_resourceexporter_testsuite"/>
     <property name="success.code" value="0"/>
+
+    <property name="behat.wwwroot" value="/var/www/html/behat_${parameter.version}"/>
+    <property name="behat.dataroot" value="/var/behat_${parameter.version}"/>
+    <property name="behat.yml" value="${behat.dataroot}/behat/behat.yml"/>
 
     <target name="git_status">
         <exec command="git symbolic-ref --short HEAD" outputProperty="git.branch"/>
@@ -21,8 +25,8 @@
     </target>
 
     <target name="usablebackup_install">
-        <delete dir="${usablebackup.install.path}"/>
-        <copy todir="${usablebackup.install.path}">
+        <delete dir="${resourceexporter.install.path}"/>
+        <copy todir="${resourceexporter.install.path}">
             <fileset dir="${workspace.dir}/${phing.project.name}"/>
         </copy>
     </target>
@@ -44,10 +48,9 @@
         <echo msg="${moodle_pull.output}"/>
     </target>
 
-
     <target name="codechecker" depends="usablebackup_install, moodle_install">
         <exec command="git clone ${codechecker.url} codechecker" dir="${codechecker.dir}"/>
-        <exec command="phpcs -v --colors --standard=${codechecker.ruleset} --ignore=*.xml,*.md,*.feature,.idea/*,doc/* ./*" dir="${usablebackup.install.path}" returnProperty="codechecker.status" outputProperty="codechecker.output"/>
+        <exec command="phpcs -v --colors --standard=${codechecker.ruleset} --ignore=*.xml,*.md,*.feature,.idea/*,doc/* ./*" dir="${resourceexporter.install.path}" returnProperty="codechecker.status" outputProperty="codechecker.output"/>
         <if>
             <not>
                 <equals arg1="${codechecker.status}" arg2="${success.code}"/>
@@ -77,6 +80,39 @@
         </if>
 
         <echo msg="${phpunit.output}"/>
+    </target>
+
+    <target name="behat_init">
+        <copy todir="${behat.wwwroot}">
+            <fileset dir="${version.dir}"/>
+        </copy>
+        <exec command="php admin/tool/behat/cli/init.php" dir="${version.dir}" returnProperty="behat_init.status" outputProperty="behat_init.output"/>
+
+        <if>
+            <not>
+                <equals arg1="${behat_init.status}" arg2="${success.code}"/>
+            </not>
+            <then>
+                <fail message="${behat_init.output}"/>
+            </then>
+        </if>
+
+        <echo msg="${behat_init.output}"/>
+    </target>
+
+    <target name="behat_test" depends="behat_init">
+        <exec command="vendor/bin/behat --config ${behat.yml} --tags @local_resourceexporter" dir="${version.dir}" returnProperty="behat.status" outputProperty="behat.output"/>
+
+        <if>
+            <not>
+                <equals arg1="${behat.status}" arg2="${success.code}"/>
+            </not>
+            <then>
+                <fail message="${behat.output}"/>
+            </then>
+        </if>
+
+        <echo msg="${behat.output}"/>
     </target>
 
 </project>

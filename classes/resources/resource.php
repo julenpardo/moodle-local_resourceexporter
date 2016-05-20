@@ -33,7 +33,6 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2016 onwards Julen Pardo & Mondragon Unibertsitatea
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 abstract class resource {
 
     /**
