@@ -45,7 +45,7 @@ require_login();
 
 $courseid = required_param('courseid', PARAM_INT);
 
-redirect_to_homepage_if_invalid_course($courseid);
+local_resourceexporter_redirect_to_homepage_if_invalid_course($courseid);
 
 $nopermission = optional_param('nopermission', 0, PARAM_INT);
 $coursecontext = context_course::instance($courseid);
@@ -53,11 +53,11 @@ $coursecontext = context_course::instance($courseid);
 init_page();
 
 if ($nopermission) {
-    print_error_page($nopermission);
-} else if (is_enrolled($coursecontext) || is_admin($coursecontext)) {
-    create_zip_and_redirect_to_download($courseid);
+    local_resourceexporter_print_error_page($nopermission);
+} else if (local_resourceexporter_is_enrolled($coursecontext) || is_admin($coursecontext)) {
+    local_resourceexporter_create_zip_and_redirect_to_download($courseid);
 } else {
-    print_error_page();
+    local_resourceexporter_print_error_page();
 }
 
 /**
@@ -65,7 +65,7 @@ if ($nopermission) {
  * The context is set to system because, in case of having to show the error message for those trying to download resources from
  * a course they are not enrolled in, setting the context of a course where the user is not enrolled makes no sense.
  */
-function init_page() {
+function local_resourceexporter_init_page() {
     global $PAGE;
 
     $context = context_system::instance();
@@ -85,7 +85,7 @@ function init_page() {
  *
  * @param int $courseid The id of the current course.
  */
-function create_zip_and_redirect_to_download($courseid) {
+function local_resourceexporter_create_zip_and_redirect_to_download($courseid) {
     global $SESSION;
 
     $downloader = new downloader($courseid);
@@ -106,7 +106,7 @@ function create_zip_and_redirect_to_download($courseid) {
  *
  * @param int $courseid The course to check if is valid or not.
  */
-function redirect_to_homepage_if_invalid_course($courseid) {
+function local_resourceexporter_redirect_to_homepage_if_invalid_course($courseid) {
     global $DB;
 
     $invalidcourse = $courseid === 1;
@@ -128,7 +128,7 @@ function redirect_to_homepage_if_invalid_course($courseid) {
  * @param boolean $nopermission If the error is because of the user has no permission, and not because it has accessed directly
  * to the download page.
  */
-function print_error_page($nopermission = false) {
+function local_resourceexporter_print_error_page($nopermission = false) {
     global $OUTPUT;
 
     $home = new \moodle_url('/');
