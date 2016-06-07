@@ -50,11 +50,11 @@ local_resourceexporter_redirect_to_homepage_if_invalid_course($courseid);
 $nopermission = optional_param('nopermission', 0, PARAM_INT);
 $coursecontext = context_course::instance($courseid);
 
-init_page();
+local_resourceexporter_init_page();
 
 if ($nopermission) {
     local_resourceexporter_print_error_page($nopermission);
-} else if (local_resourceexporter_is_enrolled($coursecontext) || is_admin($coursecontext)) {
+} else if (is_enrolled($coursecontext) || is_admin($coursecontext)) {
     local_resourceexporter_create_zip_and_redirect_to_download($courseid);
 } else {
     local_resourceexporter_print_error_page();
