@@ -36,7 +36,7 @@ The current release, the first stable, is the v1.1 (build 2016052000), tested fo
 ## Installation
  - Go to the local directory of your Moodle installation:
  `cd /wwwroot/local`
- - Clone this repository to a directory named `usablebackup`:
+ - Clone this repository to a directory named `resourceexporter`:
  `git clone https://github.com/julenpardo/moodle-local_resourceexporter resourceexporter`
  (Or, download directly the [latest master release, v1.0](https://github.com/julenpardo/moodle-local_resourceexporter/archive/v1.0.zip)).
  - Finally, install it from Moodle.
