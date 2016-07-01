@@ -1,7 +1,7 @@
 Moodle Resource Exporter
 ========================
 
-![Release](https://img.shields.io/badge/release-v1.1-blue.svg) ![Supported](https://img.shields.io/badge/supported-2.9%2C%203.0%2C%203.1--rc2-green.svg) ![Coverage](https://img.shields.io/badge/coverage-89.77%25-brightgreen.svg) 
+![Release](https://img.shields.io/badge/release-v1.2-blue.svg) ![Supported](https://img.shields.io/badge/supported-2.9%2C%203.0%2C%203.1--rc2-green.svg) ![Coverage](https://img.shields.io/badge/coverage-89.77%25-brightgreen.svg) 
 
 ## What is this thing?
 This is a plugin for those who like to have resources of Moodle courses in their local disk, and are tired of downloading each resource one by one.
@@ -13,16 +13,16 @@ With a single click, it will create a zip that will contain the following resour
  - URLs, in txt format.
 
 ## Current version
-The current release, the first stable, is the v1.1 (build 2016052000), tested for Moodle 2.9, 3.0 and 3.1-rc2:
- - For [Moodle 2.9 (v2.9.1.1)](https://github.com/julenpardo/moodle-local_resourceexporter/releases/tag/v2.9.1.1)
- - For [Moodle 3.0 (v3.0.1.1)](https://github.com/julenpardo/moodle-local_resourceexporter/releases/tag/v3.0.1.1)
- - For [Moodle 3.1-rc2 (v3.1.1.1-rc2)](https://github.com/julenpardo/moodle-local_resourceexporter/releases/tag/v3.1.1.1-rc2)
+The current release, the first stable, is the v1.2 (build 2016070100), tested for Moodle 2.9, 3.0 and 3.1:
+ - For [Moodle 2.9 (v2.9.1.2)](https://github.com/julenpardo/moodle-local_resourceexporter/releases/tag/v2.9.1.2)
+ - For [Moodle 3.0 (v3.0.1.2)](https://github.com/julenpardo/moodle-local_resourceexporter/releases/tag/v3.0.1.2)
+ - For [Moodle 3.1-rc2 (v3.1.1.2)](https://github.com/julenpardo/moodle-local_resourceexporter/releases/tag/v3.1.1.2)
 
-## Changes from v1.0
- - Fix issue "create_zip.php doesn't handle exception when courseid param is a course that does not exist" (see [issue 18](https://github.com/julenpardo/moodle-local_resourceexporter/issues/18)).
- - Add acceptance tests (see [issue 17](https://github.com/julenpardo/moodle-local_resourceexporter/issues/17)).
- - Fix issue "Prechecker errors (not actual errors)" (see [issue 19](https://github.com/julenpardo/moodle-local_resourceexporter/issues/19)).
- - Fix issue "folder_test breaks for Moodle v3.1.0-beta1" (see [issue 20](https://github.com/julenpardo/moodle-local_resourceexporter/issues/20)).
+## Changes from v1.1
+ - Fix issue "Misleading installation instructions" (see [issue 21](https://github.com/julenpardo/moodle-local_resourceexporter/issues/21)).
+ - Fix issue "Errors while trying to test the plugin" (see [issue 22](https://github.com/julenpardo/moodle-local_resourceexporter/issues/22).
+ - Fix issue "Naming issues" (see [issue 23](https://github.com/julenpardo/moodle-local_resourceexporter/issues/23)).
+ - Fix issue "Where does the tool check for access rights?" (see [issue 24](https://github.com/julenpardo/moodle-local_resourceexporter/issues/24)). 
 
 ## Upcoming features
  - Allow to export the remaining resources:
@@ -36,7 +36,7 @@ The current release, the first stable, is the v1.1 (build 2016052000), tested fo
 ## Installation
  - Go to the local directory of your Moodle installation:
  `cd /wwwroot/local`
- - Clone this repository to a directory named `usablebackup`:
+ - Clone this repository to a directory named `resourceexporter`:
  `git clone https://github.com/julenpardo/moodle-local_resourceexporter resourceexporter`
  (Or, download directly the [latest master release, v1.0](https://github.com/julenpardo/moodle-local_resourceexporter/archive/v1.0.zip)).
  - Finally, install it from Moodle.
