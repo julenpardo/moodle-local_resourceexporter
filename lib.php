@@ -60,7 +60,7 @@ function local_resourceexporter_extend_settings_navigation($navigation, $context
  * @param int $coursecontext The course context.
  * @return boolean If the user is admin, or not.
  */
-function is_admin($coursecontext) {
+function local_resourceexporter_is_admin($coursecontext) {
     $isadmin = has_capability('moodle/site:config', $coursecontext);
 
     return $isadmin;

@@ -24,8 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version      = 2016052000;
-$plugin->release      = 'v2.9.1.1 (version 1.1 for Moodle 2.9) (Build 2016052000)';
+$plugin->version      = 2016070100;
+$plugin->release      = 'v2.9.1.2 (version 1.2 for Moodle 2.9) (Build 2016070100)';
 $plugin->requires     = 2015051100;
 $plugin->component    = 'local_resourceexporter';
 $plugin->maturity     = MATURITY_STABLE;
