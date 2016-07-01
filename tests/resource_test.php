@@ -316,6 +316,38 @@ class local_resourceexporter_resource_testcase extends advanced_testcase {
     }
 
     /**
+     * Test the visibility of the module for the user, when he has no visibility capability for the module.
+     */
+    public function test_is_module_visible_for_user_no_view_capability() {
+        global $DB;
+
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        // We generate all the required stuff: course, a resource (url, e.g.), a user enrolled in the course, a group.
+        $course = $this->getDataGenerator()->create_course();
+        $url = $this->getDataGenerator()->get_plugin_generator('mod_url')->create_instance(array('course' => $course->id));
+        $student = $this->getDataGenerator()->create_user();
+        $this->getDataGenerator()->enrol_user($student->id, $course->id, 5); // 5 is student role id.
+        $this->setUser($student);
+
+        $nocap = new stdClass();
+        $nocap->contextid = 1;
+        $nocap->roleid = 5;
+        $nocap->capability = 'mod/url:view';
+        $nocap->permission = CAP_PROHIBIT;
+        $DB->insert_record('role_capabilities', $nocap);
+
+        // We get the testing method by reflection.
+        $method = self::get_methods('is_module_visible_for_user');
+
+        // And, finally, we test the method.
+        $actual = $method->invokeArgs($this->resource, array($course->id, $url->cmid));
+
+        $this->assertFalse($actual);
+    }
+
+    /**
      * Test getting the section name of a resource.
      */
     public function test_get_section_name() {
