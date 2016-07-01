@@ -113,7 +113,8 @@ class downloader {
         $zipfilepath = $fullpathtoparent . '.zip';
         $ziparchive = new \ZipArchive();
 
-        $erroropeningzip = !$ziparchive->open($zipfilepath, \ZipArchive::OVERWRITE);
+        $erroropeningzip = !$ziparchive->open($zipfilepath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+
         if ($erroropeningzip) {
             throw new \Exception('Failed to create zip archive, error object: ' . error_get_last()['message']);
         }
