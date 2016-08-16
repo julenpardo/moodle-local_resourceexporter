@@ -54,7 +54,7 @@ local_resourceexporter_init_page();
 
 if ($nopermission) {
     local_resourceexporter_print_error_page($nopermission);
-} else if (is_enrolled($coursecontext) || is_admin($coursecontext)) {
+} else if (is_enrolled($coursecontext) || local_resourceexporter_is_admin($coursecontext)) {
     local_resourceexporter_create_zip_and_redirect_to_download($courseid);
 } else {
     local_resourceexporter_print_error_page();

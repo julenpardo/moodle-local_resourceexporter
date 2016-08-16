@@ -39,7 +39,7 @@ $coursecontext = context_course::instance($courseid);
 
 $validsubmission = isset($SESSION->resourceexporter_downloadpermission);
 $validsubmission &= isset($SESSION->resourceexporter_filename);
-$validsubmission &= is_enrolled($coursecontext) || is_admin($coursecontext);
+$validsubmission &= is_enrolled($coursecontext) || local_resourceexporter_is_admin($coursecontext);
 
 if ($validsubmission) {
     $filename = $SESSION->resourceexporter_filename;
